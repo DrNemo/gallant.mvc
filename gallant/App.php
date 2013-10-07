@@ -29,7 +29,7 @@ class G{
     public static $filter = array();
 	
 	public static function version(){
-		return "0.0.1 pre-alfa";
+		return "0.0.2 pre-alfa";
 	}
 	/**
 	* G::init

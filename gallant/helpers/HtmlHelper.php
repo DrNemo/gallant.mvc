@@ -13,8 +13,6 @@ namespace Gallant\Helpers;
 use \G as G;
 
 class HtmlHelper{
-	private function __construct(){}
-    private function __clone(){}
 
 	/**
 	* printError выводит ошибки созданные методом G::setError в обрамление <div> с указанным css классом
@@ -28,7 +26,7 @@ class HtmlHelper{
 		$html = '';
 		foreach ($code as $c) {
 			if($text = G::getError($c)){
-				$html .= "<div class=\"$class\">$text</div>";
+				$html .= "<div id=\"$c\" class=\"$class\">$text</div>";
 			}
 		}
 		return $html;
@@ -42,6 +40,8 @@ class HtmlHelper{
 	* @return string html
 	*/
 	function select($list, $id = false){
+		p($list);
+		if(!$list) return;
 	    foreach($list as $index => $val){
 	        if(!$id){
 	        	$list.='<option value="'.$index.'">'.$val.'</option>';

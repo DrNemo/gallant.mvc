@@ -1,6 +1,6 @@
 <?
 /**
-* G
+* Model
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
@@ -141,8 +141,17 @@ class Model extends Builder{
 			return false;
 		}
 		if(!$this->parent_models[$rel]){
+			$rel = $rels[$rel];
+			$rel_model = $rel['model'];
+			$rel_type = $rel['relation'];
+
+			$requery = new \Gallant\DB\DBQuery;
+			if($rel_type == 'ONE_TO_ONE'){
+				//$requery->where('');
+			}
 			// load parent model
+		}else{
+			return $this->parent_models[$rel];
 		}
-		return $this->parent_models[$rel];
 	}
 }

@@ -10,7 +10,7 @@
 * @version 1.0
 */
 
-if(!defined('GALLANT_SYSTEM') || GALLANT_SYSTEM !== true) die('not');
+if(!defined('GALLANT_SYSTEM') || GALLANT_SYSTEM !== true) die('NOT GALLANT_SYSTEM');
 define('GALLANT_CORE', __DIR__);
 define('SITE_ROOT', $_SERVER['DOCUMENT_ROOT']);
 

@@ -27,7 +27,7 @@ class Template{
 	function __construct(){
 		$design = G::getConfig('site');
 		$this->chaster = $design['chaster'];
-		#$this->helper = new \Gallant\Helpers\HtmlHelper;
+		$this->helper = new \Gallant\Helpers\HtmlHelper;
 
 		header("Content-Encoding: ".$this->chaster);
         header("Content-Type: text/html; charset=".$this->chaster);

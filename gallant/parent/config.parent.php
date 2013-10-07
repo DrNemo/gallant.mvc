@@ -23,7 +23,7 @@ return array(
 		),
 
 	'route' => array(
-		'type' => 'get',
+		'type' => 'request_url', //'get',
 		'index' => 'page/index',
 		'error404' => 'action404'
 		),

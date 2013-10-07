@@ -1,6 +1,6 @@
 <?
 /**
-* G
+* Register
 * 
 * @package Gallant
 * @copyright 2013 DrNemo

@@ -23,9 +23,10 @@ class Route{
 
     private $param = array();
 
-    private $_routes = false;
+    private $_routes = array();
 
     private $_urls = array();
+    private $_path = array();
 
 	const PREF_CONTROL = 'control';
 	const PREF_ACTION = 'action';
@@ -54,16 +55,28 @@ class Route{
         }
 	}
 
-    function getUrl(){
+    function getRoutes(){
         return $this->_routes;
     }
 
-    function getStrUrl(){
+    function setRoutes($routes){
+        return $this->_routes = $routes;
+    }
+
+    function getUrl(){
+        return $this->_urls;
+    }
+
+    function getUrlStr(){
         return '/'.strtolower(implode('/', $this->_urls));
     }
 
-    function setUrl($url){
-        $this->_routes = $url;
+    function getPath(){
+        return $this->_path;
+    }
+
+    function getPathStr(){
+        return '/'.strtolower(implode('/', $this->_path));
     }
 
 	function route(){
@@ -101,43 +114,59 @@ class Route{
                     if(is_dir($folder_control.$rout) && !$_control_flag){
                         $_control .= $rout.'\\';
                         $folder_control .= $rout.'/';
+
+                        $this->_urls[] = $rout;
+                        $this->_path[] = $rout;
                     // наличее контроллера в "папке"
                     }else if(class_exists($_control.self::PREF_CONTROL.$routU)){
                         $_control .= self::PREF_CONTROL.$routU;
                         $_control_flag = true;
+
                         $this->_urls[] = $rout;
+                        $this->_path[] = $rout;
                     // если контроллер не найден
                     }else{
                         /* ищем default control в текущей папке */
                         if(class_exists($_control.$default_control)){
                             $_control .= $default_control;
                             $_control_flag = true;
+
+                            $this->_path[] = $this->default_control;
                             /* ищем метод в default control */
                             if(method_exists($_control, $_action.$routU)){
                                 $_action .= $routU;
-                                $_action_flag = true; 
-                                $this->_urls[] = $this->default_control;
+                                $_action_flag = true;
+
+                                $this->_path[] = $rout;
                                 $this->_urls[] = $rout;
                             /* иначе ищем метод 404*/
                             }else if(method_exists($_control, $action_404)){
                                 $_action = $action_404;
                                 $_action_flag = true;
-                                $this->_urls[] = $this->default_control;
+
                                 $this->_urls[] = '404';
+
+                                $this->_path[] = '404';
                                 $param[] = $rout;
                             /* вызываем корневой default control и его метод 404 */
                             }else{
                                 $_control = '\\Control\\'.$default_control;
                                 $_action = $action_404;
                                 $_control_flag = $_action_flag = true;
+                                
                                 $this->_urls = array($this->default_control, '404');
+                                $this->_path = array($this->default_control, '404');
+
                                 $param[] = $rout;
                             }
                         }else if(method_exists('\\Control\\'.$default_control, $action_404)){
                             $_control = '\\Control\\'.$default_control;
                             $_action = $action_404;
                             $_control_flag = $_action_flag = true;
+
                             $this->_urls = array($this->default_control, '404');
+                            $this->_path = array($this->default_control, '404');
+
                         }else{
                             throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
                         }
@@ -146,16 +175,23 @@ class Route{
                     if(method_exists($_control, $_action.$routU)){
                         $_action .= $routU;
                         $_action_flag = true;
+
                         $this->_urls[] = $rout;
+                        $this->_path[] = $rout;
                     }else if(method_exists($_control, $action_404)){
                         $_action = $action_404;
                         $_action_flag = true;
+
                         $this->_urls[] = '404';
+                        $this->_path[] = '404';
+
                     }else if(method_exists('\\Control\\'.$default_control, $action_404)){
                         $_control = '\\Control\\'.$default_control;
                         $_action = $action_404;
                         $_action_flag = $_control_flag = true;
+
                         $this->_urls = array($this->default_control, '404');
+                        $this->_path = array($this->default_control, '404');
                     }else{
                         throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
                     }
@@ -166,14 +202,20 @@ class Route{
                     if(class_exists($_control.$default_control)){
                         $_control .= $default_control;
                         $_control_flag = true;
+
                         $this->_urls[] = $this->default_control;
+                        $this->_path[] = $this->default_control;
+
                     }else if(class_exists('\\Control\\'.$default_control)){
                         $_control = '\\Control\\'.$default_control;
                         $_control_flag = true;
                         $this->_urls[] = $this->default_control;
                         if(method_exists($_control, $action_404)){
                             $_action = $action_404;
+
                             $this->_urls[] = '404';
+                            $this->_path[] = '404';
+
                             $_action_flag = true;
                         }else{
                             throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
@@ -184,16 +226,24 @@ class Route{
                     if(method_exists($_control, $default_action)){
                         $_action = $default_action;
                         $_action_flag = true;
+
                         $this->_urls[] = $this->default_action;
+                        $this->_path[] = $this->default_action;
+
                     }else if(method_exists($_control, $action_404)){
                         $_action = $action_404;
                         $_action_flag = true;
+
                         $this->_urls[] = '404';
+                        $this->_path[] = '404';
+
                     }else if(method_exists('\\Control\\'.$default_control, $action_404)){
                         $_control = '\\Control\\'.$default_control;
                         $_action = $action_404;
                         $_control_flag = $_action_flag = true;
+
                         $this->_urls = array($this->default_control, '404');
+                        $this->_path = array($this->default_control, '404');
                     }else{
                         throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
                     }

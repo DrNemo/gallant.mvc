@@ -1,6 +1,6 @@
 <?
 /**
-* G
+* Builder
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
@@ -11,45 +11,71 @@
 namespace Gallant\Ar;
 
 class Builder{
-
-	protected $data = false;
+	public $_init = false;
+	protected $data = array();
 	protected $data_update = array();
 	protected $parent_models = array();
 
-	private $_relation_pref = false;
+	public $_relation_pref = false;
 
 	const MODEL_AS = 'mod1_t0';
 
-	function __construct($data = false, $as = false){
+	const ONE_TO_ONE = 'relation::ONE_TO_ONE';
+	const ONE_TO_MANY = 'relation::ONE_TO_MANY';
+	const MANY_TABLE_BUNCH = 'relation::MANY_TABLE_BUNCH';
+	const MANY_TO_MANY = 'relation::MANY_TO_MANY';
+
+	function __construct($map = false, $as = false){
 		$this->sqlQuery();
 
-		if($data && $as){
-			$structure = $this->structure();
-			$db_structure = $this->db_structure;
+		$db_struct = Register::getStructure($this->className());
+		//die();
+		$arr_key = array_keys($db_struct);
+		$arr_val = array();
+		$arr_val = array_pad($arr_val, count($db_struct), false);
+		$this->data = array_combine($arr_key, $arr_val);		
+		
+		
+		if($map && $as){
+			//p('__construct : '.$this->className(). ' | AS: '.$as, $map);
 			$relations = $this->relations();
 
-			$f_data = function($val, $key, $dop){
-				if(substr($key, 0, strlen($dop['as'])) == $dop['as']){
-					$dop['data'][substr($key, strlen($dop['as']) + 1)] = $val;
-				}
-			};
-			while($line = array_shift($data)){
+			// todo if($data is Map)''
 
-				if(!$this->data){
-					$data_model = array();
-					array_walk($line, $f_data, array('as' => $as, 'data' => &$data_model));
-					$this->data = $data_model;					
-				}
+			if($dt = $map->getData($as)){
+				$this->data = array_merge($this->data, $dt);
+				$this->_init = true;
+			}else{
+				return;
+			}
 
-				if($relations && $as == self::MODEL_AS){
-					foreach ($relations as $rel_key => $rel_desc){
-						$rel_model = $rel_desc['model'];
-						if(!$this->parent_models[$rel_key]){
-							$this->parent_models[$rel_key] = new Mediator;
+			if($relations && $map->isSource()){
+				foreach ($relations as $relation_key => $relation_data) {
+					$rel_as = $this->_relation_pref[$relation_key];
+					$rel_model_name = $relation_data['model'];
+					$rel_type = $relation_data['relation'];
+
+					/** @todo: ($rel_map) ? $rel_map->getSource() ? */
+					$new_source = ($rel_map) ? $rel_map->getSource() : $map->getSource();
+
+					$rel_map = new Map($new_source, $rule_pref);
+					$childs = $rel_map->getParse($rel_as, $rel_model_name::primaryPk());
+					if($rel_type == self::ONE_TO_ONE){
+						$this->parent_models[$relation_key] = new $rel_model_name($childs[0], $rel_as);
+					}else if($rel_type == self::ONE_TO_MANY || $rel_type == self::MANY_TABLE_BUNCH){
+						$mediator = new Mediator;
+						if($childs){
+							foreach ($childs as $child) {
+								$new_child = new $rel_model_name($child, $rel_as);
+								if($new_child->_init){
+									$mediator->push($new_child);
+								}
+							}
 						}
-						$model = new $rel_model(array($line), $this->_relation_pref[$rel_key]);
-
-						$this->parent_models[$rel_key]->push($model);
+						$this->parent_models[$relation_key] = $mediator;
+					}else{
+						p('@todo: '.$rel_type);
+						p($rel_map);
 					}
 				}
 			}
@@ -93,22 +119,20 @@ class Builder{
 		$rel_concet = array();
 
 		if($relations){
-			$iter = 1;
+			$iter = 0;
 			foreach ($relations as $key => $relation) {
-				
-				$rel_model = $relation['model'];
-				$relation_type = $relation['relation'];
-				$my_colon = $relation['my_column'];
-				$his_colon = $relation['his_column'];
-				if(is_array($his_colon)){
-					$add_colons = array_slice($his_colon, 1);
-					$his_colon = $his_colon[0];
-				}
+				$iter ++;
 
-				$rel_as = 'mod1_t'.$iter;
+				$rel_model = $relation['model'];
 
 				$rel_pk = $rel_model::primaryPk();
+				
+				
+				$relation_type = $relation['relation'];
+				$my_colon = isset($relation['my_column']) ? $relation['my_column'] : $pk;
+				$his_colon = isset($relation['his_column']) ? $relation['his_column'] : $rel_pk;
 
+				$rel_as = 'mod1_t'.$iter;
 
 				$rel_colon = $rel_model::structure();
 
@@ -116,45 +140,32 @@ class Builder{
 
 				$rel_colon = array_values($rel_colon);
 
-				$demo_query->columns($rel_colon, $rel_as, $rel_as.'_');
-
 				$rel_concet[$key] = $rel_as;
 
-				// ONE_TO_BUNCH - для связки использует доп таблицу
-				if($relation_type == 'ONE_TO_BUNCH'){
-					if(is_array($pk)){
-						$pk = $pk[0];
-					}
+				$rel_table = $rel_model::table();
 
-					$dop_table = $my_colon[0];
+				$demo_query->columns($rel_colon, $rel_as, $rel_as.'_');
 
-					$dop_pole = $my_colon[1];
+				if($relation_type == self::ONE_TO_ONE){
 
-					$iter++;
+					$demo_query->join(array($rel_table, $rel_as), "$as.$my_colon = $rel_as.$his_colon");
 
-					$dop_as = 'mod1_t'.$iter;
+				}else if($relation_type == self::ONE_TO_MANY){
 
-					$demo_query->join(array($dop_table, $dop_as), "$dop_as.$dop_pole = $as.$pk");
+					$demo_query->join(array($rel_table, $rel_as), "$as.$my_colon = $rel_as.$his_colon");
 
-					$r_pk = (is_array($rel_pk)) ? $rel_pk[0] : $rel_pk;
-					$demo_query->join(array($rel_model::table(), $rel_as), "$dop_as.$his_colon = $rel_as.$r_pk");
+				}else if($relation_type == self::MANY_TABLE_BUNCH){
 
-					$demo_query->columns(array($dop_pole, $his_colon), $dop_as, $rel_as.'_');
+					$bunch_table = $relation['table'];
+					$demo_query->join(array($bunch_table, 'bunch'), "`bunch`.$my_colon = $as.$pk");
+					$demo_query->join(array($rel_table, $rel_as), "`bunch`.$his_colon = $rel_as.$rel_pk");
+					//p(array($rel_table, $rel_as), "$as.$my_colon = $rel_as.$his_colon");
 
-					if(sizeof($my_colon) > 2){
-						$demo_query->columns(array_splice($my_colon, 2), $dop_as, $rel_as.'_');
-					}
-
-					if($add_colons){
-						$demo_query->columns($add_colons, $dop_as, $rel_as.'_');
-					}
-
-				// ONE_TO_ONE - один к одному
-				}else if($relation_type == 'ONE_TO_ONE'){
-					$demo_query->table($rel_model::table(), $rel_as)->where("$as.$my_colon == $rel_as.$his_colon");
+				}else/* if($relation_type == 'ONE_TO_MANY')*/{
+					die('@todo $relation_type in Builder.php:'.$relation_type);
 				}
 				
-				$iter++;
+				
 			}
 		}
 
@@ -200,26 +211,23 @@ class Builder{
 			}
 		}else{
 			$sql = "$as.$pk ";
-			if(sizeof($gpk) > 1){
-				if(!is_array($gpk[0])){
-					$val = $gpk;
-				}else{
-					$val = $gpk[0];
-				}
+			if(is_array($gpk[0])){
+				$val = $gpk[0];
 				$inp = implode(',', array_fill(0, sizeof($val), '?'));
 				$sql .= " IN ($inp)";
-				
+				$attr = array_values($gpk[0]);			
 			}else{
 				$sql .= " = ?";
 				//$attr[] = $gpk;
+				$attr = array_values($gpk);
 			}
-			$attr = array_values($gpk);
+			
 		}
 		
 		$pre_query->where($sql)->attr($attr);
 
 		if($results = $pre_query->select()){
-			$data_return = self::parseResult($results);
+			$data_return = self::parseResult($results, $pre_model->_relation_pref);
 			return $data_return;
 		}else return false;		
 	}
@@ -232,7 +240,7 @@ class Builder{
 		$pre_query->merge($query);
 		
 		if($results = $pre_query->select()){
-			$data_return = self::parseResult($results);
+			$data_return = self::parseResult($results, $pre_query->_relation_pref);
 			return $data_return;
 		}else return false;	
 	}
@@ -275,9 +283,9 @@ class Builder{
 		
 	}
 
-	private function parseResult($results){
-		$as = self::MODEL_AS;
+	private static function parseResult($results, $rule_pref){
 		$model = self::className();
+
 		$pk = $model::primaryPk();
 
 		if(!is_array($pk)){
@@ -285,30 +293,19 @@ class Builder{
 		}else{
 			$ar_pk = $pk;
 		}
-		$pre_id = false;
-		$obj_data = array();
-		foreach($results as $result){
-			$new_pre_id = false;				
-			foreach($ar_pk as $_pk){
-				$new_pre_id[] = $result[$as.'_'.$_pk];
-			}
-			if(!$pre_id){
-				$pre_id = $new_pre_id;
-			}
 
-			if($pre_id != $new_pre_id){
-				$pre_id = $new_pre_id;
-				$obj_data[] = $data;
-				$data = array();
-			}
-			$data[] = $result;
-		}
-		$obj_data[] = $data;
+		$map = new Map($results, $rule_pref);
+		$maps = $map->getParse(self::MODEL_AS, $model::primaryPk());
+		
+		$mediator = new Mediator;
 
-		$result = new Mediator;	
-		foreach($obj_data as $data){
-			$result->push(new $model($data, $as));
+		if(sizeof($maps) > 0){
+			foreach ($maps as $map) {
+				$mediator->push(new $model($map, self::MODEL_AS));
+			}
 		}
-		return $result;
+
+		return $mediator;
+
 	}
 }

@@ -1,6 +1,6 @@
 <?
 /**
-* G
+* Mediator
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
@@ -52,6 +52,7 @@ class Mediator{
 	}
 
 	function last(){
+		if(!$this->data) return false;
 		$data = $this->data;
 		if($r = array_pop($data)){
 			return $r;

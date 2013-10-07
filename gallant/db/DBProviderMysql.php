@@ -161,15 +161,38 @@ class DBProviderMysql{
 			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
 		}
 
-		
+		////////////////// order
+		if($DBQuery['order']){
+			$sql .= " ORDER BY ";
+			$sql_order = '';
+			foreach($DBQuery['order'] as $order){
+				if($sql_order) $sql_order .= ', ';
+				$sort = ($order[0] == 'asc') ? 'ASC' : 'DESC';
+				$sql_order .= " '$order[1]' $sort ";
+			}
+			$sql .= $sql_order;
+		}
+
+		////////////////// order
+		if($DBQuery['limit']){
+			$sql .= " LIMIT $DBQuery[limit]";
+			if($DBQuery['ofset']){
+				$sql .= ", $DBQuery[ofset]";
+			}
+		}
+
 		////////////////// attr
 		$attr = false;
 		if($DBQuery['attr']){
 			$attr = $DBQuery['attr'];
 		}
+
+		//p($DBQuery);
+
+		
 		
 		////////////////// QUERY
-		//p($sql, $attr);
+		 p($sql, $attr);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}
@@ -179,19 +202,14 @@ class DBProviderMysql{
 		}else{
 			$exec = $pdo_query->execute();
 		}
-
 		
 
 		if(!$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC)){
 			return false;
-		}
-
-		if($result){
+		}else{
 			$this->report[$this->count] = $sql;
 			$this->count ++;
 			return $result;
-		}else{
-			return false;
 		}
 	}	
 }

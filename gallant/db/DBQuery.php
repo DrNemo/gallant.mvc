@@ -35,6 +35,7 @@ class DBQuery{
 		$this->pref = $db[$provider]['pref'];
 		$this->config = $db[$provider];
 		$this->provider = $provider;
+		$this->query = array();
 	}
 
 	/**
