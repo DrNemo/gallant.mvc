@@ -1,10 +1,10 @@
 <?
 /**
-* Model
+* Gallant\Ar\Model
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -82,8 +82,9 @@ class Model extends Builder{
 	* @param sting
 	* @param mixed
 	*/
-	public function __set($key, $val){		
-		if(isset($this->db_structure[$key])){
+	public function __set($key, $val){
+		$structure = Register::getStructure($this->className());
+		if(isset($structure[$key])){
 			$this->data_update[$key] = $val;
 		}
 	}
@@ -136,6 +137,7 @@ class Model extends Builder{
 	* @return object Gallant\Ar\Mediator
 	*/
 	public function related($rel){
+
 		$rels = $this->relations();
 		if(!$rels[$rel]){
 			return false;

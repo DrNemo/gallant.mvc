@@ -1,10 +1,10 @@
 <?
 /**
-* Builder
+* Gallant\Ar\Builder
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -38,32 +38,31 @@ class Builder{
 		
 		if($map && $as){
 			//p('__construct : '.$this->className(). ' | AS: '.$as, $map);
+			
 			$relations = $this->relations();
 
-			// todo if($data is Map)''
-
-			if($dt = $map->getData($as)){
+			// todo if($data is Map)
+			$dt = $map->getData('self');
+			if($dt){
 				$this->data = array_merge($this->data, $dt);
 				$this->_init = true;
 			}else{
 				return;
 			}
 
-			if($relations && $map->isSource()){
+			if($relations){
+
 				foreach ($relations as $relation_key => $relation_data) {
 					$rel_as = $this->_relation_pref[$relation_key];
 					$rel_model_name = $relation_data['model'];
 					$rel_type = $relation_data['relation'];
 
-					/** @todo: ($rel_map) ? $rel_map->getSource() ? */
-					$new_source = ($rel_map) ? $rel_map->getSource() : $map->getSource();
+					$childs = $map->getData($relation_key);
 
-					$rel_map = new Map($new_source, $rule_pref);
-					$childs = $rel_map->getParse($rel_as, $rel_model_name::primaryPk());
 					if($rel_type == self::ONE_TO_ONE){
 						$this->parent_models[$relation_key] = new $rel_model_name($childs[0], $rel_as);
 					}else if($rel_type == self::ONE_TO_MANY || $rel_type == self::MANY_TABLE_BUNCH){
-						$mediator = new Mediator;
+						$mediator = new Iterator;
 						if($childs){
 							foreach ($childs as $child) {
 								$new_child = new $rel_model_name($child, $rel_as);
@@ -87,6 +86,12 @@ class Builder{
 		return get_called_class();
 	}
 
+	static function tableName(){
+		$model = self::className();
+		$pre_query = new \Gallant\DB\DBQuery($model::provider());
+		return $pre_query->tableName($model::table());
+	}
+
 	function publicMethod(){
 		return Register::getStructure(self::className());
 	}
@@ -94,6 +99,10 @@ class Builder{
 	/* sql query generate */
 	private function sqlQuery(){
 		$model = self::className();
+
+		if(Register::getQuery($model)){
+			// @todo return;
+		}
 
 		$demo_query = new \Gallant\DB\DBQuery($model::provider());
 
@@ -180,10 +189,7 @@ class Builder{
 		$model = self::className();
 		$pre_model = new $model;
 
-		//Register::setStructure($model, $colon);
-		//Register::setQuery($model, $demo_query);
 		$pre_query = Register::getQuery($model);
-
 		
 		$pk = $pre_model->primaryPk();
 
@@ -218,7 +224,6 @@ class Builder{
 				$attr = array_values($gpk[0]);			
 			}else{
 				$sql .= " = ?";
-				//$attr[] = $gpk;
 				$attr = array_values($gpk);
 			}
 			
@@ -226,21 +231,29 @@ class Builder{
 		
 		$pre_query->where($sql)->attr($attr);
 
-		if($results = $pre_query->select()){
-			$data_return = self::parseResult($results, $pre_model->_relation_pref);
+		$replace = $pre_model->_relation_pref;
+		$replace['self'] = $as;
+
+		if($results = $pre_query->select($replace)){
+			$data_return = self::parseResult($results, $replace);
 			return $data_return;
 		}else return false;		
 	}
 
-	static function fetch(\Gallant\DB\DBQuery $query){
+	static function fetch($query = false){ // \Gallant\DB\DBQuery 
 		$as = self::MODEL_AS;
 		$model = self::className();
 		$pre_model = new $model;
 		$pre_query = Register::getQuery($model);
-		$pre_query->merge($query);
-		
-		if($results = $pre_query->select()){
-			$data_return = self::parseResult($results, $pre_query->_relation_pref);
+		if($query){
+			$pre_query->merge($query);
+		}
+
+		$replace = $pre_model->_relation_pref;
+		$replace['self'] = $as;
+
+		if($results = $pre_query->select($replace)){
+			$data_return = self::parseResult($results, $pre_model->_relation_pref);
 			return $data_return;
 		}else return false;	
 	}
@@ -248,7 +261,7 @@ class Builder{
 	function save(){
 		$model = self::className();
 		$pre_model = new $model;
-		$pre_query = $pre_model->getQuery();		
+		$pre_query = Register::getQuery($model);		
 
 		$f = function($val, $key, $dop){
 			if(in_array($key, $dop['structure'])){
@@ -257,9 +270,9 @@ class Builder{
 		};
 
 		$data = array();
-		array_walk($this->data_update, $f, array('structure' => $this->db_structure, 'update' => &$data));
+		array_walk($this->data_update, $f, array('structure' => Register::getStructure($model), 'update' => &$data));
 
-		if($this->data){
+		if($this->_init){
 			// update
 			$pks = $pre_model->primaryPk();
 			if(!is_array($pks)){
@@ -294,10 +307,10 @@ class Builder{
 			$ar_pk = $pk;
 		}
 
-		$map = new Map($results, $rule_pref);
-		$maps = $map->getParse(self::MODEL_AS, $model::primaryPk());
+		$map = new Parser($results);
+		$maps = $map->getParse($rule_pref);
 		
-		$mediator = new Mediator;
+		$mediator = new Iterator;
 
 		if(sizeof($maps) > 0){
 			foreach ($maps as $map) {

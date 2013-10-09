@@ -1,10 +1,10 @@
 <?
 /**
-* G
+* Gallant\DB\DBProviderMysql
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -31,7 +31,7 @@ class DBProviderMysql{
 		$this->pdo->query("SET character_set_results = '$config[character]'");
 	}
 
-	function update($DBQuery){
+	function update($DBQuery, $replice){
 		$sql = "UPDATE `".$DBQuery['table'][0]['name']."` SET ";
 		$data = $DBQuery['attr'];
 
@@ -83,7 +83,7 @@ class DBProviderMysql{
 
 	}
 
-	function insert($DBQuery){		
+	function insert($DBQuery, $replice = false){		
 		$sql = "INSERT INTO `".$DBQuery['table'][0]['name']."` ";
 		if($DBQuery['attr']){
 			$attr_keys = array_keys($DBQuery['attr']);
@@ -106,7 +106,7 @@ class DBProviderMysql{
 			$sql .= " () VALUES ()";
 		}
 
-    	if(!$pdo_query = $this->pdo->prepare($sql)){			
+		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}
 		$exec = $pdo_query->execute($attr);
@@ -114,7 +114,7 @@ class DBProviderMysql{
 		return $this->pdo->lastInsertId();
 	}
 
-	function select($DBQuery){
+	function select($DBQuery, $replice = false){
 		$sql = "SELECT ";
 
 		////////////////// colons 
@@ -168,7 +168,7 @@ class DBProviderMysql{
 			foreach($DBQuery['order'] as $order){
 				if($sql_order) $sql_order .= ', ';
 				$sort = ($order[0] == 'asc') ? 'ASC' : 'DESC';
-				$sql_order .= " '$order[1]' $sort ";
+				$sql_order .= " $order[1] $sort ";
 			}
 			$sql .= $sql_order;
 		}
@@ -189,10 +189,13 @@ class DBProviderMysql{
 
 		//p($DBQuery);
 
-		
+		////////////////// REPLACE
+		if($replice){
+			$sql = self::replace($sql, $replice);
+		}
 		
 		////////////////// QUERY
-		 p($sql, $attr);
+		// p($sql, $attr, $replice);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}
@@ -211,5 +214,11 @@ class DBProviderMysql{
 			$this->count ++;
 			return $result;
 		}
-	}	
+	}
+
+	function replace($sql, $replace){
+		$keys = array_map(function($val){return "{{{$val}}}";}, array_keys($replace));
+
+		return str_replace($keys, array_values($replace), $sql);
+	}
 }

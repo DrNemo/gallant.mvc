@@ -1,10 +1,10 @@
 
 /**
-* G
+* Gallant.js helper
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -17,6 +17,13 @@ var Gallant = {
 	
 	link : function(url){
 		
+	},
+
+	ref : function(url){
+		if(!url) return document.location.href;
+		else{
+			document.location.href = url;
+		}
 	}
 
 }

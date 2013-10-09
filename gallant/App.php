@@ -4,7 +4,7 @@
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -28,9 +28,15 @@ class G{
 
     public static $filter = array();
 	
+	/**
+	* G::version
+	* 
+	* @return string version
+	*/
 	public static function version(){
-		return "0.0.2 pre-alfa";
+		return "0.0.3 pre-alfa";
 	}
+	
 	/**
 	* G::init
 	* 

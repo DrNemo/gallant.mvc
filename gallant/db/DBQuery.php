@@ -1,12 +1,12 @@
 <?
 /**
-* DBQuery
+* Gallant\DB\DBQuery
 * Класс конструктор для sql запросов. Все обращения к БД рекамендуется выполнять через этот класс
 * Реализован плавучий интерфейс
 *
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -197,9 +197,9 @@ class DBQuery{
 	* 
 	* @return mixid возвращяет результат выборки
 	*/
-	final function select(){
+	final function select($replice = false){
 		$this->query['type'] = 'select';
-		return G::DB($this->provider)->select($this->query);
+		return G::DB($this->provider)->select($this->query, $replice);
 	}	
 
 	/**
@@ -207,9 +207,9 @@ class DBQuery{
 	* 
 	* @return mixid первичные ключи новой записи
 	*/
-	final function insert(){
+	final function insert($replice = false){
 		$this->query['type'] = 'insert';
-		$res = G::DB($this->provider)->insert($this->query);
+		$res = G::DB($this->provider)->insert($this->query, $replice);
 		return $res;
 	}
 
@@ -218,9 +218,9 @@ class DBQuery{
 	* 
 	* @return mixid количество затронутых рядов
 	*/
-	final function update(){
+	final function update($replice = false){
 		$this->query['type'] = 'update';
-		return G::DB($this->provider)->update($this->query);
+		return G::DB($this->provider)->update($this->query, $replice);
 	}
 
 	/**
@@ -228,7 +228,7 @@ class DBQuery{
 	* 
 	* @return mixid количество затронутых рядов
 	*/
-	final function delete(){
+	final function delete($replice = false){
 		$this->query['type'] = 'delete';
 		
 	}

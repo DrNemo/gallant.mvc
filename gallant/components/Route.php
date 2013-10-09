@@ -1,10 +1,10 @@
 <?
 /**
-* G
+* Gallant\Components\Route
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -226,8 +226,7 @@ class Route{
                     if(method_exists($_control, $default_action)){
                         $_action = $default_action;
                         $_action_flag = true;
-
-                        $this->_urls[] = $this->default_action;
+                        
                         $this->_path[] = $this->default_action;
 
                     }else if(method_exists($_control, $action_404)){

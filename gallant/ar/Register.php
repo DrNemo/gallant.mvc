@@ -1,10 +1,10 @@
 <?
 /**
-* Register
+* Gallant\Ar\Register
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
-* @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+* @license http://www.opensource.org/licenses/mit-license.html MIT License
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
@@ -36,4 +36,5 @@ final class Register{
 		}
 		return false;
 	}
+
 }
