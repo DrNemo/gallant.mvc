@@ -21,15 +21,15 @@
 					</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">DBQuery  Класс конструктор для sql запросов. Все обращения к БД рекамендуется выполнять через этот класс  Реализован плавучий интерфейс</p>
+<p class="short-description">Gallant\DB\DBQuery  Класс конструктор для sql запросов. Все обращения к БД рекамендуется выполнять через этот класс  Реализован плавучий интерфейс</p>
 	<ul class="tags">
 				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
 				<li><span class="field">version:</span> 1.0</li>
 				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.gnu.org/copyleft/lesser.html">GNU Lesser General Public License</a></li>
+				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
 			</ul>
 		<p class="notes">
-			Located in <a class="field" href="_gallant---db---DBQuery.php.html">/gallant/db/DBQuery.php</a> (line <span class="field">17</span>)
+			Located in <a class="field" href="_db---DBQuery.php.html">/db/DBQuery.php</a> (line <span class="field">17</span>)
 		</p>
 		
 				
@@ -72,7 +72,7 @@
 				<div class="method-definition">
 											<span class="method-result">mixid</span>
 										<a href="#delete" title="details" class="method-name">delete</a>
-										()
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
@@ -84,7 +84,7 @@
 				<div class="method-definition">
 											<span class="method-result">mixid</span>
 										<a href="#insert" title="details" class="method-name">insert</a>
-										()
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
@@ -120,7 +120,7 @@
 				<div class="method-definition">
 											<span class="method-result">mixid</span>
 										<a href="#select" title="details" class="method-name">select</a>
-										()
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
@@ -138,7 +138,7 @@
 				<div class="method-definition">
 											<span class="method-result">mixid</span>
 										<a href="#update" title="details" class="method-name">update</a>
-										()
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
@@ -191,7 +191,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">attr</span> (line <span class="line-number">188</span>)
+		<span class="method-title">attr</span> (line <span class="line-number">189</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -217,7 +217,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">columns</span> (line <span class="line-number">75</span>)
+		<span class="method-title">columns</span> (line <span class="line-number">76</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -249,7 +249,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">delete</span> (line <span class="line-number">230</span>)
+		<span class="method-title">delete</span> (line <span class="line-number">231</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -263,9 +263,14 @@
 		<span class="method-name">
 			delete
 		</span>
-				()
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 			</div>
 	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$replice</span>			</li>
+				</ul>
 		
 			
 	</div>
@@ -273,7 +278,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">getRequest</span> (line <span class="line-number">91</span>)
+		<span class="method-title">getRequest</span> (line <span class="line-number">92</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -294,7 +299,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">insert</span> (line <span class="line-number">209</span>)
+		<span class="method-title">insert</span> (line <span class="line-number">210</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -308,9 +313,14 @@
 		<span class="method-name">
 			insert
 		</span>
-				()
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 			</div>
 	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$replice</span>			</li>
+				</ul>
 		
 			
 	</div>
@@ -318,7 +328,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">join</span> (line <span class="line-number">116</span>)
+		<span class="method-title">join</span> (line <span class="line-number">117</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -350,7 +360,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">limit</span> (line <span class="line-number">152</span>)
+		<span class="method-title">limit</span> (line <span class="line-number">153</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -379,7 +389,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">merge</span> (line <span class="line-number">101</span>)
+		<span class="method-title">merge</span> (line <span class="line-number">102</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -408,7 +418,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">orderAsc</span> (line <span class="line-number">166</span>)
+		<span class="method-title">orderAsc</span> (line <span class="line-number">167</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -434,7 +444,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">orderDesc</span> (line <span class="line-number">177</span>)
+		<span class="method-title">orderDesc</span> (line <span class="line-number">178</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -460,7 +470,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">select</span> (line <span class="line-number">199</span>)
+		<span class="method-title">select</span> (line <span class="line-number">200</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -474,9 +484,14 @@
 		<span class="method-name">
 			select
 		</span>
-				()
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 			</div>
 	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$replice</span>			</li>
+				</ul>
 		
 			
 	</div>
@@ -484,7 +499,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">table</span> (line <span class="line-number">57</span>)
+		<span class="method-title">table</span> (line <span class="line-number">58</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -513,7 +528,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">tableName</span> (line <span class="line-number">46</span>)
+		<span class="method-title">tableName</span> (line <span class="line-number">47</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -539,7 +554,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">update</span> (line <span class="line-number">220</span>)
+		<span class="method-title">update</span> (line <span class="line-number">221</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -553,9 +568,14 @@
 		<span class="method-name">
 			update
 		</span>
-				()
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
 			</div>
 	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$replice</span>			</li>
+				</ul>
 		
 			
 	</div>
@@ -563,7 +583,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">where</span> (line <span class="line-number">139</span>)
+		<span class="method-title">where</span> (line <span class="line-number">140</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -591,7 +611,7 @@
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Tue, 01 Oct 2013 14:25:51 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 09 Oct 2013 14:11:55 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

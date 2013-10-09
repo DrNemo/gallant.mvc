@@ -1,6 +1,6 @@
 body 
 { 
-	background-color: #FFFFFF; 
+	background-color: #DDDDDD;
 	margin: 0px; 
 	padding: 0px;
 }
@@ -18,15 +18,15 @@ body
 
 .banner-title 
 { 
-	text-align: right; 
-	font-size: 20pt; 
-	font-weight: bold; 
+	text-align: right;
+	font-size: 20pt;
+	font-weight: bold;
 	margin: .2em;
 }
 
 .package-selector 
 { 
-	background-color: #EEEEEE; 
-	border: 1px solid black; 
-	color: #0000C0;
+	background-color: #CCCCCC;
+	border: 1px solid black;
+	color: blue;
 }
