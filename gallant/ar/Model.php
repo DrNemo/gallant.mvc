@@ -24,7 +24,7 @@ class Model extends Builder{
 	* @return array 
 	*/
 	public function structure(){
-		return false;
+		return array();
 	}
 
 	/**
@@ -46,14 +46,14 @@ class Model extends Builder{
 	}
 
 	/**
-	* primaryPk переопределите метод с указанием первичного ключа 
+	* primaryKey переопределите метод с указанием первичного ключа 
 	* return 'id'
 	* если их несколько
 	* return array('id1', 'id2')
 	* 
 	* @return mixed
 	*/
-	public function primaryPk(){
+	public function primaryKey(){
 		return false;
 	}
 
@@ -120,14 +120,23 @@ class Model extends Builder{
 	}
 
 	/**
-	* attr установка новых значений array('public_key' => val, ...)
+	* setData установка новых значений array('public_key' => val, ...)
 	* 
 	* @param array
 	*/
-	public function attr($data){
+	public function setData($data){
 		if(is_array($data)){
 			$this->data_update = array_merge($this->data_update, $data);
 		}
+	}
+
+	/**
+	* getData возвращяет все свойства модели в виде массива
+	* 
+	* @return array
+	*/
+	public function getData(){
+		return array_merge($this->data, $this->data_update);
 	}
 
 	/**
@@ -143,14 +152,14 @@ class Model extends Builder{
 			return false;
 		}
 		if(!$this->parent_models[$rel]){
-			$rel = $rels[$rel];
+			/*$rel = $rels[$rel];
 			$rel_model = $rel['model'];
 			$rel_type = $rel['relation'];
 
 			$requery = new \Gallant\DB\DBQuery;
 			if($rel_type == 'ONE_TO_ONE'){
 				//$requery->where('');
-			}
+			}*/
 			// load parent model
 		}else{
 			return $this->parent_models[$rel];

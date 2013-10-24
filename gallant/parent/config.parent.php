@@ -39,5 +39,7 @@ return array(
 		'entry'		=> '%root%/entry.php'
 		),
 
-	'db' => array()
+	'db' => array(),
+
+	'recaptcha' => array(),/* publicKey, privateKey */
 );

@@ -11,28 +11,45 @@
 
 namespace Gallant\Ar;
 
-final class Register{
+class Register{
+	protected function __construct(){}
+	protected function __clone(){}
+
 	private static $db_structure = array();
 	private static $pre_sql = array();
+	private static $replace = array();
 
 	public static function setStructure($model, $structure){
 		self::$db_structure[$model] = $structure;
 	}
 
 	public static function getStructure($model){
-		if(self::$db_structure[$model]){
+		if(isset(self::$db_structure[$model])){
 			return self::$db_structure[$model];
 		}
 		return false;
 	}
+	
 
 	public static function setQuery($model, $query){
 		self::$pre_sql[$model] = $query;
 	}
 
 	public static function getQuery($model){
-		if(self::$pre_sql[$model]){
+		if(isset(self::$pre_sql[$model])){
 			return self::$pre_sql[$model];
+		}
+		return false;
+	}
+
+
+	public static function setReplace($model, $replace){
+		self::$replace[$model] = $replace;
+	}
+
+	public static function getReplace($model){
+		if(isset(self::$replace[$model])){
+			return self::$replace[$model];
 		}
 		return false;
 	}

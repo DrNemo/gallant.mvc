@@ -15,11 +15,11 @@ namespace Gallant\DB;
 use \G as G;
 
 class DBQuery{
-	private $query = false;
-	private $pref = '';
-	private $config;
-	private $table_num = 0;
-	private $provider = false;
+	protected $query = false;
+	protected $pref = '';
+	protected $config;
+	protected $table_num = 0;
+	protected $provider = false;
 
 	/**
 	* __construct
@@ -73,14 +73,9 @@ class DBQuery{
 	* @param string $pref префикс для колонок
 	* @return $this
 	*/
-	function columns($column, $table_as = false, $pref = false){
-		$columne = array(
-			'column' => $column,
-			'table_as' => $table_as,
-			'column_pref' => $pref
-			);
-		if(!$this->query['columns']) $this->query['columns'][] = $columne;
-		else $this->query['columns'] = array_merge($this->query['columns'], array($columne));
+	function columns($column){
+		if(!$this->query['columns']) $this->query['columns'][] = $column;
+		else $this->query['columns'] = array_merge($this->query['columns'], array($column));
 		return $this;
 	}
 
@@ -138,7 +133,7 @@ class DBQuery{
 	* @return $this
 	*/
 	function where($where){
-		if(!$this->query['where']) $this->query['where'] = array();
+		if(!isset($this->query['where'])) $this->query['where'] = array();
 		$this->query['where'][] = $where;
 		return $this;
 	}
@@ -181,13 +176,24 @@ class DBQuery{
 	}
 
 	/**
+	* group 
+	* 
+	* @param string $colomn
+	* @return $this
+	*/
+	function group($colomn){
+		$this->query['group'] = $colomn;
+		return $this;
+	}
+
+	/**
 	* attr установка отребутов запроса 
 	* 
 	* @param array $attr array(':col1' => $val, ':mail' => $mail, ...)
 	* @return $this
 	*/
 	function attr($attr){
-		if($this->query['attr']) $this->query['attr'] = array_merge($this->query['attr'], $attr);
+		if(isset($this->query['attr'])) $this->query['attr'] = array_merge($this->query['attr'], $attr);
 		else $this->query['attr'] = $attr;
 		return $this;
 	}

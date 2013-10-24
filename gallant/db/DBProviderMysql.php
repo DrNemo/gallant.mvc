@@ -18,13 +18,14 @@ class DBProviderMysql{
 	private $structure = array();
 
 	function __construct($config){
-		if (!class_exists('PDO')){
+		if (!class_exists('\PDO')){
 			throw new \Gallant\Exceptions\CoreException('Fatal Error: To work needs the support of PDO.');
 		}
-		$this->pdo = new \PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass']);
-		if(!$this->pdo){
-			throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect');
-		}
+		try{
+			$this->pdo = new \PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass']);
+		}catch (Exception $e) {
+    		throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
+    	}
 		$this->pdo->query("SET CHARACTER SET $config[character]");		
 		$this->pdo->query("SET character_set_client = '$config[character]'");
 		$this->pdo->query("SET character_set_connection = '$config[character]'");
@@ -119,17 +120,7 @@ class DBProviderMysql{
 
 		////////////////// colons 
 		if($DBQuery['columns']){
-			$_sql = "";
-			$f_colon = function(&$val, $key, $dop){
-				$val = "`$dop[as]`.`$val` AS `$dop[pref]$val`";
-			};
-			foreach ($DBQuery['columns'] as $column) {
-				if($_sql) $_sql .= ', ';
-				$columns = $column['column'];
-				array_walk($columns, $f_colon, array('as'=>$column['table_as'], 'pref'=>$column['column_pref']));
-				$_sql .= implode(', ', $columns);
-			}
-			$sql .= $_sql;
+			$sql .= implode(', ', $DBQuery['columns']);
 		}else{
 			$sql .= '*';
 		}
@@ -145,7 +136,7 @@ class DBProviderMysql{
 
 
 		////////////////// join
-		if($DBQuery['join']){
+		if(isset($DBQuery['join'])){
 			$joins = $DBQuery['join'];
 			$f_join = function(&$val, $key){
 				$t = ($val['as']) ? "`$val[table]` AS `$val[as]`" : "`$val[table]`";
@@ -157,12 +148,17 @@ class DBProviderMysql{
 
 
 		////////////////// where
-		if($DBQuery['where']){
+		if(isset($DBQuery['where'])){
 			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
 		}
 
+		////////////////// group
+		if(isset($DBQuery['group'])){
+			$sql .= " GROUP BY $DBQuery[group]";
+		}
+
 		////////////////// order
-		if($DBQuery['order']){
+		if(isset($DBQuery['order'])){
 			$sql .= " ORDER BY ";
 			$sql_order = '';
 			foreach($DBQuery['order'] as $order){
@@ -171,23 +167,21 @@ class DBProviderMysql{
 				$sql_order .= " $order[1] $sort ";
 			}
 			$sql .= $sql_order;
-		}
+		}		
 
-		////////////////// order
-		if($DBQuery['limit']){
+		////////////////// limit
+		if(isset($DBQuery['limit'])){
 			$sql .= " LIMIT $DBQuery[limit]";
-			if($DBQuery['ofset']){
+			if(isset($DBQuery['ofset'])){
 				$sql .= ", $DBQuery[ofset]";
 			}
 		}
 
 		////////////////// attr
 		$attr = false;
-		if($DBQuery['attr']){
+		if(isset($DBQuery['attr'])){
 			$attr = $DBQuery['attr'];
 		}
-
-		//p($DBQuery);
 
 		////////////////// REPLACE
 		if($replice){
@@ -210,6 +204,7 @@ class DBProviderMysql{
 		if(!$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC)){
 			return false;
 		}else{
+			// p($result);
 			$this->report[$this->count] = $sql;
 			$this->count ++;
 			return $result;

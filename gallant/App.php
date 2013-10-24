@@ -267,7 +267,7 @@ class G{
 	* @return boolean
 	*/
 	public static function setSession($key, $value, $close = false){
-		if(!$_SESSION['gallant_system']['close_session'][$key]){
+		if(!isset($_SESSION['gallant_system']['close_session'][$key])){
 			if($close){
 				$_SESSION['gallant_system']['close_session'][$key] = true;
 			}
@@ -365,6 +365,17 @@ class G{
 			self::$DBprovider[$provider] = new $prov($config[$provider]);
 		}
 		return self::$DBprovider[$provider];
+	}
+
+	/**
+	* dbQuery
+	*
+	* @param string $provider ключ БД настроек из файла config.php
+	* 
+	* @return new \Gallant\DB\DBQuery($provider);
+	*/
+	public static function dbQuery($provider = false){
+		return new \Gallant\DB\DBQuery($provider);
 	}
 
 	private static $error = array();

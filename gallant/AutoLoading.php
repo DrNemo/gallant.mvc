@@ -18,6 +18,7 @@ spl_autoload_register(array('Gallant\AutoLoading', 'loadingSite'));
 class AutoLoading{
 
 	public static function loadingCore($inc){
+		//p('loadingCore: ' . $inc);
 		$routs = array_filter(explode('\\', $inc.'\\'),'trim');
 		
 		$class = array_pop($routs);
@@ -39,15 +40,17 @@ class AutoLoading{
 			$path .= implode('/', $routs).'/';
 		}
 		
-		$path = GALLANT_CORE.$path.$class.'.php';
+		$path = self::dirSep(GALLANT_CORE.$path.$class.'.php');
 		if(is_file($path)){
+			//p('include_once' , $path);
 			include_once $path;
 			return true;
 		}
 		return false;
 	}
 
-	public static function loadingSite($inc){
+	static public function loadingSite($inc){
+		//p('loadingSite: ' . $inc);
 		$routs = array_filter(explode('\\', $inc.'\\'));
 		$type = strtolower(array_shift($routs));
 
@@ -55,8 +58,7 @@ class AutoLoading{
 
 		if($type == 'entry'){
 			if(is_file(G::getPath('entry'))){
-				include_once G::getPath('entry');
-				
+				include_once G::getPath('entry');				
 				return true;
 			}
 		}
@@ -68,18 +70,33 @@ class AutoLoading{
 		$class = array_pop($routs);
 		$routs = array_map('strtolower', $routs);
 
-		$p2 = implode('/', $routs).'/';
+		$p2 = implode('/', $routs);
 		if(is_array($path)){
 			foreach ($path as $val) {
-				if(is_file($val.$p2.$class.'.php')){
-					include_once $val.$p2.$class.'.php';
+				$file = self::dirSep($val.$p2.$class.'.php');
+				
+				if(is_file($file)){
+					//p('include_once' , $file);
+					include_once $file;
 					return true;
 				}
 			}
-		}else if(is_file($path.$p2.$class.'.php')){
-			include_once $path.$p2.$class.'.php';
-			return true;
+		}else{
+			$file = self::dirSep($path.$p2.'/'.$class.'.php');
+			//p('include_once' , $file);
+			if(is_file($file)){
+			
+				//p('include_once' , $file);
+				include_once $file;
+				return true;
+			}
 		}		
 		return false;
+	}
+
+	function dirSep($path){
+		$dir_pre_sep = '\\';
+		$dir_pub_sep = '/';
+		return str_replace($dir_pre_sep, $dir_pub_sep, $path);
 	}
 }

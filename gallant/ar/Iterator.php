@@ -10,70 +10,65 @@
 */
 namespace Gallant\Ar;
 
-class Iterator{
-	protected $data = false;
-	protected $cursor = 0;
-	protected $count = 0;
+class Iterator extends \ArrayObject{
 
-	function push($obj){
-		$this->data[] = $obj;
-		$this->count ++;
-	}
-
-	function remove(){
-		unset($this->data[$this->cursor]);
-	}
-
-	function next(){
-		$this->cursor ++;
-		if($this->data[$this->cursor]){
-			return $this->data[$this->cursor];
-		}
-	}
-
-	function prev(){
-		$this->cursor --;
-		if($this->data[$this->cursor]){
-			return $this->data[$this->cursor];
-		}
-	}
-
-	function reset(){
-		$this->data = array_values($this->data);
-		$this->cursor = 0;
-		return $this;
-	}
-
-	function all(){
-		if($this->data){
-			return array_values($this->data);
-		}
-		return false;
-	}
-
-	function last(){
-		if(!$this->data) return false;
-		$data = $this->data;
-		if($r = array_pop($data)){
-			return $r;
-		}
-		return false;
-	}
-
+	/**
+	*	
+	*
+	*/
 	function first(){
-		if(sizeof($this->data) == 0) return false;
-		$data = $this->data;
+		if(!$this->count()) return false;
+		$data = $this->getArrayCopy();
 		if($r = array_shift($data)){
 			return $r;
 		}
 		return false;
 	}
 
-	function search(){
-
+	/**
+	*	
+	*
+	*/
+	function last(){
+		if(!$this->count()) return false;
+		$data = $this->getArrayCopy();
+		if($r = array_pop($data)){
+			return $r;
+		}
+		return false;
 	}
 
-	function sum(){
+	/**
+	* filter возвращяет отфильтрованный Iterator
+	*
+	* @param function $filter
+	* @param array $params
+	*
+	*	$function = function($val, $key, $params){
+	*		$val - значение свойства, 
+	*		$key - ключ свойства, 
+	*		$params - массив $params
+	*		return bool
+	*	}
+	*/
+	function filter($filter, array $params = array()){		
+		if(!$this->count()) return array();
+		$copy_iter = $this->getArrayCopy();
 
+		// iter to Iterator
+		foreach ($copy_iter as $line => $model) {
+			
+			$data = $model->getData();
+			// iter to prop in model
+			foreach ($data as $key => $value) {
+				// iter to filter
+				if(!$filter($value, $key, $params)){
+					unset($copy_iter[$line]);
+				}				
+			}
+		}
+		return new Iterator($copy_iter);
 	}
+
+	
 }

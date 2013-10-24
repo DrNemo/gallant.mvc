@@ -44,7 +44,7 @@ class Parser{
 		unset($rule['self']);
 		foreach ($parse_data as $line) {
 			if(array_diff_assoc($line['self'], $pre_self)){
-				if($_data['self']){
+				if(isset($_data['self'])){
 					$reparse_data[] = new Parser($_data);					
 					$_data = array();
 				}
@@ -61,6 +61,7 @@ class Parser{
 		if($_data){
 			$reparse_data[] = new Parser($_data);
 		}
+		//p('$reparse_data', $reparse_data);
 
 		return $reparse_data;
 	}
@@ -74,7 +75,7 @@ class Parser{
 			}
 		}else{
 			
-			if($this->source[$model]){
+			if(isset($this->source[$model])){
 				$return = array();
 				$data_model = $this->source[$model];
 				unset($this->source[$model]);

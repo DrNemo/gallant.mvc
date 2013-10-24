@@ -21,7 +21,7 @@ class HtmlHelper{
 	* @param string
 	* @return string html
 	*/
-	function printError($code, $class = 'error'){
+	function printError($code, $class = 'alert alert-warning'){
 		if(!is_array($code)) $code = array($code);
 		$html = '';
 		foreach ($code as $c) {
