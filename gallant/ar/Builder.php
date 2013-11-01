@@ -12,74 +12,53 @@ namespace Gallant\Ar;
 
 class Builder{
 	
-	public $_init = false;
+	public $_init_ = false;
 	protected $data = array();
 	protected $data_update = array();
 	protected $parent_models = array();
 
-	const MODEL_AS = 'mod1_t0';
+	const MODEL_AS = 'mod0_t0';
 
 	const ONE_TO_ONE = 'relation::ONE_TO_ONE';
 	const ONE_TO_MANY = 'relation::ONE_TO_MANY';
 	const MANY_TABLE_BUNCH = 'relation::MANY_TABLE_BUNCH';
 	const MANY_TO_MANY = 'relation::MANY_TO_MANY';
 
-	function __construct($map = false, $as = false, $repl = false){
-		
+	const CONCET_MODEL = '::';
+
+	function __construct($parser = false){
 		$model = self::className();
 
-		$db_struct = $this->loadStructure();
-		$arr_key = array_keys($db_struct);
-		
-		$arr_val = array_pad(array(), count($db_struct), false);
-		$this->data = array_combine($arr_key, $arr_val);		
-		
-		if($map && $as){
-			//p('__construct : '.$this->className(). ' | AS: '.$as.' | $repl:|'.$repl, $map);
-			
-			$relations = $this->relations();
+		$colons = $model::dbStructure();		
+		$arr_key = array_keys($colons);
 
-			$dt = $map->getData('self');
-			if($dt){
-				$this->data = array_merge($this->data, $dt);
-				$this->_init = true;
-			}else{
-				return;
-			}
+		$arr_val = array_pad(array(), count($colons), false);
+		$this->data = array_combine($arr_key, $arr_val);
 
-			if($relations){
-				if(!$repl){
-					$prefs = Register::getReplace($this->className());
-					$repl = $this->className();
-				}else{
-					$prefs = Register::getReplace($repl);
-				}
+		if($parser){
+			//p('__construct : '.$this->className(). ' | AS: '.$as.' | $repl:'.$repl.'|', $parser);
+
+			$self = $parser->getSelf();
+			$this->data = array_merge($this->data, $self);
+
+			$this->_init_ = true;
+
+			if($relations = $this->relations()){
 				foreach ($relations as $relation_key => $relation_data) {
-					$rel_as = $prefs[$model.':'.$relation_key];
-					$rel_model_name = $relation_data['model'];
 					$rel_type = $relation_data['relation'];
+					$rel_model_name = $relation_data['model'];
 
-					$childs = $map->getData($model.':'.$relation_key);
+					$rel_data = $parser->getRelation($relation_key);
 
-					if($rel_type == self::ONE_TO_ONE){
-						$pre_model = new $rel_model_name($childs[0], $rel_as, $repl);
-						if($pre_model->_init){
-							$this->parent_models[$relation_key] = $pre_model;
-						}
-					}else if($rel_type == self::ONE_TO_MANY || $rel_type == self::MANY_TABLE_BUNCH){
-						$iters = array();
-						if($childs){
-							foreach ($childs as $child) {
-								$new_child = new $rel_model_name($child, $rel_as, $repl);
-								if($new_child->_init){
-									$iters[] = $new_child;
-								}
+					if($rel_data){
+						if($rel_type == self::ONE_TO_ONE){
+							$this->parent_models[$relation_key] = new $rel_model_name(new Parser($rel_data));
+						}else{
+							foreach ($rel_data as $_rel_data) {
+								$_rel[] = new $rel_model_name(new Parser($_rel_data));
 							}
+							$this->parent_models[$relation_key] = new Iterator($_rel);
 						}
-						$this->parent_models[$relation_key] = new Iterator($iters);
-					}else{
-						p('@todo: '.$rel_type);
-						p($rel_map);
 					}
 				}
 			}
@@ -95,105 +74,141 @@ class Builder{
 		return serialize($this);
 	}
 
-	static function tableName(){
+	static function dbStructure(){		
 		$model = self::className();
-		$pre_query = new \Gallant\DB\DBQuery($model::provider());
-		return $pre_query->tableName($model::table());
+
+		if($r = Register::getStructure($model)){
+			return $r;
+		}
+
+		$colons = $model::structure();
+		$f = function(&$val, $key){
+			if(isset($val['db'])){
+				$val = $val['db'];
+			}else{
+				$val = $key;
+			}
+		};
+		array_walk($colons, $f);
+
+		Register::setStructure($model, $colons);
+		return $colons;
 	}
 
-	static function loadStructure(){
-		$model = self::className();
-		if(!$structure = Register::getStructure($model)){
-			$structure = $model::structure();
-			$my_pk = $model::primaryKey();
-
-			$f = function(&$val, $key){
-				if(isset($val['db_column'])){
-					$val = $val['db_column'];
-				}else{
-					$val = $key;
-				}
-			};
-			array_walk($structure, $f);
-			Register::setStructure($model, $structure);
-		}
-		return $structure;
-	}
-
-	static function searchRelation(&$query, $my_as, &$iter = 0){
+	static function buildSql($as, $num_model = 0){
+		$table = 0;
 		$model = self::className();
 
-		$structure = self::loadStructure();
-
-		$query->columns(array_values($structure), $my_as, $my_as.'_');
-		if($my_as == self::MODEL_AS){
-			$query->table($model::table(), $my_as);
+		if($as == self::MODEL_AS){
+			$data = Register::get($model);
+			if($data) return $data;
 		}
+
+		$pref = array();
+
+		$pre_query = new arQuery($model::provider());
+
+		if($as == self::MODEL_AS){
+			$pref[$model.self::CONCET_MODEL.'self'] = $as;
+			$pre_query->table($model::table(), $as);
+			$table ++;
+		}
+
+		$pre_query->columns(array_values($model::dbStructure()), $as);
 		
-		$my_pk = $model::primaryKey();
-		$relations = $model::relations();
-		if($relations){
-			foreach ($relations as $relation_key => $relation) {
-				if($my_as == self::MODEL_AS || @$relation['load']){
-					++ $iter;
-					$rel_model = $relation['model'];
-					$rel_as = 'mod1_t'.$iter;					
-
-					$rel_pk = $rel_model::primaryKey();
-
-					$relation_type = $relation['relation'];
-					$my_colon = isset($relation['my_column']) ? $relation['my_column'] : $my_pk;
-					$his_colon = isset($relation['his_column']) ? $relation['his_column'] : $rel_pk;
+		if($relations = $model::relations()){
+			foreach($relations as $rel_key => $relation){
+				if($as == self::MODEL_AS || $relation['load']){
 					
-					$rel_table = $rel_model::table();				
 
-					if($relation_type == self::ONE_TO_ONE){
+					$rel_as			= 'mod'.$num_model.'_t'.$table;
+					$rel_model   	= $relation['model'];
+					$rel_type    	= $relation['relation'];
+					$rel_my_colon  	= isset($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+					$rel_his_colon 	= isset($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
 
-						$query->join(array($rel_table, $rel_as), "$my_as.$my_colon = $rel_as.$his_colon");
+					$pref[$model.self::CONCET_MODEL.$rel_key] = $rel_as;
 
-					}else if($relation_type == self::ONE_TO_MANY){
+					$rel_query = $rel_model::buildSql($rel_as, $num_model + 1);
 
-						$query->join(array($rel_table, $rel_as), "$my_as.$my_colon = $rel_as.$his_colon");
-
-					}else if($relation_type == self::MANY_TABLE_BUNCH){
-
-						$bunch_table = $relation['table'];
-						$query->join(array($bunch_table, 'bunch'.$iter), "`bunch$iter`.$my_colon = $my_as.$my_pk");
-						$query->join(array($rel_table, $rel_as), "`bunch$iter`.$his_colon = $rel_as.$rel_pk");
-
-					}else{
-						die('@todo $relation_type in Builder.php:'.$relation_type);				
+					if($rel_query){
+						if($rel_type == self::MANY_TABLE_BUNCH){
+							$bunch_table = $relation['table'];
+							$bunch_as = 'bunch'.$table;
+							$pre_query
+								->join(array($bunch_table, $bunch_as), "`$bunch_as`.$rel_my_colon = $as.".$model::primaryKey())
+								->join(array($rel_model::table(), $rel_as), "`$bunch_as`.$rel_his_colon = $rel_as.".$rel_model::primaryKey())
+								->merge($rel_query[0]);
+							$table ++;
+						}else{
+							$pre_query->join(array($rel_model::table(), $rel_as), "$as.$rel_my_colon = $rel_as.$rel_his_colon")->merge($rel_query[0]);
+							$pref = array_merge($pref, $rel_query[1]);
+						}	
 					}
-
-					
-					if($new_pref = $rel_model::searchRelation($query, $rel_as, $iter)){
-						$rel_concet[$model.':'.$relation_key] = $new_pref['self'];
-						unset($new_pref['self']);
-						$rel_concet = array_merge($rel_concet, $new_pref);
-					}
-					
+					$table ++;
 				}
-				
 			}
 		}
 
-		$rel_concet['self'] = $my_as;
-		return $rel_concet;
+		if($as == self::MODEL_AS){
+			Register::set($model, array($pre_query, $pref));
+			return array($pre_query, $pref);
+		}
+
+		return array($pre_query, $pref);
+	}
+
+	static function preParser($source){
+		$model = self::className();
+
+		$pks = $model::primaryKey();
+		if(!is_array($pks)){
+			$pks = array($pks);
+		}
+
+		$len = strlen(self::MODEL_AS);
+		$pre_pars = array();
+
+		if(!$source) return $pre_pars;
+
+		foreach ($source as $line) {
+			$_new_self = array();
+			foreach ($pks as $pk) {
+				$_new_self[$pk] = $line[self::MODEL_AS . '_' . $pk];
+			}
+			$pre_pars[implode('_', $_new_self)][] = $line;			
+		}	
+
+		return array_values($pre_pars);
+	}
+
+	static function fetch($op_query = false){ // \Gallant\DB\DBQuery 
+		$model = self::className();
+		list($pre_query, $prefs) = self::buildSql(self::MODEL_AS);
+
+		if($op_query){
+			$pre_query->merge($op_query);
+		}
+
+		$data =  $pre_query->select($prefs);
+
+		$result_parse = self::preParser($data);
+
+		$result = array();
+		foreach ($result_parse as $data) {
+			$result[] = new $model(new Parser($model, $data, $prefs));
+		}
+
+		return new Iterator($result);		
 	}
 
 	static function fetchPk(){
-		$param_pk = func_get_args();
 		$model = self::className();
+		$param_pk = func_get_args();
 		$as = self::MODEL_AS;
-		$my_pk = $model::primaryKey();
+		$my_pk = $model::primaryKey();		
 
-		if(!$query = Register::getQuery($model) || $replace = Register::getReplace($model)){
-			$query = new arQuery($model::provider());
-			$replace = $model::searchRelation($query, self::MODEL_AS);
-
-			Register::setQuery($model, $query);
-			Register::setReplace($model, $replace);
-		}
+		list($query, $prefs) = self::buildSql(self::MODEL_AS);
 
 		if(is_array($param_pk[0])){
 			$pks = $param_pk[0];
@@ -209,41 +224,47 @@ class Builder{
 			$query->where("`$as`.`$my_pk` = ?")->attr($pks);
 		}
 
-		$results = $query->select($replace);
-		if($results){			
-			$data_return = self::parseResult($results, $replace);			
-			return $data_return;
-		}else return false;
-		
-	}
+		$data =  $query->select($prefs);
 
-	static function fetch($query = false){ // \Gallant\DB\DBQuery 
-		//die('fetch');
-		$as = self::MODEL_AS;
-		$model = self::className();
+		$result_parse = self::preParser($data);
 
-		if(!$pre_query = Register::getQuery($model) || $replace = Register::getReplace($model)){
-			$pre_query = new arQuery($model::provider());
-			$replace = $model::searchRelation($pre_query, self::MODEL_AS);
-
-			Register::setQuery($model, $query);
-			Register::setReplace($model, $replace);
-		}
-		if($query){
-			$pre_query->merge($query);
+		$result = array();
+		foreach ($result_parse as $data) {
+			$result[] = new $model(new Parser($model, $data, $prefs));
 		}
 
-		if($results = $pre_query->select($replace)){
-			$data_return = self::parseResult($results, $replace);
-			return $data_return;
-		}else return false;	
+		return new Iterator($result);
 	}
 
 	function save(){
-		
 		$model = self::className();
+
+		list($query, $prefs) = self::buildSql(self::MODEL_AS);
+
+		$data = array_merge($this->data, $this->data_update);
+
+		$query->attr($data);
+
+		if($this->_init_){
+			// update
+
+		}else{
+			// insert
+
+		}
+		/*
+		
 		$pre_model = new $model;
-		$pre_query = Register::getQuery($model);		
+
+		if(!($pre_query = Register::getQuery($model)) || !($replace = Register::getReplace($model))){
+			$pre_query = new arQuery($model::provider());
+			$replace = $model::searchRelation($pre_query, self::MODEL_AS);
+
+
+
+			Register::setQuery($model, $pre_query);
+			Register::setReplace($model, $replace);
+		}
 
 		$f = function($val, $key, $dop){
 			if(in_array($key, $dop['structure'])){
@@ -254,7 +275,7 @@ class Builder{
 		$data = array();
 		array_walk($this->data_update, $f, array('structure' => Register::getStructure($model), 'update' => &$data));
 
-		if($this->_init){
+		if($this->_init_){
 			// update
 			$pks = $pre_model->primaryKey();
 			if(!is_array($pks)){
@@ -274,33 +295,7 @@ class Builder{
 			$id = $pre_query->attr($data)->insert();
 			return $id;
 		}
-
+		*/
 		
-	}
-
-	private static function parseResult($results, $rule_pref){
-		$model = self::className();
-
-		$pk = $model::primaryKey();
-
-		if(!is_array($pk)){
-			$ar_pk = array($pk);
-		}else{
-			$ar_pk = $pk;
-		}
-
-		$map = new Parser($results);
-
-		$maps = $map->getParse($rule_pref);
-		
-		$data = array();
-		if(sizeof($maps) > 0){
-			foreach ($maps as $map) {
-				$data[] = new $model($map, self::MODEL_AS);
-			}
-		}
-
-		return new Iterator($data);
-
 	}
 }

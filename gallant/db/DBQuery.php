@@ -96,7 +96,7 @@ class DBQuery{
 	*/
 	function merge(\Gallant\DB\DBQuery $query){
 		$pre_sql = $query->getRequest();
-		$this->query = array_merge($this->query, $pre_sql);
+		$this->query = array_merge_recursive($this->query, $pre_sql);
 		return $this;
 	}
 

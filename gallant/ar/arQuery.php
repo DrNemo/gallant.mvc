@@ -13,9 +13,10 @@ namespace Gallant\Ar;
 
 class arQuery extends \Gallant\DB\DBQuery{
 
-	function columns($column, $table_as = false, $pref = false){
+	function columns($column, $table_as = false){
+		$colons = array();
 		foreach ($column as $name) {
-			$colons[] = "`$table_as`.`$name` AS `{$pref}{$name}`";
+			$colons[] = "`$table_as`.`$name` AS `{$table_as}_{$name}`";
 		}
 		$this->query['columns'][] = implode(', ', $colons);
 		return $this;

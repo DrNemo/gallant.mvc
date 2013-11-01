@@ -15,41 +15,27 @@ class Register{
 	protected function __construct(){}
 	protected function __clone(){}
 
-	private static $db_structure = array();
-	private static $pre_sql = array();
-	private static $replace = array();
+	protected static $model_pre_data = array();
+	protected static $model_structure = array();
 
-	public static function setStructure($model, $structure){
-		self::$db_structure[$model] = $structure;
+	public static function set($model, $pre_data){
+		self::$model_pre_data[$model] = $pre_data;
+	}
+
+	public static function get($model){
+		if(isset(self::$model_pre_data[$model])){
+			return self::$model_pre_data[$model];
+		}
+		return false;
+	}
+
+	public static function setStructure($model, $struct){
+		self::$model_structure[$model] = $struct;
 	}
 
 	public static function getStructure($model){
-		if(isset(self::$db_structure[$model])){
-			return self::$db_structure[$model];
-		}
-		return false;
-	}
-	
-
-	public static function setQuery($model, $query){
-		self::$pre_sql[$model] = $query;
-	}
-
-	public static function getQuery($model){
-		if(isset(self::$pre_sql[$model])){
-			return self::$pre_sql[$model];
-		}
-		return false;
-	}
-
-
-	public static function setReplace($model, $replace){
-		self::$replace[$model] = $replace;
-	}
-
-	public static function getReplace($model){
-		if(isset(self::$replace[$model])){
-			return self::$replace[$model];
+		if(isset(self::$model_structure[$model])){
+			return self::$model_structure[$model];
 		}
 		return false;
 	}

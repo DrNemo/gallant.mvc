@@ -22,14 +22,16 @@ class DBProviderMysql{
 			throw new \Gallant\Exceptions\CoreException('Fatal Error: To work needs the support of PDO.');
 		}
 		try{
-			$this->pdo = new \PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass']);
+			if(!$this->pdo = new \PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass'])) die('Fatal Error: Error connect');
+			$this->pdo->query("SET CHARACTER SET $config[character]");		
+			$this->pdo->query("SET character_set_client = '$config[character]'");
+			$this->pdo->query("SET character_set_connection = '$config[character]'");
+			$this->pdo->query("SET character_set_results = '$config[character]'");
 		}catch (Exception $e) {
+			p('erro');
     		throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
     	}
-		$this->pdo->query("SET CHARACTER SET $config[character]");		
-		$this->pdo->query("SET character_set_client = '$config[character]'");
-		$this->pdo->query("SET character_set_connection = '$config[character]'");
-		$this->pdo->query("SET character_set_results = '$config[character]'");
+		
 	}
 
 	function update($DBQuery, $replice){
@@ -107,6 +109,7 @@ class DBProviderMysql{
 			$sql .= " () VALUES ()";
 		}
 
+		// p($sql, $attr);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}

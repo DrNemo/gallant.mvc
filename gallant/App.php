@@ -1,4 +1,4 @@
-<?
+﻿<?
 /**
 * G
 * 
@@ -34,7 +34,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.0.3 pre-alfa";
+		return "0.0.5 pre-alfa";
 	}
 	
 	/**
@@ -403,6 +403,17 @@ class G{
 	public static function setError($key, $val = true){
 		self::$error[$key] = $val;
 	}
+
+	/**
+	* getErrorKeys
+	*
+	* 
+	* @return array - массив всех зарегестрированных ошибок
+	*/
+	public static function getErrorKeys(){
+		return array_keys(self::$error);
+	}
+
 
 	/**
 	* includeComponent

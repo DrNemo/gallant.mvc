@@ -58,6 +58,26 @@ class Model extends Builder{
 	}
 
 	/**
+	* primaryKey переопределите метод с указанием первичного ключа 
+	* return 'id'
+	* если их несколько
+	* return array('id1', 'id2')
+	* 
+	* @return mixed
+	*/
+	public function primaryKeyVal(){
+		if($his->_init_){
+			$ids = $this->primaryKey();
+			if(is_array($ids)){
+
+			}else{
+				return $this->data[$ids];
+			}
+		}
+		return false;
+	}
+
+	/**
 	* relations переопределите метод с указанием связей с другими моделями
 	* @todo 
 	* array(
@@ -152,6 +172,7 @@ class Model extends Builder{
 			return false;
 		}
 		if(!$this->parent_models[$rel]){
+			return new Iterator;
 			/*$rel = $rels[$rel];
 			$rel_model = $rel['model'];
 			$rel_type = $rel['relation'];

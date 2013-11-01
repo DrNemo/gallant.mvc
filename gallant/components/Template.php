@@ -151,8 +151,9 @@ class Template{
 
 	private $file_js = array();
 	function setJs(){
-		$files = func_get_args();
-		$this->file_js = array_merge($this->file_js, $files);
+		$files = func_get_args();		
+		if(is_array($files[0])) $files = $files[0];
+		$this->file_js = array_merge($files, $this->file_js);
 	}
 
 	function includeJs(){
@@ -170,7 +171,8 @@ class Template{
 	private $file_css = array();
 	function setCss(){
 		$files = func_get_args();
-		$this->file_css = array_merge($this->file_css, $files);
+		if(is_array($files[0])) $files = $files[0];
+		$this->file_css = array_merge($files, $this->file_css);
 	}
 
 	function includeCss(){
