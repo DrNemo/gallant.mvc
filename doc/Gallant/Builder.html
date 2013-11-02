@@ -5,7 +5,7 @@
 			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class Builder</title>
 			<link rel="stylesheet" href="../media/stylesheet.css" />
-			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
 		<body>
 			<div class="page-body">			
@@ -87,6 +87,10 @@
 		<div class="info-box-body">
 			<div class="const-summary">
 								<div class="const-title">
+					<a href="#CONCET_MODEL" title="details" class="const-name">CONCET_MODEL</a> = 					<span class="var-type"> '::'</span>
+
+				</div>
+								<div class="const-title">
 					<a href="#MANY_TABLE_BUNCH" title="details" class="const-name">MANY_TABLE_BUNCH</a> = 					<span class="var-type"> 'relation::MANY_TABLE_BUNCH'</span>
 
 				</div>
@@ -95,7 +99,7 @@
 
 				</div>
 								<div class="const-title">
-					<a href="#MODEL_AS" title="details" class="const-name">MODEL_AS</a> = 					<span class="var-type"> 'mod1_t0'</span>
+					<a href="#MODEL_AS" title="details" class="const-name">MODEL_AS</a> = 					<span class="var-type"> 'mod0_t0'</span>
 
 				</div>
 								<div class="const-title">
@@ -125,7 +129,7 @@
 					</div>
 		<div class="info-box-body">
 			<div class="var-summary">
-																																																								<div class="var-title">
+																																																<div class="var-title">
 					<span class="var-type">mixed</span>
 					<a href="#$data" title="details" class="var-name">$data</a>
 				</div>
@@ -139,11 +143,7 @@
 				</div>
 																<div class="var-title">
 					<span class="var-type">mixed</span>
-					<a href="#$_init" title="details" class="var-name">$_init</a>
-				</div>
-																<div class="var-title">
-					<span class="var-type">mixed</span>
-					<a href="#$_relation_pref" title="details" class="var-name">$_relation_pref</a>
+					<a href="#$_init_" title="details" class="var-name">$_init_</a>
 				</div>
 											</div>
 		</div>
@@ -164,49 +164,49 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																										
+																																		
 				<div class="method-definition">
-					static 						<span class="method-result">void</span>
+					static 						<span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
 										<a href="#fetch" title="details" class="method-name">fetch</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$query</span> = <span class="var-default">false</span>])
+											([<span class="var-type">\Gallant\DB\DBQuery</span>&nbsp;<span class="var-name">$op_query</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
-					static 						<span class="method-result">void</span>
+					static 						<span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
 										<a href="#fetchPk" title="details" class="method-name">fetchPk</a>
-										()
+											(<span class="var-type">mixid</span>&nbsp;<span class="var-name">0</span>)
 									</div>
-																														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#tableName" title="details" class="method-name">tableName</a>
-										()
-									</div>
-																		
+																																		
 				<div class="method-definition">
 											<span class="method-result">Builder</span>
 										<a href="#__construct" title="details" class="method-name">__construct</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$map</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$as</span> = <span class="var-default">false</span>])
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$parser</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">Class</span>
 										<a href="#className" title="details" class="method-name">className</a>
 										()
 									</div>
+														
+				<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#delete" title="details" class="method-name">delete</a>
+											([<span class="var-type">bool</span>&nbsp;<span class="var-name">$delete_as</span> = <span class="var-default">false</span>])
+									</div>
 																														
 				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#publicMethod" title="details" class="method-name">publicMethod</a>
-										()
+											<span class="method-result">mixed</span>
+										<a href="#save" title="details" class="method-name">save</a>
+											([<span class="var-type">bool</span>&nbsp;<span class="var-name">$save_as</span> = <span class="var-default">false</span>])
 									</div>
 														
 				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#save" title="details" class="method-name">save</a>
+											<span class="method-result">serialize</span>
+										<a href="#serialize" title="details" class="method-name">serialize</a>
 										()
 									</div>
-																			</div>
+											</div>
 		</div>
 	</div>		
 
@@ -228,33 +228,12 @@
 		<div class="info-box-body">
 			
 <a name="var$data" id="$data"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			<span class="var-type">mixed</span>
-			<span class="var-name">$data</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">15</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
-<a name="var$data_update" id="$data_update"><!-- --></A>
 <div class="oddrow">
 
 	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
-			<span class="var-name">$data_update</span>
+			<span class="var-name">$data</span>
 			 = <span class="var-default">array()</span>			(line <span class="line-number">16</span>)
 		</span>
 	</div>
@@ -269,13 +248,13 @@
 		
 
 </div>
-<a name="var$parent_models" id="$parent_models"><!-- --></A>
+<a name="var$data_update" id="$data_update"><!-- --></A>
 <div class="evenrow">
 
 	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
-			<span class="var-name">$parent_models</span>
+			<span class="var-name">$data_update</span>
 			 = <span class="var-default">array()</span>			(line <span class="line-number">17</span>)
 		</span>
 	</div>
@@ -290,20 +269,20 @@
 		
 
 </div>
-<a name="var$_init" id="$_init"><!-- --></A>
+<a name="var$parent_models" id="$parent_models"><!-- --></A>
 <div class="oddrow">
 
 	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
-			<span class="var-name">$_init</span>
-			 = <span class="var-default"> false</span>			(line <span class="line-number">14</span>)
+			<span class="var-name">$parent_models</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">18</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
 	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
+				<li><span class="field">access:</span> protected</li>
 			</ul>
 	
 	
@@ -311,14 +290,14 @@
 		
 
 </div>
-<a name="var$_relation_pref" id="$_relation_pref"><!-- --></A>
+<a name="var$_init_" id="$_init_"><!-- --></A>
 <div class="evenrow">
 
 	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
-			<span class="var-name">$_relation_pref</span>
-			 = <span class="var-default"> false</span>			(line <span class="line-number">19</span>)
+			<span class="var-name">$_init_</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">15</span>)
 		</span>
 	</div>
 
@@ -354,23 +333,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">static fetch</span> (line <span class="line-number">243</span>)
+		<span class="method-title">static fetch</span> (line <span class="line-number">221</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">fetch</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> - result model</li>
+			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+		static <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
 		<span class="method-name">
 			fetch
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$query</span> = <span class="var-default">false</span>])
+					([<span class="var-type">\Gallant\DB\DBQuery</span>&nbsp;<span class="var-name">$op_query</span> = <span class="var-default">false</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$query</span>			</li>
+				<span class="var-type">\Gallant\DB\DBQuery</span>
+				<span class="var-name">$op_query</span><span class="var-description">: - подготовленный с помощью DBQuery запрос к БД</span>			</li>
 				</ul>
 		
 			
@@ -379,81 +362,72 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">static fetchPk</span> (line <span class="line-number">186</span>)
+		<span class="method-title">static fetchPk</span> (line <span class="line-number">249</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">fetchPk</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> - result model</li>
+			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+		static <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
 		<span class="method-name">
 			fetchPk
 		</span>
-				()
+					(<span class="var-type">mixid</span>&nbsp;<span class="var-name">0</span>)
 			</div>
 	
-		
-			
-	</div>
-<a name="methodtableName" id="tableName"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static tableName</span> (line <span class="line-number">89</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			tableName
-		</span>
-				()
-			</div>
-	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixid</span>
+				<span class="var-name">0</span><span class="var-description">: - primaryKey model  Model::fetchPk(1)  Model::fetchPk(1, 2, 3, ...)  Model::fetchPk( array(1, 2, 3, 4 ,...) )</span>			</li>
+				</ul>
 		
 			
 	</div>
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">28</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">32</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">__construct отправляет запрос на выполнение выборки</p>
 	
 	<div class="method-signature">
 		<span class="method-result">Builder</span>
 		<span class="method-name">
 			__construct
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$map</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$as</span> = <span class="var-default">false</span>])
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$parser</span> = <span class="var-default">false</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
 				<span class="var-type"></span>
-				<span class="var-name">$map</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$as</span>			</li>
+				<span class="var-name">$parser</span>			</li>
 				</ul>
 		
 			
 	</div>
 <a name="methodclassName" id="className"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">className</span> (line <span class="line-number">85</span>)
+		<span class="method-title">className</span> (line <span class="line-number">80</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">className</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Model Name</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Class</span>
 		<span class="method-name">
 			className
 		</span>
@@ -463,39 +437,83 @@
 		
 			
 	</div>
-<a name="methodpublicMethod" id="publicMethod"><!-- --></a>
-<div class="evenrow">
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">publicMethod</span> (line <span class="line-number">95</span>)
+		<span class="method-title">delete</span> (line <span class="line-number">372</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> true - успешно     false - ошибка</li>
+				<li><span class="field">todo:</span> delete</li>
+				<li><span class="field">todo:</span> delete data Model in db</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">bool</span>
 		<span class="method-name">
-			publicMethod
+			delete
 		</span>
-				()
+					([<span class="var-type">bool</span>&nbsp;<span class="var-name">$delete_as</span> = <span class="var-default">false</span>])
 			</div>
 	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$delete_as</span><span class="var-description">: (@todo true - удалит все связанные модели, false - удалит только данные этой модели)</span>			</li>
+				</ul>
 		
 			
 	</div>
 <a name="methodsave" id="save"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">save</span> (line <span class="line-number">261</span>)
+		<span class="method-title">save</span> (line <span class="line-number">292</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> = если insert, то primaryKey Model. если update, то bool:      true - успешно     false - ошибка (если данные модели не изменились запрос отправляться не будет, вернет false)</li>
+				<li><span class="field">todo:</span> save - save data Model in db</li>
+				<li><span class="field">todo:</span> insert model / update model</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">mixed</span>
 		<span class="method-name">
 			save
+		</span>
+					([<span class="var-type">bool</span>&nbsp;<span class="var-name">$save_as</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$save_as</span><span class="var-description">: (@todo true - сохранит все связанные модели, false - сохранение только данные этой модели)</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodserialize" id="serialize"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">serialize</span> (line <span class="line-number">88</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">serialize</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> object Model</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">serialize</span>
+		<span class="method-name">
+			serialize
 		</span>
 				()
 			</div>
@@ -522,58 +540,28 @@
 							
 					</div>
 		<div class="info-box-body">
-			<a name="constMANY_TABLE_BUNCH" id="MANY_TABLE_BUNCH"><!-- --></A>
+			<a name="constCONCET_MODEL" id="CONCET_MODEL"><!-- --></A>
 <div class="evenrow">
+
+	<div class="const-header">
+		<span class="const-title">
+			<span class="const-name">CONCET_MODEL</span>
+			 = <span class="const-default"> '::'</span>
+			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constMANY_TABLE_BUNCH" id="MANY_TABLE_BUNCH"><!-- --></A>
+<div class="oddrow">
 
 	<div class="const-header">
 		<span class="const-title">
 			<span class="const-name">MANY_TABLE_BUNCH</span>
 			 = <span class="const-default"> 'relation::MANY_TABLE_BUNCH'</span>
-			(line <span class="line-number">25</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constMANY_TO_MANY" id="MANY_TO_MANY"><!-- --></A>
-<div class="oddrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">MANY_TO_MANY</span>
-			 = <span class="const-default"> 'relation::MANY_TO_MANY'</span>
-			(line <span class="line-number">26</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constMODEL_AS" id="MODEL_AS"><!-- --></A>
-<div class="evenrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">MODEL_AS</span>
-			 = <span class="const-default"> 'mod1_t0'</span>
-			(line <span class="line-number">21</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constONE_TO_MANY" id="ONE_TO_MANY"><!-- --></A>
-<div class="oddrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">ONE_TO_MANY</span>
-			 = <span class="const-default"> 'relation::ONE_TO_MANY'</span>
 			(line <span class="line-number">24</span>)
 		</span>
 	</div>
@@ -582,14 +570,59 @@
 	
 	
 </div>
-<a name="constONE_TO_ONE" id="ONE_TO_ONE"><!-- --></A>
+<a name="constMANY_TO_MANY" id="MANY_TO_MANY"><!-- --></A>
 <div class="evenrow">
+
+	<div class="const-header">
+		<span class="const-title">
+			<span class="const-name">MANY_TO_MANY</span>
+			 = <span class="const-default"> 'relation::MANY_TO_MANY'</span>
+			(line <span class="line-number">25</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constMODEL_AS" id="MODEL_AS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<span class="const-title">
+			<span class="const-name">MODEL_AS</span>
+			 = <span class="const-default"> 'mod0_t0'</span>
+			(line <span class="line-number">20</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constONE_TO_MANY" id="ONE_TO_MANY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<span class="const-title">
+			<span class="const-name">ONE_TO_MANY</span>
+			 = <span class="const-default"> 'relation::ONE_TO_MANY'</span>
+			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constONE_TO_ONE" id="ONE_TO_ONE"><!-- --></A>
+<div class="oddrow">
 
 	<div class="const-header">
 		<span class="const-title">
 			<span class="const-name">ONE_TO_ONE</span>
 			 = <span class="const-default"> 'relation::ONE_TO_ONE'</span>
-			(line <span class="line-number">23</span>)
+			(line <span class="line-number">22</span>)
 		</span>
 	</div>
 
@@ -602,7 +635,7 @@
 	</div>
 
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 09 Oct 2013 14:11:55 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Sat, 02 Nov 2013 05:36:33 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
