@@ -20,6 +20,8 @@ class Template{
 
 	private $chaster = 'utf-8';
 
+	public $content = '';
+
 	public $folder;
 
 	public $helper;
@@ -97,7 +99,6 @@ class Template{
 		return $this->main;
 	}
 
-	private $content = '';
 	function tpl($file, $Result = array()){
 		$Result = (object)$Result;
 		if(!is_file($this->folder_template.$this->skin.'/control/'.$file.'.php')){

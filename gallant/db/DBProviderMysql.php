@@ -28,7 +28,6 @@ class DBProviderMysql{
 			$this->pdo->query("SET character_set_connection = '$config[character]'");
 			$this->pdo->query("SET character_set_results = '$config[character]'");
 		}catch (Exception $e) {
-			p('erro');
     		throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
     	}
 		
@@ -38,19 +37,25 @@ class DBProviderMysql{
 		$sql = "UPDATE `".$DBQuery['table'][0]['name']."` SET ";
 		$data = $DBQuery['attr'];
 
+		p('DBQuery',$data);
+
 		if(!$data){
 			throw new \Gallant\Exceptions\CoreException('Fatal Error: update not attr');
 		}
-		$f = function($val, $key, $data){
+
+		$update = array();
+		$attr = array();
+		foreach ($data as $key => $val) {
+			p('----');
+			p($key, $val);
 			if($key[0] != ':'){
-				$data['attr'][":$key"] = $val;
-				$data['update'][$key] = ":$key";
+				$attr[":update_gallant_$key"] = $val;
+				$update[$key] = ":update_gallant_$key";
 			}else{
-				$data['attr'][$key] = $val;
+				$attr[$key] = $val;
 			}
-		};
-		$update = $attr = array();
-		array_walk($data, $f, array('update' => &$update, 'attr' => &$attr));
+		}
+
 		$upd = '';
 		foreach ($update as $colon => $val) {
 			if($upd) $upd .= ", ";
@@ -63,7 +68,7 @@ class DBProviderMysql{
 			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
 		}
 
-		//p($sql, $attr);
+		p($sql, $attr);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}
@@ -86,7 +91,7 @@ class DBProviderMysql{
 
 	}
 
-	function insert($DBQuery, $replice = false){		
+	function insert($DBQuery, $replice = false){
 		$sql = "INSERT INTO `".$DBQuery['table'][0]['name']."` ";
 		if($DBQuery['attr']){
 			$attr_keys = array_keys($DBQuery['attr']);

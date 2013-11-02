@@ -1,4 +1,4 @@
-﻿<?
+<?
 /**
 * G
 * 
@@ -26,6 +26,8 @@ class G{
 
     private static $system_path = false;
 
+    private static $_domen = false;
+
     public static $filter = array();
 	
 	/**
@@ -34,7 +36,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.0.5 pre-alfa";
+		return "0.0.6 pre-alfa";
 	}
 	
 	/**
@@ -44,6 +46,8 @@ class G{
 	*/
 	public static function init($config_file){
 		session_start();
+
+		self::$_domen = $_SERVER['SERVER_NAME'];
 
 		self::$filter['html'] = function(&$v,$k,$filter){
             if(!is_array($v)){
@@ -170,6 +174,16 @@ class G{
 			return self::$registr[$key];
 		}
 		return false;
+	}
+
+
+	/**
+	* getDomen
+	* 
+	* @return string domen name
+	*/
+	public static function getDomen(){
+		return self::$_domen;
 	}
 
 	/**
@@ -375,7 +389,8 @@ class G{
 	* @return new \Gallant\DB\DBQuery($provider);
 	*/
 	public static function dbQuery($provider = false){
-		return new \Gallant\DB\DBQuery($provider);
+		$query = new \Gallant\DB\DBQuery($provider);
+		return $query;
 	}
 
 	private static $error = array();

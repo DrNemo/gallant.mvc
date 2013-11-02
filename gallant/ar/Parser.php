@@ -8,6 +8,7 @@
 * @author DrNemo <drnemo@bk.ru>
 * @version 1.0
 */
+
 namespace Gallant\Ar;
 
 class Parser{
@@ -39,7 +40,7 @@ class Parser{
 		$len = strlen($pref);
 		$data = array();
 
-		foreach ($this->source as $line_num => $line) {
+		foreach ($this->source as $line_num => $line) {			
 			foreach ($line as $db_key => $db_val){
 				
 				if(substr($db_key, 0, strlen($pref)) == $pref){
@@ -63,11 +64,15 @@ class Parser{
 					
 					$data['relations'][$rel_key] = array();	
 
-					if($rel_type == Builder::ONE_TO_ONE){
-						$data['relations'][$rel_key] = $this->tree($rel_model, $rel_as);
-					}else{
-						foreach ($this->source as $line_num => $line) {
-							$data['relations'][$rel_key][] = $this->tree($rel_model, $rel_as);
+					$tree = $this->tree($rel_model, $rel_as);
+
+					if($tree){
+						if($rel_type == Builder::ONE_TO_ONE){
+							$data['relations'][$rel_key] = $tree;
+						}else{
+							foreach ($this->source as $line_num => $line) {
+								$data['relations'][$rel_key][] = $tree;
+							}
 						}
 					}
 				}
@@ -80,158 +85,11 @@ class Parser{
 	}
 
 	function getSelf(){
-		return $this->data['self'];
+		return array_filter($this->data['self']);
 	}
 
 	function getRelation($key){
 
 		return $this->data['relations'][$key];
 	}
-
-
-	/* 
-	function getSelf(){
-		if($this->data['self']) return $this->data['self'];
-		return array();
-	}
-
-	function getDataModel($model, $rel_type){
-
-	}
-
-	function getChilds($mod_pref, $rel_type){
-		p('getChilds', $mod_pref, $rel_type);
-
-		if($this->data['relation']){
-			foreach ($this->data['relation'] as $num_line => $line){
-				if(isset($line[$mod_pref])){
-					$self[] = $line[$mod_pref];
-				}
-				
-			}
-		}
-
-		return $self;
-	}
-
-	/*
-	static protected $model_structure = array();
-
-	static function setModelParser($name, $parser){
-		self::$model_structure[$name] = $parser;
-	}
-
-	static function getModelParser($name){
-		if(isset(self::$model_structure[$name])){
-			return self::$model_structure[$name];
-		}
-		/*$pre_query = $name::build();
-		if($pre_query){
-			self::setModelParser($name, $parser)
-
-	private $source = false;
-	private $data = false;
-	private $po_source = false;
-	private $children = array();
-	function __construct($data){
-		$this->source = $data;
-	}
-
-	function getParse($rule){
-		$rule['self'] = Builder::MODEL_AS;
-
-		if(!$this->source) return;
-		$data = $this->source;
-
-		$parse_data = array();
-		foreach ($data as $line => $value) {
-			$value = array_filter($value);
-			foreach($value as $db_key => $db_val){
-				foreach ($rule as $model => $pref) {
-					if(substr($db_key, 0, strlen($pref)) == $pref){
-						$parse_data[$line][$model][substr($db_key, strlen($pref) + 1)] = $db_val;
-					}
-				}				
-			}
-		}
-
-		if(!$parse_data) return;
-
-		$reparse_data = array();
-		$pre_self = array();
-		unset($rule['self']);
-		foreach ($parse_data as $line) {
-			if(array_diff_assoc($line['self'], $pre_self)){
-				if(isset($_data['self'])){
-					$reparse_data[] = new Parser($_data);					
-					$_data = array();
-				}
-				$_data['self'] = $line['self'];
-				$pre_self = $line['self'];
-			}
-
-			foreach ($rule as $module => $pref) {
-				if($line[$module]){
-					$_data[$module][] = $line[$module];
-				}
-			}
-		}
-		if($_data){
-			$reparse_data[] = new Parser($_data);
-		}
-		//p('$reparse_data', $reparse_data);
-
-		return $reparse_data;
-	}
-
-	function getData($model, $type_rel = Builder::ONE_TO_ONE){
-		if('self' == $model){
-			if($this->source['self']){
-				$data = $this->source['self'];
-				unset($this->source['self']);
-				return $data;
-			}
-		}else{
-			//p($model, $type_rel);
-			if(isset($this->source[$model])){
-				/*if($type_rel == Builder::ONE_TO_ONE){
-					$self = array_shift($this->source[$model]);
-					$data = $this->source;
-					$data['self'] = $self;
-					$return[] = new Parser($data);
-				}else{///
-					$data_model = $this->source[$model];
-					unset($this->source[$model]);
-					while($self = array_shift($data_model)) {
-						$data = $this->source;
-						$data['self'] = $self;
-						$return[] = new Parser($data);
-					}
-				//}
-				//p($return, '--------');
-				return $return;
-			}
-			/*
-			if(isset($this->source[$model])){
-				$return = array();
-				if($one){
-					$data = array_shift($this->source[$model]);
-					$data['self'] = $self;
-					$return = new Parser($data);
-				}else{
-					$data_model = $this->source[$model];
-					unset($this->source[$model]);
-					while($self = array_shift($data_model)) {
-						$data = $this->source;
-						$data['self'] = $self;
-						$return[] = new Parser($data);
-					}
-					return $return;
-				}
-			}/
-		}
-	}*/
-
-
-
 }

@@ -26,6 +26,9 @@ class Builder{
 
 	const CONCET_MODEL = '::';
 
+	/**
+	* __construct отправляет запрос на выполнение выборки
+	*/
 	function __construct($parser = false){
 		$model = self::className();
 
@@ -39,25 +42,30 @@ class Builder{
 			//p('__construct : '.$this->className(). ' | AS: '.$as.' | $repl:'.$repl.'|', $parser);
 
 			$self = $parser->getSelf();
-			$this->data = array_merge($this->data, $self);
+			if($self){
+				$this->data = array_merge($this->data, $self);
 
-			$this->_init_ = true;
+				$this->_init_ = true;
 
-			if($relations = $this->relations()){
-				foreach ($relations as $relation_key => $relation_data) {
-					$rel_type = $relation_data['relation'];
-					$rel_model_name = $relation_data['model'];
+				if($relations = $this->relations()){
+					foreach ($relations as $relation_key => $relation_data) {
+						$rel_type = $relation_data['relation'];
+						$rel_model_name = $relation_data['model'];
 
-					$rel_data = $parser->getRelation($relation_key);
+						$rel_data = $parser->getRelation($relation_key);
 
-					if($rel_data){
-						if($rel_type == self::ONE_TO_ONE){
-							$this->parent_models[$relation_key] = new $rel_model_name(new Parser($rel_data));
-						}else{
-							foreach ($rel_data as $_rel_data) {
-								$_rel[] = new $rel_model_name(new Parser($_rel_data));
+						if($rel_data){
+							if($rel_type == self::ONE_TO_ONE){
+								$this->parent_models[$relation_key] = new $rel_model_name(new Parser($rel_data));
+							}else{
+								foreach ($rel_data as $_rel_data) {
+									$load_model = new $rel_model_name(new Parser($_rel_data));
+									if($load_model->_init_){
+										$_rel[] = $load_model;
+									}
+								}
+								$this->parent_models[$relation_key] = new Iterator($_rel);
 							}
-							$this->parent_models[$relation_key] = new Iterator($_rel);
 						}
 					}
 				}
@@ -65,16 +73,27 @@ class Builder{
 		}
 	}
 
-	// return model name 
+	/**
+	* className 
+	* @return Class Model Name
+	*/
 	function className(){
 		return get_called_class();
 	}
 
+	/**
+	* serialize 
+	* @return serialize object Model
+	*/
 	function serialize(){
 		return serialize($this);
 	}
 
-	static function dbStructure(){		
+	/**
+	* private dbStructure
+	* @return structure db table Model
+	*/
+	static private function dbStructure(){		
 		$model = self::className();
 
 		if($r = Register::getStructure($model)){
@@ -95,7 +114,13 @@ class Builder{
 		return $colons;
 	}
 
-	static function buildSql($as, $num_model = 0){
+	/**
+	* private buildSql
+	* @param string as model table
+	* @param int num model level
+	* @return array( [0] => arQuery - pre db query, [1] => array(Model pref => db table as)  )
+	*/
+	static private function buildSql($as, $num_model = 0){
 		$table = 0;
 		$model = self::className();
 
@@ -158,7 +183,12 @@ class Builder{
 		return array($pre_query, $pref);
 	}
 
-	static function preParser($source){
+	/**
+	* private buildSql
+	* @param array source - result db select
+	* @return array - массив сгрупированный по моделям
+	*/
+	static private function preParser($source){
 		$model = self::className();
 
 		$pks = $model::primaryKey();
@@ -172,6 +202,7 @@ class Builder{
 		if(!$source) return $pre_pars;
 
 		foreach ($source as $line) {
+			$line = array_filter($line);
 			$_new_self = array();
 			foreach ($pks as $pk) {
 				$_new_self[$pk] = $line[self::MODEL_AS . '_' . $pk];
@@ -182,6 +213,11 @@ class Builder{
 		return array_values($pre_pars);
 	}
 
+	/**
+	* fetch
+	* @param \Gallant\DB\DBQuery - подготовленный с помощью DBQuery запрос к БД
+	* @return Iterator - result model
+	*/
 	static function fetch($op_query = false){ // \Gallant\DB\DBQuery 
 		$model = self::className();
 		list($pre_query, $prefs) = self::buildSql(self::MODEL_AS);
@@ -202,6 +238,14 @@ class Builder{
 		return new Iterator($result);		
 	}
 
+	/**
+	* fetchPk
+	* @param mixid - primaryKey model
+	* Model::fetchPk(1)
+	* Model::fetchPk(1, 2, 3, ...)
+	* Model::fetchPk( array(1, 2, 3, 4 ,...) )
+	* @return Iterator - result model
+	*/
 	static function fetchPk(){
 		$model = self::className();
 		$param_pk = func_get_args();
@@ -236,66 +280,96 @@ class Builder{
 		return new Iterator($result);
 	}
 
-	function save(){
+
+	/**
+	* @todo save - save data Model in db
+	* @todo insert model / update model 
+	* @param bool (@todo true - сохранит все связанные модели, false - сохранение только данные этой модели)
+	* @return mixed = если insert, то primaryKey Model. если update, то bool: 
+	* 	true - успешно
+	*	false - ошибка (если данные модели не изменились запрос отправляться не будет, вернет false)
+	*/
+	function save($save_as = false){
 		$model = self::className();
 
-		list($query, $prefs) = self::buildSql(self::MODEL_AS);
+		$query = new arQuery($model::provider());
+
+		$query->table($model::table(), self::MODEL_AS);
 
 		$data = array_merge($this->data, $this->data_update);
+		$data = array_filter($data);
 
-		$query->attr($data);
-
-		if($this->_init_){
-			// update
-
-		}else{
-			// insert
-
-		}
-		/*
-		
-		$pre_model = new $model;
-
-		if(!($pre_query = Register::getQuery($model)) || !($replace = Register::getReplace($model))){
-			$pre_query = new arQuery($model::provider());
-			$replace = $model::searchRelation($pre_query, self::MODEL_AS);
-
-
-
-			Register::setQuery($model, $pre_query);
-			Register::setReplace($model, $replace);
+		if(!array_diff_assoc($this->data, $data)){
+			return false;
 		}
 
-		$f = function($val, $key, $dop){
-			if(in_array($key, $dop['structure'])){
-				$dop['update'][$key] = $val;
-			}
-		};
-
-		$data = array();
-		array_walk($this->data_update, $f, array('structure' => Register::getStructure($model), 'update' => &$data));
-
 		if($this->_init_){
-			// update
-			$pks = $pre_model->primaryKey();
+			$pks = $model::primaryKey();
 			if(!is_array($pks)){
 				$pks = array($pks);
 			}
 			$where = '';
 			foreach($pks as $pk){
-				$pre_query->where(" $pk = :gallant_update_pk_$pk ");
-				$attr[":gallant_update_pk_$pk"] = $this->data[$pk];
+				$attr[":gallant_update_pk_$pk"] = $data[$pk];
+				unset($data[$pk]);
+				if($where) $where .= "OR";
+				$where .= " $pk = :gallant_update_pk_$pk ";
 			}
+			
+
 			$data = array_merge($data, $attr);
 			
-			$res = $pre_query->attr($data)->update();
+			$res = $query->where($where)->attr($data)->update();
+			
 			return $res;
 		}else{
 			// insert
-			$id = $pre_query->attr($data)->insert();
-			return $id;
+			$pks = $model::primaryKey();
+			if(!is_array($pks)){
+				$pks = array($pks);
+			}
+			foreach($pks as $pk){
+				unset($data[$pk]);
+			}
+			$new_pk = $query->attr($data)->insert();
+			
+			if($new_pk){
+				if(!is_array($new_pk)){
+					$_new_pk = array($new_pk);
+				}
+				$this->data = $data;
+				$this->data_update = array();
+
+				foreach ($pks as $pk) {
+					$this->data[$_pk] = array_shift($_new_pk);
+				}
+
+				$this->_init_ = true;
+				/**
+				* @todo in log
+				*/
+				return $new_pk;
+			}else{
+				/**
+				* @todo in log
+				*/
+				p('save insert false');
+				return false;
+			}
+			
 		}
-		*/
-		
+	}
+
+
+	/**
+	* @todo delete
+	* @todo delete data Model in db
+	* @param bool (@todo true - удалит все связанные модели, false - удалит только данные этой модели)
+	* @return bool
+	* 	true - успешно
+	*	false - ошибка
+	*/
+	function delete($delete_as = false){
+
 	}
 }

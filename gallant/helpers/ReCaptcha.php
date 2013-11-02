@@ -17,8 +17,33 @@ G::includeComponent('recaptchalib.php');
 
 class ReCaptcha{
 
-	static function htmlForm(){
+	static private $_publicKey = false;
 
+	static private $_privateKey = false;
+
+	function init(){
+		if(!self::$_publicKey){
+			$conf = G::getConfig('recaptcha');
+			if(!$conf['publicKey'] || !$conf['privateKey']){
+				throw new \Gallant\Exceptions\HelperException('error config ReCaptcha');
+			}
+			self::$_publicKey = $conf['publicKey'];
+			self::$_privateKey = $conf['privateKey'];
+		}
+	}
+
+	function getPublicKey(){
+		self::init();
+		return self::$_publicKey;
+	}
+
+	function getPrivateKey(){
+		self::init();
+		return self::$_privateKey;
+	}
+
+	static function htmlForm(){
+		return recaptcha_get_html(self::getPublicKey());
 	}
 
 	/*static function */
