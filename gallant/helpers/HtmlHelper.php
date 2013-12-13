@@ -40,17 +40,16 @@ class HtmlHelper{
 	* @return string html
 	*/
 	function select($list, $id = false){
-		p($list);
 		if(!$list) return;
-	    foreach($list as $index => $val){
-	        if(!$id){
-	        	$list.='<option value="'.$index.'">'.$val.'</option>';
-	        }else{
-	            if($index == $id) $list.='<option value="'.$index.'" selected="selected">'.$val.'</option>';
-	            else $list.='<option value="'.$index.'">'.$val.'</option>';
-	        }
-	    }
-	    return $list;
+		foreach($list as $index => $val){
+			if(!$id){
+				$list.='<option value="'.$index.'">'.$val.'</option>';
+			}else{
+				if($index == $id) $list.='<option value="'.$index.'" selected="selected">'.$val.'</option>';
+				else $list.='<option value="'.$index.'">'.$val.'</option>';
+			}
+		}
+		return $list;
 	}
 
 	/**

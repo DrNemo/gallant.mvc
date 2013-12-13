@@ -64,7 +64,9 @@ class Builder{
 										$_rel[] = $load_model;
 									}
 								}
-								$this->parent_models[$relation_key] = new Iterator($_rel);
+								if($_rel){
+									$this->parent_models[$relation_key] = new Iterator($_rel);
+								}
 							}
 						}
 					}
@@ -144,7 +146,9 @@ class Builder{
 		if($relations = $model::relations()){
 			foreach($relations as $rel_key => $relation){
 				if($as == self::MODEL_AS || $relation['load']){
-					
+					/**
+					* @todo $rel_model is Model
+					*/
 
 					$rel_as			= 'mod'.$num_model.'_t'.$table;
 					$rel_model   	= $relation['model'];
@@ -154,7 +158,8 @@ class Builder{
 
 					$pref[$model.self::CONCET_MODEL.$rel_key] = $rel_as;
 
-					$rel_query = $rel_model::buildSql($rel_as, $num_model + 1);
+					$num_model ++;
+					$rel_query = $rel_model::buildSql($rel_as, $num_model);
 
 					if($rel_query){
 						if($rel_type == self::MANY_TABLE_BUNCH){
@@ -176,7 +181,7 @@ class Builder{
 		}
 
 		if($as == self::MODEL_AS){
-			Register::set($model, array($pre_query, $pref));
+			Register::set($model, array(clone($pre_query), $pref));
 			return array($pre_query, $pref);
 		}
 
@@ -184,7 +189,7 @@ class Builder{
 	}
 
 	/**
-	* private buildSql
+	* private preParser
 	* @param array source - result db select
 	* @return array - массив сгрупированный по моделям
 	*/
@@ -208,7 +213,7 @@ class Builder{
 				$_new_self[$pk] = $line[self::MODEL_AS . '_' . $pk];
 			}
 			$pre_pars[implode('_', $_new_self)][] = $line;			
-		}	
+		}
 
 		return array_values($pre_pars);
 	}
@@ -293,13 +298,11 @@ class Builder{
 		$model = self::className();
 
 		$query = new arQuery($model::provider());
+		$query->table($model::table());
 
-		$query->table($model::table(), self::MODEL_AS);
-
-		$data = array_merge($this->data, $this->data_update);
-		$data = array_filter($data);
-
-		if(!array_diff_assoc($this->data, $data)){
+		$data = array_intersect_key($this->data_update, $this->data);
+		p($data, $this->data_update, $this->data);
+		if(!$data){
 			return false;
 		}
 
@@ -310,7 +313,7 @@ class Builder{
 			}
 			$where = '';
 			foreach($pks as $pk){
-				$attr[":gallant_update_pk_$pk"] = $data[$pk];
+				$attr[":gallant_update_pk_$pk"] = $this->data[$pk];
 				unset($data[$pk]);
 				if($where) $where .= "OR";
 				$where .= " $pk = :gallant_update_pk_$pk ";
@@ -318,10 +321,22 @@ class Builder{
 			
 
 			$data = array_merge($data, $attr);
+			$query->where($where)->attr($data);
+			$res = $query->update();
+			if($res){
+				/**
+				* @todo in log
+				*/
+				return $res;
+			}else{
+				/**
+				* @todo in log
+				*/
+				p('save update false');
+				return false;
+			}
 			
-			$res = $query->where($where)->attr($data)->update();
 			
-			return $res;
 		}else{
 			// insert
 			$pks = $model::primaryKey();
@@ -337,11 +352,11 @@ class Builder{
 				if(!is_array($new_pk)){
 					$_new_pk = array($new_pk);
 				}
-				$this->data = $data;
+				$this->data = array_merge($this->data, $data);
 				$this->data_update = array();
 
 				foreach ($pks as $pk) {
-					$this->data[$_pk] = array_shift($_new_pk);
+					$this->data[$pk] = array_shift($_new_pk);
 				}
 
 				$this->_init_ = true;

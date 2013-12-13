@@ -186,4 +186,9 @@ class Model extends Builder{
 			return $this->parent_models[$rel];
 		}
 	}
+
+	public function getRelations(){
+		if(!$this->parent_models) return array();
+		return $this->parent_models;
+	}
 }

@@ -46,7 +46,7 @@ Gallant.Ajax = function(url){
 			data: this._param,
 			dataType: 'json',
 			success: function(msg){
-	            console.log(msg);
+				console.log(msg);
 				if(callback) callback(msg['result']);
 			},
 			error: function(e1, e2, e3){

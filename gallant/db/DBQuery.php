@@ -236,6 +236,6 @@ class DBQuery{
 	*/
 	final function delete($replice = false){
 		$this->query['type'] = 'delete';
-		
+		return G::DB($this->provider)->delete($this->query, $replice);
 	}
 }

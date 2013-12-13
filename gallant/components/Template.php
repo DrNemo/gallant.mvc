@@ -32,9 +32,9 @@ class Template{
 		$this->helper = new \Gallant\Helpers\HtmlHelper;
 
 		header("Content-Encoding: ".$this->chaster);
-        header("Content-Type: text/html; charset=".$this->chaster);
+		header("Content-Type: text/html; charset=".$this->chaster);
 
-        header("Content-language: ".G::lang()->getLang());
+		header("Content-language: ".G::lang()->getLang());
 		
 		$this->setSkin($design['skin']);
 		$this->setMain($design['main']);		
@@ -48,26 +48,26 @@ class Template{
 
 	function setSkin($skin){
 		$folders = G::getPath('template');
-        if(!$folders){
-        	throw new \Gallant\Exceptions\CoreException('error template not folder template');
-        }
-        if(is_array($folders)){
-	        $templ = false;
-	        foreach ($folders as $folder) {
-	        	if(is_dir($folder.$skin)){
-	        		$templ = $folder;
-	        		break;
-	        	}
-	        }
-	    }else{
-	    	$templ = $folders;
-	    }
-        if(!$templ){
-        	throw new \Gallant\Exceptions\CoreException('error template not folder template');
-        }
+		if(!$folders){
+			throw new \Gallant\Exceptions\CoreException('error template not folder template');
+		}
+		if(is_array($folders)){
+			$templ = false;
+			foreach ($folders as $folder) {
+				if(is_dir($folder.$skin)){
+					$templ = $folder;
+					break;
+				}
+			}
+		}else{
+			$templ = $folders;
+		}
+		if(!$templ){
+			throw new \Gallant\Exceptions\CoreException('error template not folder template');
+		}
 
-        $this->folder_template = $templ;
-        $this->folder_template_html = str_replace('\\', '/', substr($templ, strlen(SITE_ROOT)));
+		$this->folder_template = $templ;
+		$this->folder_template_html = str_replace('\\', '/', substr($templ, strlen(SITE_ROOT)));
 
 		if(!is_dir($this->folder_template.$skin)){
 			throw new \Gallant\Exceptions\CoreException('error template skin folder: '.$skin);
@@ -154,7 +154,7 @@ class Template{
 	function setJs(){
 		$files = func_get_args();		
 		if(is_array($files[0])) $files = $files[0];
-		$this->file_js = array_merge($files, $this->file_js);
+		$this->file_js = array_merge($this->file_js, $files);
 	}
 
 	function includeJs(){
@@ -260,8 +260,8 @@ class Template{
 			if(!in_array(substr($tag,0,stripos($tag,' ')),$tag_ignory) &&
 				!in_array(substr($tag,0,stripos($tag,'>')),$tag_ignory)){
 				$tag = preg_replace('/[\r\n\t]?/', '', $tag);
-                $tag = str_replace("  ",'', $tag);
-            }
+				$tag = str_replace("  ",'', $tag);
+			}
 			$html = preg_replace('!#pre#!', $tag, $html, 1);
 		}
 		return $html;

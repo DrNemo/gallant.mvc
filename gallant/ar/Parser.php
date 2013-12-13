@@ -49,7 +49,6 @@ class Parser{
 				}
 			}
 			if($data['self']) break;
-
 		}
 
 		if($relations = $model::relations()){
@@ -64,15 +63,15 @@ class Parser{
 					
 					$data['relations'][$rel_key] = array();	
 
-					$tree = $this->tree($rel_model, $rel_as);
-
-					if($tree){
-						if($rel_type == Builder::ONE_TO_ONE){
+					if($rel_type == Builder::ONE_TO_ONE){
+						if($tree = $this->tree($rel_model, $rel_as)){
 							$data['relations'][$rel_key] = $tree;
-						}else{
-							foreach ($this->source as $line_num => $line) {
+						}
+					}else{
+						foreach ($this->source as $line_num => $line) {
+							if($tree = $this->tree($rel_model, $rel_as)){
 								$data['relations'][$rel_key][] = $tree;
-							}
+							}								
 						}
 					}
 				}
@@ -80,12 +79,14 @@ class Parser{
 			}
 			
 		}
-
 		return $data;
 	}
 
 	function getSelf(){
-		return array_filter($this->data['self']);
+		if($this->data['self']){
+			return array_filter($this->data['self']);
+		}
+		return false;
 	}
 
 	function getRelation($key){

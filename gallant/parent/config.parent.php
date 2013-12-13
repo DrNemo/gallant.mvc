@@ -29,14 +29,14 @@ return array(
 		),
 
 	'path' => array(
-		'site' 		=> '%root%',
+		'site' 		=> '%site%',
 		'template' 	=> '%site%/template',
 		'model' 	=> '%site%/model',
 		'component' => '%site%/component',
 		'include' 	=> '%site%/include',
 		'control' 	=> '%site%/control',
 		'lang' 		=> '%site%/data/lang',
-		'entry'		=> '%root%/entry.php'
+		'entry'		=> '%site%/entry.php'
 		),
 
 	'db' => array(),

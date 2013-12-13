@@ -14,14 +14,25 @@ if(!defined('GALLANT_SYSTEM') || GALLANT_SYSTEM !== true) die('NOT GALLANT_SYSTE
 define('GALLANT_CORE', __DIR__);
 define('SITE_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
+if(defined('FOLDER_ROOT')){
+	define('FOLDER_ROOT', SITE_ROOT);
+}
+
 include GALLANT_CORE.'/AutoLoading.php';
 
 function p(){
 	$p=func_get_args();
+
 	echo '<pre>';
+	$fs = debug_backtrace(false);
+	foreach($fs as $f){
+		if($f['function'] == 'p'){
+			echo 'Print debug Function: '.$f['file'].':'.$f['line'].''."\n";
+		}
+	}
 	foreach($p as $pp){
-        print_r($pp);
-        echo "\n\r";
-    }
+		print_r($pp);
+		echo "\n\r";
+	}
 	echo '</pre>';
 }

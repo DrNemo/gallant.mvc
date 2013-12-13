@@ -28,16 +28,14 @@ class DBProviderMysql{
 			$this->pdo->query("SET character_set_connection = '$config[character]'");
 			$this->pdo->query("SET character_set_results = '$config[character]'");
 		}catch (Exception $e) {
-    		throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
-    	}
+			throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
+		}
 		
 	}
 
 	function update($DBQuery, $replice){
 		$sql = "UPDATE `".$DBQuery['table'][0]['name']."` SET ";
 		$data = $DBQuery['attr'];
-
-		p('DBQuery',$data);
 
 		if(!$data){
 			throw new \Gallant\Exceptions\CoreException('Fatal Error: update not attr');
@@ -46,8 +44,6 @@ class DBProviderMysql{
 		$update = array();
 		$attr = array();
 		foreach ($data as $key => $val) {
-			p('----');
-			p($key, $val);
 			if($key[0] != ':'){
 				$attr[":update_gallant_$key"] = $val;
 				$update[$key] = ":update_gallant_$key";
@@ -59,7 +55,7 @@ class DBProviderMysql{
 		$upd = '';
 		foreach ($update as $colon => $val) {
 			if($upd) $upd .= ", ";
-			$upd .= " $colon = $val";
+			$upd .= " `$colon` = $val";
 		}
 		$sql .= "$upd";
 
@@ -68,7 +64,8 @@ class DBProviderMysql{
 			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
 		}
 
-		p($sql, $attr);
+		///////////////////////////////
+		// p($sql, $attr, $data);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
 			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
 		}
@@ -78,6 +75,7 @@ class DBProviderMysql{
 		}else{
 			$exec = $pdo_query->execute();
 		}
+
 		if($exec){
 			$this->report[$this->count] = $sql;
 			$this->count ++;
@@ -88,7 +86,47 @@ class DBProviderMysql{
 	}
 
 	function delete($DBQuery){
+		$sql = "DELETE FROM `".$DBQuery['table'][0]['name']."` ";
 
+		////////////////// where
+		if($DBQuery['where']){
+			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
+		}
+
+		////////////////// limit
+		if(isset($DBQuery['limit'])){
+			$sql .= " LIMIT $DBQuery[limit]";
+			if(isset($DBQuery['ofset'])){
+				$sql .= ", $DBQuery[ofset]";
+			}
+		}
+
+		////////////////// attr
+		$attr = false;
+		if(isset($DBQuery['attr'])){
+			$attr = $DBQuery['attr'];
+		}
+
+		////////////////// QUERY
+		// p($sql, $attr);
+		if(!$pdo_query = $this->pdo->prepare($sql)){			
+			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
+		}
+
+		if($attr){
+			$exec = $pdo_query->execute($attr);
+		}else{
+			$exec = $pdo_query->execute();
+		}
+		
+
+		if(!$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC)){
+			return false;
+		}else{
+			$this->report[$this->count] = $sql;
+			$this->count ++;
+			return $result;
+		}
 	}
 
 	function insert($DBQuery, $replice = false){

@@ -11,24 +11,24 @@
 
 class G{
 	private function __construct(){}
-    private function __clone(){}
+	private function __clone(){}
 
-    private static $config = array();
+	private static $config = array();
 
-    private static $request = array();
+	private static $request = array();
 
-    private static $control = false;
-    private static $action = false;
+	private static $control = false;
+	private static $action = false;
 
-    private static $template = false;
-    private static $_route = false;
-    private static $helper_lang = false;
+	private static $template = false;
+	private static $_route = false;
+	private static $helper_lang = false;
 
-    private static $system_path = false;
+	private static $system_path = false;
 
-    private static $_domen = false;
+	private static $_domen = false;
 
-    public static $filter = array();
+	public static $filter = array();
 	
 	/**
 	* G::version
@@ -36,7 +36,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.0.6 pre-alfa";
+		return "0.0.7 pre-alfa";
 	}
 	
 	/**
@@ -50,12 +50,12 @@ class G{
 		self::$_domen = $_SERVER['SERVER_NAME'];
 
 		self::$filter['html'] = function(&$v,$k,$filter){
-            if(!is_array($v)){
-            	$v = htmlspecialchars($v);
-            }else array_walk($v, $filter, $filter);
-        };
+			if(!is_array($v)){
+				$v = htmlspecialchars($v);
+			}else array_walk($v, $filter, $filter);
+		};
 
-        self::$request = array('post' => $_POST, 'get' => $_GET);
+		self::$request = array('post' => $_POST, 'get' => $_GET, 'files' => $_FILES);
 
 		$def_config = include GALLANT_CORE.\Gallant\GConst::DEFAULT_CONFIG;
 		if(!is_array($def_config)){
@@ -197,8 +197,8 @@ class G{
 			$config_path = self::getConfig('path');
 
 			$path_param = array(
-				'%site%' => $config_path['site'],
-				'%root%' => FOLDER_ROOT,
+				'%site%' => FOLDER_ROOT,
+				'%root%' => SITE_ROOT,
 				);
 			
 			$not_array = array('site', 'lang', 'entry');
@@ -245,7 +245,7 @@ class G{
 	*/
 	public static function getRequest($type, $key, $filter = 'html'){
 		$type = strtolower($type);
-		if($type != 'post' && $type != 'get'){
+		if($type != 'post' && $type != 'get' && $type != 'files'){
 			throw new \Gallant\Exceptions\CoreException('error type Request in function G::getRequest($type, $key, $filter)');
 		}
 		if(isset(self::$request[$type][$key])){
@@ -455,11 +455,11 @@ class G{
 	* @param string $url адрес редиректа
 	*/
 	public static function ref($url = false){
-	    if(!$url) $url = $_SERVER['REQUEST_URI'];
-	    $url = self::template()->link($url);
-	    ob_clean();
-	    header('Location: '.$url);
-	    exit;
+		if(!$url) $url = $_SERVER['REQUEST_URI'];
+		$url = self::template()->link($url);
+		ob_clean();
+		header('Location: '.$url);
+		exit;
 	}
 
 	/**
@@ -468,10 +468,10 @@ class G{
 	* @return boolean
 	*/
 	public static function isAjax(){
-        if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] =='XMLHttpRequest'){
-            $type = explode(',',$_SERVER['HTTP_ACCEPT']);
-            if(in_array('application/json', $type)) return true;
-            else return false;
-        }else return false;
-    }
+		if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] =='XMLHttpRequest'){
+			$type = explode(',',$_SERVER['HTTP_ACCEPT']);
+			if(in_array('application/json', $type)) return true;
+			else return false;
+		}else return false;
+	}
 }

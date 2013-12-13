@@ -40,6 +40,41 @@ class Iterator extends \ArrayObject{
 
 	/**
 	* filter возвращяет отфильтрованный Iterator
+	* фильтруются данные модели
+	*
+	* @param function $filter
+	* @param array $params
+	*
+	*	$function = function($val, $key, $params){
+	*		$val - значение свойства, 
+	*		$key - ключ свойства, 
+	*		$params - массив $params
+	*		return bool
+	*	}
+	* 
+	*/
+	function filter($filter, array $params = array()){		
+		if(!$this->count()) return new Iterator;
+		$copy_iter = $this->getArrayCopy();
+
+		// iter to Iterator
+		foreach ($copy_iter as $line => $model) {
+			
+			$data = $model->getData();
+			// iter to prop in model
+			foreach ($data as $key => $value) {
+				// iter to filter
+				if($filter($value, $key, $params) === false){
+					unset($copy_iter[$line]);
+				}				
+			}
+		}
+		return new Iterator($copy_iter);
+	}
+
+	/**
+	* filterRelations возвращяет отфильтрованный Iterator
+	* фильтруются связанные модели
 	*
 	* @param function $filter
 	* @param array $params
@@ -51,24 +86,58 @@ class Iterator extends \ArrayObject{
 	*		return bool
 	*	}
 	*/
-	function filter($filter, array $params = array()){		
-		if(!$this->count()) return array();
+	function filterRelations($filter, array $params = array()){
+		if(!$this->count()) return new Iterator;
 		$copy_iter = $this->getArrayCopy();
 
-		// iter to Iterator
 		foreach ($copy_iter as $line => $model) {
-			
-			$data = $model->getData();
-			// iter to prop in model
-			foreach ($data as $key => $value) {
-				// iter to filter
-				if(!$filter($value, $key, $params)){
+			$relations = $model->getRelations();
+
+			foreach($relations as $key => $rel_model){
+				if($filter($rel_model, $key, $params) === false){
 					unset($copy_iter[$line]);
-				}				
-			}
+				}
+			}			
 		}
 		return new Iterator($copy_iter);
 	}
 
-	
+	/**
+	* walk применяет произвольную функцию ко всем элементам Iterator
+	*
+	* @param function $function
+	* @param array $params
+	*
+	*	$function = function($model, $params){
+	*		$model - модель, 
+	*		$params - массив $params
+	*	}
+	*/
+	function walk($function, array $params = array()){
+		if(!$this->count()) return new Iterator;
+		$copy_iter = $this->getArrayCopy();
+
+		foreach ($copy_iter as $line => $model) {
+			$function($model, $params);
+		}
+		$copy_iter = array_filter($copy_iter);
+		return new Iterator($copy_iter);
+	}
+
+	/**
+	* walk применяет произвольную функцию ко всем элементам Iterator
+	*
+	* @param function $function
+	* @param array $params
+	*
+	*	$function = function($model, $params){
+	*		$model - модель, 
+	*		$params - массив $params
+	*	}
+	*/
+	function merge(\Gallant\ar\Iterator $Iterator){
+		foreach ($Iterator as $value) {
+			$this->append($value);
+		}
+	}
 }
