@@ -16,20 +16,23 @@ class File{
 	public $file = false;
 	public $ext = false;
 	public $path = false;
+	public $src = false;
 
 	function __construct($file){
 		if(is_file($file)){
 			$pars = pathinfo($file);
-			$this->folder = $pars['dirname'];
+			$this->folder = $pars['dirname'].'/';
 			$this->file = $pars['basename'];
 			$this->ext = $pars['extension'];
 			$this->path = $file;
+			$this->src = substr($this->path, strlen(FOLDER_ROOT));
 		}
 	}
 
 	static function load($load, $new_file){
 
-		$ext = basename($load['name']);
+		$file = pathinfo($load['name']);
+		$ext = $file['extension'];
 		$new_file = str_replace('%ext%', $ext, $new_file);
 		self::dir($new_file);
 
@@ -72,7 +75,7 @@ class File{
 	}
 
 	function size(){
-
+		return filesize($this->path);
 	}
 
 	function info(){

@@ -120,7 +120,7 @@ class DBProviderMysql{
 		}
 		
 
-		if(!$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC)){
+		if(!$result = $pdo_query->rowCount()){
 			return false;
 		}else{
 			$this->report[$this->count] = $sql;

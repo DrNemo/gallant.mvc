@@ -301,7 +301,7 @@ class Builder{
 		$query->table($model::table());
 
 		$data = array_intersect_key($this->data_update, $this->data);
-		p($data, $this->data_update, $this->data);
+		//p($data, $this->data_update, $this->data);
 		if(!$data){
 			return false;
 		}
@@ -385,6 +385,22 @@ class Builder{
 	*	false - ошибка
 	*/
 	function delete($delete_as = false){
+		$model = self::className();
 
+		$query = new arQuery($model::provider());
+		$query->table($model::table());
+
+		$pks = $model::primaryKey();
+		if(!is_array($pks)) $pks = array($pks);
+
+		$where = "";
+		$attr = array();
+		foreach ($pks as $pk) {
+			if(strlen($where)) $where .= " AND ";
+			$where .= "$pk = :$pk";
+			$attr[":$pk"] = $this->$pk;
+		}
+		$result = $query->where($where)->attr($attr)->delete();
+		return $result;
 	}
 }
