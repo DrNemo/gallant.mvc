@@ -12,20 +12,24 @@
 namespace Gallant\Components;
 
 class Entry{
+	/**
+	* init
+	* Это событие вызывается после инициализации фреймворка 
+	* Используйте для дополнительной логики, например управление доступом
+	*/
+	static function init(){}
 
-	static function init(){
-		return false;
-	}
+	/**
+	* render
+	* Это событие вызывается перед выводом результата
+	* Используйте при необходимости изменить результаты вывода
+	*/
+	static function render(){}
 
-	static function load(){
-		return false;
-	}
-
-	static function render(){
-		return false;
-	}
-
-	static function destroy(){
-		return false;
-	}
+	/**
+	* destroy
+	* Это событие вызывается перед завершением 
+	* Используйте для коректного завершения ваших компонентов
+	*/
+	static function destroy(){}
 }

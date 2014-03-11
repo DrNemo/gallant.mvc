@@ -10,6 +10,6 @@
 */
 
 namespace Gallant\Exceptions;
-class CoreException extends \Exception{
+class CoreException extends GException{
 	
 }

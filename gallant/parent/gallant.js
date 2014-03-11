@@ -10,15 +10,6 @@
 */
 
 var Gallant = {
-	init : function(){
-
-	},
-
-	
-	link : function(url){
-		
-	},
-
 	ref : function(url){
 		if(!url) return document.location.href;
 		else{
@@ -38,7 +29,8 @@ Gallant.Ajax = function(url){
 		return this;
 	}
 	this.send = function(callback){
-		console.log(this._url, this._param);
+		var url = this._url
+		console.log(url, this._param);
 		$.ajax({
 			type: "POST",
 			cache: false,
@@ -46,21 +38,12 @@ Gallant.Ajax = function(url){
 			data: this._param,
 			dataType: 'json',
 			success: function(msg){
-				console.log(msg);
+				console.log(url, msg);
 				if(callback) callback(msg['result']);
 			},
 			error: function(e1, e2, e3){
 				console.log(e1, e2, e3)
 			}
 		});
-	}
-}
-
-Gallant.Lang = {
-	_data : {},
-	_lang : false,
-
-	getWord : function(key){
-		return 'LANG:' + this._lang + ':' + key;
 	}
 }

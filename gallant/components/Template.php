@@ -9,50 +9,50 @@
 */
 
 namespace Gallant\Components;
-use \G as G;
+
+use \G;
+use \Gallant\Exceptions\CoreException;
+use \Gallant\GConst;
+
 
 class Template{
 	private $skin = false;
 	private $main = false;
 
 	private $folder_template;
-	private $folder_template_html;
+	private $folder_template_http;
 
 	private $chaster = 'utf-8';
 
-	public $content = '';
+	private $content_controller = '';
+	private $content_page = '';
+
+	private $gzip = false;
+	private $htmlcompress = false;
 
 	public $folder;
 
-	public $helper;
-
 	function __construct(){
+		ob_start();
 		$design = G::getConfig('site');
 		$this->chaster = $design['chaster'];
-		$this->helper = new \Gallant\Helpers\HtmlHelper;
 
 		header("Content-Encoding: ".$this->chaster);
 		header("Content-Type: text/html; charset=".$this->chaster);
 
-		header("Content-language: ".G::lang()->getLang());
+		header("Content-language: ".$design['lang']);
+
+		$this->gzip = $design['gzip'];
+		$this->htmlcompress = $design['htmlcompress'];
 		
 		$this->setSkin($design['skin']);
-		$this->setMain($design['main']);		
-
-		ob_start();
-	}
-
-	function html(){
-		return $this->helper;
+		$this->setMain($design['main']);
 	}
 
 	function setSkin($skin){
 		$folders = G::getPath('template');
-		if(!$folders){
-			throw new \Gallant\Exceptions\CoreException('error template not folder template');
-		}
+		$templ = false;
 		if(is_array($folders)){
-			$templ = false;
 			foreach ($folders as $folder) {
 				if(is_dir($folder.$skin)){
 					$templ = $folder;
@@ -63,24 +63,27 @@ class Template{
 			$templ = $folders;
 		}
 		if(!$templ){
-			throw new \Gallant\Exceptions\CoreException('error template not folder template');
+			throw new CoreException('error template not folder template');
+		}else if(!is_dir($templ.$skin)){
+			throw new CoreException('error template skin folder: '.$skin);
 		}
 
 		$this->folder_template = $templ;
-		$this->folder_template_html = str_replace('\\', '/', substr($templ, strlen(SITE_ROOT)));
 
-		if(!is_dir($this->folder_template.$skin)){
-			throw new \Gallant\Exceptions\CoreException('error template skin folder: '.$skin);
+		$http_path = substr($templ, strlen(FOLDER_ROOT));
+		if(DIRECTORY_SEPARATOR == '\\'){
+			$http_path = str_replace(DIRECTORY_SEPARATOR, '/', $http_path);
 		}
 
+		$this->folder_template_http = $http_path;
 		$this->skin = $skin;
 
 		$this->folder = array(
-			'skin' => $this->folder_template_html.$this->skin.'/',
-			'js' => $this->folder_template_html.$this->skin.'/js/',
-			'images' => $this->folder_template_html.$this->skin.'/images/',
-			'css' => $this->folder_template_html.$this->skin.'/style/',
-			);		
+			'skin' => $this->folder_template_http.$this->skin.'/',
+			'js' => $this->folder_template_http.$this->skin.'/js/',
+			'images' => $this->folder_template_http.$this->skin.'/images/',
+			'css' => $this->folder_template_http.$this->skin.'/css/',
+			);
 	}
 
 	function getSkin(){
@@ -88,9 +91,9 @@ class Template{
 	}
 
 	function setMain($main){
-		$file = $this->folder_template.$this->skin.'/'.$main.'.php';
+		$file = $this->folder_template.$this->skin.DIRECTORY_SEPARATOR.$main;
 		if(!is_file($file)){
-			throw new \Gallant\Exceptions\CoreException('error template main: '.$this->skin.'/'.$main.'.php');
+			throw new CoreException('error template main: '.$this->skin.DIRECTORY_SEPARATOR.$main);
 		}
 		$this->main = $main;
 	}
@@ -99,62 +102,81 @@ class Template{
 		return $this->main;
 	}
 
-	function tpl($file, $Result = array()){
+	function tpl($file = false, $Result = array()){
 		$Result = (object)$Result;
-		if(!is_file($this->folder_template.$this->skin.'/control/'.$file.'.php')){
-			echo 'not file tpl: '.$file;
-		}else{
-			include $this->folder_template.$this->skin.'/control/'.$file.'.php';
+		if($file){
+			if(!is_file($this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php')){
+				echo 'not file tpl: '.$file;
+			}else{
+				include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php';
+			}
 		}
-		$this->content .= ob_get_clean();
+		$this->content_controller = ob_get_clean();
+		return $this->content_controller;
+	}
+
+	function layer($file, $Result = array()){
 		ob_start();
+		$Result = (object)$Result;
+		if(!is_file($this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'layer' . DIRECTORY_SEPARATOR . $file . '.php')){
+			echo '<div>not file layer: '.$file.'</div>';
+		}else{			
+			include $this->folder_template.$this->skin. DIRECTORY_SEPARATOR . 'layer' . DIRECTORY_SEPARATOR . $file.'.php';			
+		}
+		$content = ob_get_clean();
+		return $content;
 	}
 
 	function render($result = false){
-		if(!G::isAjax()){
-			$this->content .= ob_get_clean();
-			ob_start();
-			include $this->folder_template.$this->skin.'/'.$this->main.'.php';
-			$content = ob_get_clean();
+		ob_clean();
+		ob_start();
 
-			if(!is_file($this->folder_template.$this->skin.'/head.php')){
-				throw new \Gallant\Exceptions\CoreException('error template head in skin: '.$this->skin);
-			}
-			
+		if(!G::isAjax()){
+			include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . $this->main;
+			$this->content_page = ob_get_clean();
 			ob_start();
-			include $this->folder_template.$this->skin.'/head.php';
-			// compres
-			$content = $this->htmlcompress(ob_get_clean());
-			// gzip
-			ob_start('ob_gzhandler');
-			echo $content;
+
+			include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'head.php';
+		
+			$content = ob_get_clean();
+			if($this->htmlcompress){
+				$content = $this->htmlcompress($content);
+			}			
 		}else{
-			$this->content .= ob_get_clean();
+			$content = $this->getContentController();
+			if($this->htmlcompress){
+				$content = $this->htmlcompress($content);
+			}
 			$return = array(
 				'code' => 200,
 				'result' => array(
 					'data' => $result,
-					'content' => $this->content
+					'content' => $content
 					)
 				);
-			echo json_encode($return);
+			$content = json_encode($return);
 		}
+
+		if($this->gzip){
+			ob_start('ob_gzhandler');
+		}
+		echo $content;
 	}
 
-	function layer($file, $Result = array()){
-		$Result = (object)$Result;
-		if(!is_file($this->folder_template.$this->skin.'/layer/'.$file.'.php')){
-			echo '<div>not file layer: '.$file.'</div>';
-		}else{
-			include $this->folder_template.$this->skin.'/layer/'.$file.'.php';
-		}
+	
+	function getContentController(){
+		return $this->content_controller;
+	}
+
+	function getContentPage(){
+		return $this->content_page;
 	}
 
 	private $file_js = array();
 	function setJs(){
 		$files = func_get_args();		
 		if(is_array($files[0])) $files = $files[0];
-		$this->file_js = array_merge($this->file_js, $files);
+		$this->file_js = array_merge($files, $this->file_js);
 	}
 
 	function includeJs(){
@@ -241,17 +263,16 @@ class Template{
 			if(!is_dir(FOLDER_ROOT.'/cache/js')){
 				mkdir(FOLDER_ROOT.'/cache/js', 0755);
 			}
-			if(!is_file(GALLANT_CORE.\Gallant\GConst::GALLANT_JS_PARENT)){
-				throw new \Gallant\Exceptions\CoreException('error GALLANT_JS_PARENT');
+			if(!is_file(GALLANT_CORE.GConst::GALLANT_JS_PARENT)){
+				throw new CoreException('error GALLANT_JS_PARENT');
 			}
-			copy(GALLANT_CORE.\Gallant\GConst::GALLANT_JS_PARENT, FOLDER_ROOT.'/cache/js/gallant.js');
+			copy(GALLANT_CORE.GConst::GALLANT_JS_PARENT, FOLDER_ROOT.'/cache/js/gallant.js');
 			chmod(FOLDER_ROOT.'/cache/js/gallant.js', 0755);
 		}
 		return '<script src="/cache/js/gallant.js" type="text/javascript"></script>';
 	}
 
-	private function htmlcompress($html) {
-		//return $html;
+	private function htmlcompress($html){
 		$tag_ignory = array('textarea','pre');
 		preg_match_all('!([^<]+)!',$html,$pre);
 		$html = preg_replace('![^<]+!', '#pre#', $html);
@@ -265,5 +286,15 @@ class Template{
 			$html = preg_replace('!#pre#!', $tag, $html, 1);
 		}
 		return $html;
+	}
+
+	public function widget($name, $data = NULL){
+		$widget = ucfirst(strtolower($name));
+		$widget_class = '\Gallant\Widgets\\'.$widget.'\\Widget'.$widget;
+		if(!class_exists($widget_class)){
+			throw new CoreException("not found widget: $widget ($widget_class)");
+		}
+		$widget = new $widget_class($name, $data);
+		return $widget;
 	}
 }

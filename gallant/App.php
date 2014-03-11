@@ -9,6 +9,12 @@
 * @version 1.0
 */
 
+use \Gallant\DB\SqlQuery;
+use \Gallant\GConst;
+use \Gallant\Exceptions\CoreException;
+use \Gallant\Components\Template;
+use \Gallant\Components\Route;
+
 class G{
 	private function __construct(){}
 	private function __clone(){}
@@ -22,13 +28,18 @@ class G{
 
 	private static $template = false;
 	private static $_route = false;
-	private static $helper_lang = false;
 
 	private static $system_path = false;
 
 	private static $_domen = false;
 
 	public static $filter = array();
+
+	private static $registr = array();
+
+	private static $DBprovider = array();
+
+	private static $error = array();
 	
 	/**
 	* G::version
@@ -36,7 +47,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.0.8 pre-alfa";
+		return "0.1.0 alfa";
 	}
 	
 	/**
@@ -57,39 +68,34 @@ class G{
 
 		self::$request = array('post' => $_POST, 'get' => $_GET, 'files' => $_FILES);
 
-		$def_config = include GALLANT_CORE.\Gallant\GConst::DEFAULT_CONFIG;
+		$def_config = include GALLANT_CORE.GConst::DEFAULT_CONFIG;
 		if(!is_array($def_config)){
-			$_path = \Gallant\GConst::DEFAULT_CONFIG;
-			throw new \Gallant\Exceptions\CoreException('not default config file '.$_path);
+			$_path = GConst::DEFAULT_CONFIG;
+			throw new CoreException('not default config file '.$_path, 10);
 		}
 		if(!is_file($config_file)){
-			throw new \Gallant\Exceptions\CoreException('not config file');
+			throw new CoreException('not config file', 11);
 		}
 		$app_config = include $config_file;
 		if(!is_array($app_config)){
-			throw new \Gallant\Exceptions\CoreException('error data config file');
+			throw new CoreException('error data config file', 12);
 		}
 		
 		self::$config = array_replace_recursive($def_config, $app_config);
-
-		self::$helper_lang = new \Gallant\Helpers\Lang(self::$config['site']['lang']);
 		
-		self::$template = new \Gallant\Components\Template();
+		self::$template = new Template();
 
-		self::$_route = new \Gallant\Components\Route();	
+		self::$_route = new Route();
 
+		self::$_route->route();	
+
+		G::includeComponent('array_column.php');
+		
 		$entry = false;
 		if(class_exists('Entry')){
 			Entry::init();
 			$entry = true;
 		}
-
-		self::$_route->route();	
-
-		if($entry){
-			Entry::load();
-		}
-
 
 		$control = self::getControl();
 		$action = self::getAction();
@@ -130,15 +136,6 @@ class G{
 	}
 
 	/**
-	* lang
-	* 
-	* @return object Gallant\Helpers\Lang
-	*/
-	public static function lang(){
-		return self::$helper_lang;
-	}
-
-	/**
 	* getConfig
 	* 
 	* @param string $key ключ конфига
@@ -150,8 +147,6 @@ class G{
 		}
 		return false;
 	}
-
-	private static $registr = array();
 
 	/**
 	* set
@@ -197,14 +192,13 @@ class G{
 			$config_path = self::getConfig('path');
 
 			$path_param = array(
-				'%site%' => FOLDER_ROOT,
-				'%root%' => SITE_ROOT,
+				'%site%' => FOLDER_SITE,
+				'%root%' => FOLDER_ROOT,
 				);
-			
-			$not_array = array('site', 'lang', 'entry');
+			$not_array = array('site', 'entry');
 			foreach($config_path as $key => $value) {
 				if(in_array($key, $not_array) && is_array($value)){
-					throw new \Gallant\Exceptions\CoreException('Config (path=>'.$key.'): can not be an array');
+					throw new CoreException('Config (path=>'.$key.'): can not be an array');
 				}
 				$path[$key] = str_replace(array_keys($path_param), array_values($path_param), $value);
 			}
@@ -212,12 +206,12 @@ class G{
 				if(is_array($v)){
 					array_walk($v, $f, $f);
 				}else{
-					if($v[strlen($v) - 1] != '/' && substr($v, -4) != '.php') $v = $v.'/';
+					if($v[strlen($v) - 1] != DIRECTORY_SEPARATOR && substr($v, -4) != '.php') $v = $v.DIRECTORY_SEPARATOR;
 				}
 			};
 			array_walk($path, $f, $f);
 			self::$system_path = $path;
-		}		
+		}
 		if(isset(self::$system_path[$path_key])){
 			return self::$system_path[$path_key];
 		}
@@ -243,24 +237,29 @@ class G{
 	* @param string $filter тип фильтра
 	* @return mixed
 	*/
-	public static function getRequest($type, $key, $filter = 'html'){
+	public static function getRequest($type, $key = false, $filter = 'html'){
 		$type = strtolower($type);
 		if($type != 'post' && $type != 'get' && $type != 'files'){
-			throw new \Gallant\Exceptions\CoreException('error type Request in function G::getRequest($type, $key, $filter)');
+			throw new CoreException('error type Request in function G::getRequest($type, $key, $filter)');
 		}
-		if(isset(self::$request[$type][$key])){
-			$req = array(self::$request[$type][$key]);
-			if($filter && isset(self::$filter[$filter])){
-				array_walk($req, self::$filter[$filter], self::$filter[$filter]);
+		if(!$key){
+			$param = self::$request[$type];
+		}else if(isset(self::$request[$type][$key])){
+			if(!self::$request[$type][$key]){
+				$param = true;
+			}else{
+				$param = self::$request[$type][$key];
 			}
-			if(!$req[0]) return true;
-			return $req[0];
 		}
-		return false;
+
+		if($param && is_array($param) && $filter && isset(self::$filter[$filter])){
+			array_walk($param, self::$filter[$filter], self::$filter[$filter]);
+		}
+		return $param;
 	}
 
 	/**
-	* getRequest
+	* getSession
 	* 
 	* @param string $key ключ сессии
 	* @return mixed
@@ -356,8 +355,6 @@ class G{
 		return self::$_route->getParam($format);
 	}
 
-	private static $DBprovider = array();
-
 	/**
 	* DB
 	*
@@ -367,14 +364,13 @@ class G{
 	*/
 	public static function DB($provider){
 		if(!isset(self::$DBprovider[$provider])){
-			//p('search init');
 			$config = G::getConfig('db');
 			if(!$config[$provider]){
-				throw new \Gallant\Exceptions\CoreException('error db config: '.$provider);
+				throw new CoreException('error db config: '.$provider);
 			}
 			$prov = '\Gallant\DB\DBProvider'.ucfirst($config[$provider]['provider']);
 			if(!class_exists($prov)){
-				throw new \Gallant\Exceptions\CoreException('We do not yet support this database: '.$provider);
+				throw new CoreException('We do not yet support this database: '.$provider);
 			}
 			self::$DBprovider[$provider] = new $prov($config[$provider]);
 		}
@@ -389,11 +385,8 @@ class G{
 	* @return new \Gallant\DB\DBQuery($provider);
 	*/
 	public static function dbQuery($provider = false){
-		$query = new \Gallant\DB\DBQuery($provider);
-		return $query;
+		return new SqlQuery($provider);
 	}
-
-	private static $error = array();
 
 	/**
 	* getError
@@ -436,8 +429,8 @@ class G{
 	* @param string $path путь к файлам от config.php path=>include
 	*/
 	public static function includeComponent($path){
-		$path_core = GALLANT_CORE.'/include/';
-		$path_site = self::getPath('include').'/';
+		$path_core = GALLANT_CORE . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR;
+		$path_site = self::getPath('include') . DIRECTORY_SEPARATOR;
 		if(is_file($path_core.$path)){
 			include_once $path_core.$path;
 			return;
@@ -445,7 +438,7 @@ class G{
 			include_once $path_site.$path;
 			return;
 		}else{
-			throw new \Gallant\Exceptions\CoreException('Error includeComponent (not file): '.$path);
+			throw new CoreException('Error includeComponent (not file): '.$path);
 		}
 	}
 
@@ -473,5 +466,30 @@ class G{
 			if(in_array('application/json', $type)) return true;
 			else return false;
 		}else return false;
+	}
+
+	/**
+	* setFlag - install flash messages
+	* 
+	* @param string - name flash messages
+	* @param mixed (default true)
+	*/
+	public static function setFlag($name_flag, $val_flag = true){
+		$_SESSION['gallant_system']['flash_messages'][$name_flag] = $val_flag;
+	}
+
+	/**
+	* getFlag - return flash messages
+	*
+	* @param string - name flash messages
+	* @return mixed (value flash messages)
+	*/
+	public static function getFlag($name){
+		if(isset($_SESSION['gallant_system']['flash_messages'][$name])){
+			$val = $_SESSION['gallant_system']['flash_messages'][$name];
+			unset($_SESSION['gallant_system']['flash_messages'][$name]);
+			return $val;
+		}
+		return false;
 	}
 }

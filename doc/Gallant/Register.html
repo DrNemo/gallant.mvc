@@ -1,364 +1,276 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class Register</title>
-			<link rel="stylesheet" href="../media/stylesheet.css" />
-						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
-		</head>
-		<body>
-			<div class="page-body">			
-<h2 class="class-name">Class Register</h2>
-
-<a name="sec-description"></a>
-<div class="info-box">
-	<div class="info-box-title">Description</div>
-	<div class="nav-bar">
-					<span class="disabled">Description</span> |
-													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-						
-					</div>
-	<div class="info-box-body">
-        		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Gallant\Ar\Register</p>
-	<ul class="tags">
-				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
-				<li><span class="field">version:</span> 1.0</li>
-				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
-			</ul>
-		<p class="notes">
-			Located in <a class="field" href="_ar---Register.php.html">/ar/Register.php</a> (line <span class="field">14</span>)
-		</p>
-		
-				
-		<pre></pre>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Register</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
 	
-			</div>
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Register
+</h2> (line <span class="linenumber">14</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_Register.php.html">/Register.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gallant\Ar\Register</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
 </div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
 
-
-
-	<a name="sec-var-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variable Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
-							| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-								</div>
-		<div class="info-box-body">
-			<div class="var-summary">
-												<div class="var-title">
-					static <span class="var-type">mixed</span>
-					<a href="#$model_pre_data" title="details" class="var-name">$model_pre_data</a>
-				</div>
-																<div class="var-title">
-					static <span class="var-type">mixed</span>
-					<a href="#$model_structure" title="details" class="var-name">$model_structure</a>
-				</div>
-																															</div>
-		</div>
-	</div>
-
-	<a name="sec-method-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Method Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-				 
-				|
-						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
-		</div>
-		<div class="info-box-body">			
-			<div class="method-summary">
-																		
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#get" title="details" class="method-name">get</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#getStructure" title="details" class="method-name">getStructure</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#set" title="details" class="method-name">set</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$pre_data</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#setStructure" title="details" class="method-name">setStructure</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$struct</span>)
-									</div>
-																										
-				<div class="method-definition">
-											<span class="method-result">Register</span>
-										<a href="#__construct" title="details" class="method-name">__construct</a>
-										()
-									</div>
-																																														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#__clone" title="details" class="method-name">__clone</a>
-										()
-									</div>
-											</div>
-		</div>
-	</div>		
-
-	<a name="sec-vars"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variables</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
-						
-			
-										| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<a name="var$model_pre_data" id="$model_pre_data"><!-- --></A>
-<div class="oddrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			static <span class="var-type">mixed</span>
-			<span class="var-name">$model_pre_data</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">18</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="var-title">
+    static <span class="var-type">mixed</span>
+    <a href="#var$model_structure" title="details" class="property"><strong>$model_structure</strong></a>
 </div>
-<a name="var$model_structure" id="$model_structure"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			static <span class="var-type">mixed</span>
-			<span class="var-name">$model_structure</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">19</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
+<hr />
+<a name="var$model_structure" id="var$model_structure"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">static $model_structure = array()</strong> (line <span class="linenumber">18</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
 </div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
 
-						
-		</div>
-	</div>
-	
-	<a name="sec-methods"></a>
-	<div class="info-box">
-		<div class="info-box-title">Methods</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
-						
-		</div>
-		<div class="info-box-body">
-			<A NAME='method_detail'></A>
-<a name="methodget" id="get"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static get</span> (line <span class="line-number">25</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			get
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$model</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetStructure" id="getStructure"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getStructure</span> (line <span class="line-number">36</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			getStructure
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$model</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodset" id="set"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static set</span> (line <span class="line-number">21</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			set
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$pre_data</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$model</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$pre_data</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsetStructure" id="setStructure"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static setStructure</span> (line <span class="line-number">32</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			setStructure
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$struct</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$model</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$struct</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="method__construct" id="__construct"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">15</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">Register</span>
-		<span class="method-name">
-			__construct
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="method__clone" id="__clone"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">__clone</span> (line <span class="line-number">16</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			__clone
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-						
-		</div>
-	</div>
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodgetStructure" title="details" class="method-name">getStructure</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodsetStructure" title="details" class="method-name">setStructure</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$model</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$struct</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Register</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#method__clone" title="details" class="method-name">__clone</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
 
 
-	<p class="notes" id="credit">
-		Documentation generated on Sat, 02 Nov 2013 05:36:35 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
-	</p>
-	</div></body>
+<a name="methodgetStructure" id="methodgetStructure"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getStructure</strong> (line <span class="linenumber">24</span>)
+ </h4> 
+<h4><i>void</i> <strong>getStructure(
+
+$model)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $model</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetStructure" id="methodsetStructure"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setStructure</strong> (line <span class="linenumber">20</span>)
+ </h4> 
+<h4><i>void</i> <strong>setStructure(
+
+$model, 
+$struct)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $model</strong>: </li>
+			<li><strong> $struct</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">15</span>)
+ </h4> 
+<h4><i>Register</i> <strong>__construct(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - protected</li>
+		</ul>
+</div>
+<a name="method__clone" id="method__clone"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method __clone</strong> (line <span class="linenumber">16</span>)
+ </h4> 
+<h4><i>void</i> <strong>__clone(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - protected</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:59 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
 </html>

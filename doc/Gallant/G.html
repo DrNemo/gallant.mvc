@@ -1,1103 +1,899 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class G</title>
-			<link rel="stylesheet" href="../media/stylesheet.css" />
-						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
-		</head>
-		<body>
-			<div class="page-body">			
-<h2 class="class-name">Class G</h2>
-
-<a name="sec-description"></a>
-<div class="info-box">
-	<div class="info-box-title">Description</div>
-	<div class="nav-bar">
-					<span class="disabled">Description</span> |
-													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-						
-					</div>
-	<div class="info-box-body">
-        		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">G</p>
-	<ul class="tags">
-				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
-				<li><span class="field">version:</span> 1.0</li>
-				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
-			</ul>
-		<p class="notes">
-			Located in <a class="field" href="_App.php.html">/App.php</a> (line <span class="field">12</span>)
-		</p>
-		
-				
-		<pre></pre>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class G</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
 	
-			</div>
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class G
+</h2> (line <span class="linenumber">18</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_.html">/D:/WebServers/home/mvc/www/gallant/App.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>G</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
 </div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
 
-
-
-	<a name="sec-var-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variable Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
-							| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-								</div>
-		<div class="info-box-body">
-			<div class="var-summary">
-												<div class="var-title">
-					static <span class="var-type">mixed</span>
-					<a href="#$filter" title="details" class="var-name">$filter</a>
-				</div>
-																							</div>
-		</div>
-	</div>
-
-	<a name="sec-method-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Method Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-				 
-				|
-						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
-		</div>
-		<div class="info-box-body">			
-			<div class="method-summary">
-										
-				<div class="method-definition">
-					static 						<span class="method-result">Gallant\DB\DBProvider(Mysql/../..)</span>
-										<a href="#DB" title="details" class="method-name">DB</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">new</span>
-										<a href="#dbQuery" title="details" class="method-name">dbQuery</a>
-											([<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#get" title="details" class="method-name">get</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">string</span>
-										<a href="#getAction" title="details" class="method-name">getAction</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#getConfig" title="details" class="method-name">getConfig</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">string</span>
-										<a href="#getControl" title="details" class="method-name">getControl</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">string</span>
-										<a href="#getDomen" title="details" class="method-name">getDomen</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#getError" title="details" class="method-name">getError</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">array</span>
-										<a href="#getErrorKeys" title="details" class="method-name">getErrorKeys</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">array</span>
-										<a href="#getParam" title="details" class="method-name">getParam</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#getPath" title="details" class="method-name">getPath</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path_key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#getRequest" title="details" class="method-name">getRequest</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$filter</span> = <span class="var-default">'html'</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#getSession" title="details" class="method-name">getSession</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#includeComponent" title="details" class="method-name">includeComponent</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#init" title="details" class="method-name">init</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$config_file</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">boolean</span>
-										<a href="#isAjax" title="details" class="method-name">isAjax</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">boolean</span>
-										<a href="#isRequest" title="details" class="method-name">isRequest</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">object Gallant\Helpers\Lang</span>
-										<a href="#lang" title="details" class="method-name">lang</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#ref" title="details" class="method-name">ref</a>
-											([<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#removeSession" title="details" class="method-name">removeSession</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">object Gallant\Components\Template</span>
-										<a href="#route" title="details" class="method-name">route</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#set" title="details" class="method-name">set</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$val</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#setAction" title="details" class="method-name">setAction</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$action</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">void</span>
-										<a href="#setControl" title="details" class="method-name">setControl</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$control</span>)
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">mixed</span>
-										<a href="#setError" title="details" class="method-name">setError</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$val</span> = <span class="var-default">true</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">boolean</span>
-										<a href="#setSession" title="details" class="method-name">setSession</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$close</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">object Gallant\Components\Template</span>
-										<a href="#template" title="details" class="method-name">template</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result">string</span>
-										<a href="#version" title="details" class="method-name">version</a>
-										()
-									</div>
-																																																																																																																																																																																																																																															</div>
-		</div>
-	</div>		
-
-	<a name="sec-vars"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variables</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
-						
-			
-										| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<a name="var$filter" id="$filter"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			static <span class="var-type">mixed</span>
-			<span class="var-name">$filter</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">31</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	
-		
-		
-
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="var-title">
+    static <span class="var-type">mixed</span>
+    <a href="#var$filter" title="details" class="property"><strong>$filter</strong></a>
 </div>
+<hr />
+<a name="var$filter" id="var$filter"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">static $filter = array()</strong> (line <span class="linenumber">36</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
 
-						
-		</div>
-	</div>
-	
-	<a name="sec-methods"></a>
-	<div class="info-box">
-		<div class="info-box-title">Methods</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
-						
-		</div>
-		<div class="info-box-body">
-			<A NAME='method_detail'></A>
-<a name="methodDB" id="DB"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static DB</span> (line <span class="line-number">368</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">DB</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">Gallant\DB\DBProvider(Mysql/../..)</span>
-		<span class="method-name">
-			DB
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$provider</span><span class="var-description">: ключ БД настроек из файла config.php</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methoddbQuery" id="dbQuery"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static dbQuery</span> (line <span class="line-number">391</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">dbQuery</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> \Gallant\DB\DBQuery($provider);</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">new</span>
-		<span class="method-name">
-			dbQuery
-		</span>
-					([<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$provider</span><span class="var-description">: ключ БД настроек из файла config.php</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodget" id="get"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static get</span> (line <span class="line-number">172</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">get</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			get
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: произвольный ключ указанный в G::set</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetAction" id="getAction"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getAction</span> (line <span class="line-number">344</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getAction</p>
-<p class="description"><p>Возвращение текущего экшена</p></p>
-	<ul class="tags">
-				<li><span class="field">return:</span> имя контроллера</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">string</span>
-		<span class="method-name">
-			getAction
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodgetConfig" id="getConfig"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getConfig</span> (line <span class="line-number">147</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getConfig</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			getConfig
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ конфига</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetControl" id="getControl"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getControl</span> (line <span class="line-number">322</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">setControl</p>
-<p class="description"><p>Возвращение текущего контроллера</p></p>
-	<ul class="tags">
-				<li><span class="field">return:</span> имя контроллера</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">string</span>
-		<span class="method-name">
-			getControl
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodgetDomen" id="getDomen"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getDomen</span> (line <span class="line-number">185</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getDomen</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> domen name</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">string</span>
-		<span class="method-name">
-			getDomen
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodgetError" id="getError"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getError</span> (line <span class="line-number">405</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getError</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			getError
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ ошибки</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetErrorKeys" id="getErrorKeys"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getErrorKeys</span> (line <span class="line-number">428</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getErrorKeys</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> - массив всех зарегестрированных ошибок</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">array</span>
-		<span class="method-name">
-			getErrorKeys
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodgetParam" id="getParam"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getParam</span> (line <span class="line-number">355</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getParam</p>
-<p class="description"><p>Возвращяет параметры на основе фильтра</p></p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">array</span>
-		<span class="method-name">
-			getParam
-		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$format</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetPath" id="getPath"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getPath</span> (line <span class="line-number">195</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getPath</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			getPath
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path_key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$path_key</span><span class="var-description">: произвольный ключ указанный в config.php в разделе path</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetRequest" id="getRequest"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getRequest</span> (line <span class="line-number">246</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getRequest</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			getRequest
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$filter</span> = <span class="var-default">'html'</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$type</span><span class="var-description">: тип запроса (get, post)</span>			</li>
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: имя парметра: $_POST['my_key'] =&gt; $key = my_key</span>			</li>
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$filter</span><span class="var-description">: тип фильтра</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodgetSession" id="getSession"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static getSession</span> (line <span class="line-number">268</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getRequest</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			getSession
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ сессии</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodincludeComponent" id="includeComponent"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static includeComponent</span> (line <span class="line-number">438</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">includeComponent</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			includeComponent
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$path</span><span class="var-description">: путь к файлам от config.php path=&gt;include</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodinit" id="init"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static init</span> (line <span class="line-number">47</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">G::init</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			init
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$config_file</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$config_file</span><span class="var-description">: путь к файлу конфига</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodisAjax" id="isAjax"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static isAjax</span> (line <span class="line-number">470</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">isAjax</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">boolean</span>
-		<span class="method-name">
-			isAjax
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodisRequest" id="isRequest"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static isRequest</span> (line <span class="line-number">233</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">getPath</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">boolean</span>
-		<span class="method-name">
-			isRequest
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$type</span><span class="var-description">: тип запроса (get, post)</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodlang" id="lang"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static lang</span> (line <span class="line-number">137</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">lang</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">object Gallant\Helpers\Lang</span>
-		<span class="method-name">
-			lang
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodref" id="ref"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static ref</span> (line <span class="line-number">457</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">ref</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			ref
-		</span>
-					([<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$url</span><span class="var-description">: адрес редиректа</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodremoveSession" id="removeSession"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static removeSession</span> (line <span class="line-number">299</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">removeSession</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			removeSession
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ сессии</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodroute" id="route"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static route</span> (line <span class="line-number">119</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">route</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">object Gallant\Components\Template</span>
-		<span class="method-name">
-			route
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodset" id="set"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static set</span> (line <span class="line-number">162</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">set</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			set
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$val</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: произвольный ключ</span>			</li>
-					<li>
-				<span class="var-type">mixed</span>
-				<span class="var-name">$val</span><span class="var-description">: произвольное значение</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsetAction" id="setAction"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static setAction</span> (line <span class="line-number">333</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">setAction</p>
-<p class="description"><p>Изменение текущего экшена</p></p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			setAction
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$action</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$action</span><span class="var-description">: имя экшена</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsetControl" id="setControl"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static setControl</span> (line <span class="line-number">311</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">setControl</p>
-<p class="description"><p>Изменение текущего контроллера</p></p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			setControl
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$control</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$control</span><span class="var-description">: имя контроллера</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsetError" id="setError"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static setError</span> (line <span class="line-number">418</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">setError</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">mixed</span>
-		<span class="method-name">
-			setError
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$val</span> = <span class="var-default">true</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ ошибки</span>			</li>
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$val</span><span class="var-description">: доп. данные об ошибке, вернет метод getError</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsetSession" id="setSession"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static setSession</span> (line <span class="line-number">283</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">setSession</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">boolean</span>
-		<span class="method-name">
-			setSession
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$close</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">string</span>
-				<span class="var-name">$key</span><span class="var-description">: ключ сессии</span>			</li>
-					<li>
-				<span class="var-type">mixed</span>
-				<span class="var-name">$value</span><span class="var-description">: значение сессии</span>			</li>
-					<li>
-				<span class="var-type">boolean</span>
-				<span class="var-name">$close</span><span class="var-description">: защита данных от перезаписи</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodtemplate" id="template"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static template</span> (line <span class="line-number">128</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">template</p>
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">object Gallant\Components\Template</span>
-		<span class="method-name">
-			template
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodversion" id="version"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static version</span> (line <span class="line-number">38</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">G::version</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> version</li>
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">string</span>
-		<span class="method-name">
-			version
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-						
-		</div>
-	</div>
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result">Gallant\DB\DBProvider(Mysql/../..)</span>
+        <a href="#methodDB" title="details" class="method-name">DB</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">new</span>
+        <a href="#methoddbQuery" title="details" class="method-name">dbQuery</a>
+        ([<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodget" title="details" class="method-name">get</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">string</span>
+        <a href="#methodgetAction" title="details" class="method-name">getAction</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetConfig" title="details" class="method-name">getConfig</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">string</span>
+        <a href="#methodgetControl" title="details" class="method-name">getControl</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">string</span>
+        <a href="#methodgetDomen" title="details" class="method-name">getDomen</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetError" title="details" class="method-name">getError</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">array</span>
+        <a href="#methodgetErrorKeys" title="details" class="method-name">getErrorKeys</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetFlag" title="details" class="method-name">getFlag</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">array</span>
+        <a href="#methodgetParam" title="details" class="method-name">getParam</a>
+        ([<span class="var-type"></span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetPath" title="details" class="method-name">getPath</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$path_key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetRequest" title="details" class="method-name">getRequest</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span> = <span class="var-default">false</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$filter</span> = <span class="var-default">'html'</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodgetSession" title="details" class="method-name">getSession</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodincludeComponent" title="details" class="method-name">includeComponent</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodinit" title="details" class="method-name">init</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$config_file</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">boolean</span>
+        <a href="#methodisAjax" title="details" class="method-name">isAjax</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">boolean</span>
+        <a href="#methodisRequest" title="details" class="method-name">isRequest</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodref" title="details" class="method-name">ref</a>
+        ([<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodremoveSession" title="details" class="method-name">removeSession</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">object Gallant\Components\Template</span>
+        <a href="#methodroute" title="details" class="method-name">route</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodset" title="details" class="method-name">set</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$val</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodsetAction" title="details" class="method-name">setAction</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$action</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodsetControl" title="details" class="method-name">setControl</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$control</span>)
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">mixed</span>
+        <a href="#methodsetError" title="details" class="method-name">setError</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$val</span> = <span class="var-default">true</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">void</span>
+        <a href="#methodsetFlag" title="details" class="method-name">setFlag</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$name_flag</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$val_flag</span> = <span class="var-default">true</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">boolean</span>
+        <a href="#methodsetSession" title="details" class="method-name">setSession</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$close</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">object Gallant\Components\Template</span>
+        <a href="#methodtemplate" title="details" class="method-name">template</a>
+        ()
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result">string</span>
+        <a href="#methodversion" title="details" class="method-name">version</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
 
 
-	<p class="notes" id="credit">
-		Documentation generated on Sat, 02 Nov 2013 05:36:32 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
-	</p>
-	</div></body>
+<a name="methodDB" id="methodDB"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method DB</strong> (line <span class="linenumber">365</span>)
+ </h4> 
+<h4><i>Gallant\DB\DBProvider(Mysql/../..)</i> <strong>DB(
+string
+$provider)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>DB</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $provider</strong>: ключ БД настроек из файла config.php</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methoddbQuery" id="methoddbQuery"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method dbQuery</strong> (line <span class="linenumber">387</span>)
+ </h4> 
+<h4><i>new</i> <strong>dbQuery(
+[string
+$provider = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>dbQuery</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $provider</strong>: ключ БД настроек из файла config.php</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - \Gallant\DB\DBQuery($provider);</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodget" id="methodget"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method get</strong> (line <span class="linenumber">167</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>get(
+string
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>get</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: произвольный ключ указанный в G::set</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetAction" id="methodgetAction"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getAction</strong> (line <span class="linenumber">343</span>)
+ </h4> 
+<h4><i>string</i> <strong>getAction(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getAction</h5>
+<div class="desc"><p>Возвращение текущего экшена</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - имя контроллера</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetConfig" id="methodgetConfig"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getConfig</strong> (line <span class="linenumber">144</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getConfig(
+string
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getConfig</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ конфига</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetControl" id="methodgetControl"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getControl</strong> (line <span class="linenumber">321</span>)
+ </h4> 
+<h4><i>string</i> <strong>getControl(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setControl</h5>
+<div class="desc"><p>Возвращение текущего контроллера</p></div>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - имя контроллера</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetDomen" id="methodgetDomen"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getDomen</strong> (line <span class="linenumber">180</span>)
+ </h4> 
+<h4><i>string</i> <strong>getDomen(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getDomen</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - domen name</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetError" id="methodgetError"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getError</strong> (line <span class="linenumber">398</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getError(
+string
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getError</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ ошибки</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetErrorKeys" id="methodgetErrorKeys"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getErrorKeys</strong> (line <span class="linenumber">421</span>)
+ </h4> 
+<h4><i>array</i> <strong>getErrorKeys(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getErrorKeys</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - - массив всех зарегестрированных ошибок</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetFlag" id="methodgetFlag"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getFlag</strong> (line <span class="linenumber">487</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getFlag(
+string
+$name)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getFlag - return flash messages</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name</strong>: - name flash messages</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - (value flash messages)</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetParam" id="methodgetParam"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getParam</strong> (line <span class="linenumber">354</span>)
+ </h4> 
+<h4><i>array</i> <strong>getParam(
+[
+$format = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getParam</h5>
+<div class="desc"><p>Возвращяет параметры на основе фильтра</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $format</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetPath" id="methodgetPath"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getPath</strong> (line <span class="linenumber">190</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getPath(
+string
+$path_key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getPath</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $path_key</strong>: произвольный ключ указанный в config.php в разделе path</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetRequest" id="methodgetRequest"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getRequest</strong> (line <span class="linenumber">240</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getRequest(
+string
+$type, [string
+$key = false], [string
+$filter = 'html'])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getRequest</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $type</strong>: тип запроса (get, post)</li>
+			<li><strong>string $key</strong>: имя парметра: $_POST['my_key'] =&gt; $key = my_key</li>
+			<li><strong>string $filter</strong>: тип фильтра</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodgetSession" id="methodgetSession"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method getSession</strong> (line <span class="linenumber">267</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>getSession(
+string
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getSession</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ сессии</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodincludeComponent" id="methodincludeComponent"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method includeComponent</strong> (line <span class="linenumber">431</span>)
+ </h4> 
+<h4><i>void</i> <strong>includeComponent(
+string
+$path)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>includeComponent</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $path</strong>: путь к файлам от config.php path=&gt;include</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodinit" id="methodinit"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method init</strong> (line <span class="linenumber">58</span>)
+ </h4> 
+<h4><i>void</i> <strong>init(
+string
+$config_file)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>G::init</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $config_file</strong>: путь к файлу конфига</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodisAjax" id="methodisAjax"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method isAjax</strong> (line <span class="linenumber">463</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>isAjax(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>isAjax</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodisRequest" id="methodisRequest"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method isRequest</strong> (line <span class="linenumber">227</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>isRequest(
+string
+$type)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getPath</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $type</strong>: тип запроса (get, post)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodref" id="methodref"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method ref</strong> (line <span class="linenumber">450</span>)
+ </h4> 
+<h4><i>void</i> <strong>ref(
+[string
+$url = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>ref</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $url</strong>: адрес редиректа</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodremoveSession" id="methodremoveSession"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method removeSession</strong> (line <span class="linenumber">298</span>)
+ </h4> 
+<h4><i>void</i> <strong>removeSession(
+string
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>removeSession</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ сессии</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodroute" id="methodroute"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method route</strong> (line <span class="linenumber">125</span>)
+ </h4> 
+<h4><i>object Gallant\Components\Template</i> <strong>route(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>route</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodset" id="methodset"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method set</strong> (line <span class="linenumber">157</span>)
+ </h4> 
+<h4><i>void</i> <strong>set(
+string
+$key, mixed
+$val)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>set</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: произвольный ключ</li>
+			<li><strong>mixed $val</strong>: произвольное значение</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetAction" id="methodsetAction"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setAction</strong> (line <span class="linenumber">332</span>)
+ </h4> 
+<h4><i>void</i> <strong>setAction(
+string
+$action)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setAction</h5>
+<div class="desc"><p>Изменение текущего экшена</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $action</strong>: имя экшена</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetControl" id="methodsetControl"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setControl</strong> (line <span class="linenumber">310</span>)
+ </h4> 
+<h4><i>void</i> <strong>setControl(
+string
+$control)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setControl</h5>
+<div class="desc"><p>Изменение текущего контроллера</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $control</strong>: имя контроллера</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetError" id="methodsetError"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setError</strong> (line <span class="linenumber">411</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>setError(
+string
+$key, [string
+$val = true])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setError</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ ошибки</li>
+			<li><strong>string $val</strong>: доп. данные об ошибке, вернет метод getError</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetFlag" id="methodsetFlag"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setFlag</strong> (line <span class="linenumber">477</span>)
+ </h4> 
+<h4><i>void</i> <strong>setFlag(
+string
+$name_flag, [mixed
+$val_flag = true])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setFlag - install flash messages</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $name_flag</strong>: - name flash messages</li>
+			<li><strong>mixed $val_flag</strong>: (default true)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsetSession" id="methodsetSession"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method setSession</strong> (line <span class="linenumber">282</span>)
+ </h4> 
+<h4><i>boolean</i> <strong>setSession(
+string
+$key, mixed
+$value, [boolean
+$close = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>setSession</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $key</strong>: ключ сессии</li>
+			<li><strong>mixed $value</strong>: значение сессии</li>
+			<li><strong>boolean $close</strong>: защита данных от перезаписи</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodtemplate" id="methodtemplate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method template</strong> (line <span class="linenumber">134</span>)
+ </h4> 
+<h4><i>object Gallant\Components\Template</i> <strong>template(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>template</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodversion" id="methodversion"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method version</strong> (line <span class="linenumber">49</span>)
+ </h4> 
+<h4><i>string</i> <strong>version(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>G::version</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - version</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:56 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
 </html>

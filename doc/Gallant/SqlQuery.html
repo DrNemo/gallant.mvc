@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class SqlQuery</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class SqlQuery
+</h2> (line <span class="linenumber">19</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_SqlQuery.php.html">/SqlQuery.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gallant\DB\DBQuery  Класс конструктор для sql запросов. Все обращения к БД рекамендуется выполнять через этот класс  Реализован плавучий интерфейс</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$config" title="details" class="property"><strong>$config</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$pref" title="details" class="property"><strong>$pref</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$provider" title="details" class="property"><strong>$provider</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$query" title="details" class="property"><strong>$query</strong></a>
+</div>
+<hr />
+<a name="var$config" id="var$config"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$config</strong> (line <span class="linenumber">22</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$pref" id="var$pref"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$pref =  ''</strong> (line <span class="linenumber">21</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$provider" id="var$provider"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$provider =  false</strong> (line <span class="linenumber">23</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$query" id="var$query"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$query =  false</strong> (line <span class="linenumber">20</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">SqlQuery</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        ([<span class="var-type">string</span>&nbsp;<span class="var-name">$provider</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodattr" title="details" class="method-name">attr</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$attr</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodcolumns" title="details" class="method-name">columns</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$table_as</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$pref</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixid</span>
+        <a href="#methoddelete" title="details" class="method-name">delete</a>
+        ([<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodget" title="details" class="method-name">get</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">array</span>
+        <a href="#methodgetRequest" title="details" class="method-name">getRequest</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodgroup" title="details" class="method-name">group</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$colomn</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixid</span>
+        <a href="#methodinsert" title="details" class="method-name">insert</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodjoin" title="details" class="method-name">join</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$table</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$on</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$table:</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodlimit" title="details" class="method-name">limit</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$offset</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodmerge" title="details" class="method-name">merge</a>
+        (<span class="var-type"><a href="../Gallant/SqlQuery.html">SqlQuery</a></span>&nbsp;<span class="var-name">$query</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodorder" title="details" class="method-name">order</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$colomn</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">'asc'</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodorderAsc" title="details" class="method-name">orderAsc</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$colomn</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodorderDesc" title="details" class="method-name">orderDesc</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$colomn</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodreAttr" title="details" class="method-name">reAttr</a>
+        (<span class="var-type">array</span>&nbsp;<span class="var-name">$attr</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixid</span>
+        <a href="#methodselect" title="details" class="method-name">select</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodsql" title="details" class="method-name">sql</a>
+        ([<span class="var-type"></span>&nbsp;<span class="var-name">$method</span> = <span class="var-default">'select'</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodtable" title="details" class="method-name">table</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$as</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">string</span>
+        <a href="#methodtableName" title="details" class="method-name">tableName</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixid</span>
+        <a href="#methodupdate" title="details" class="method-name">update</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">$this</span>
+        <a href="#methodwhere" title="details" class="method-name">where</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$where</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">31</span>)
+ </h4> 
+<h4><i>SqlQuery</i> <strong>__construct(
+[string
+$provider = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>__construct</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $provider</strong>: тип подключения к Базе Данных, берется и config.php раздел db,  если не указан будет выбран первый вариант</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodattr" id="methodattr"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method attr</strong> (line <span class="linenumber">221</span>)
+ </h4> 
+<h4><i>$this</i> <strong>attr(
+array
+$attr)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>attr установка отребутов запроса</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $attr</strong>: array(':col1' =&gt; $val, ':mail' =&gt; $mail, ...)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodcolumns" id="methodcolumns"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method columns</strong> (line <span class="linenumber">84</span>)
+ </h4> 
+<h4><i>$this</i> <strong>columns(
+string
+$column, string
+$table_as, string
+$pref)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>columns устанавливает колонки для выборки, если не установить будут возвращены все колонки</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $column</strong>: список колонок array('id', 'login', 'password', ...)</li>
+			<li><strong>string $table_as</strong>: </li>
+			<li><strong>string $pref</strong>: префикс для колонок</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methoddelete" id="methoddelete"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method delete</strong> (line <span class="linenumber">285</span>)
+ </h4> 
+<h4><i>mixid</i> <strong>delete(
+[
+$replice = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $replice</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - количество затронутых рядов</li>
+			<li><strong>todo</strong> - delete отправляет запрос на выполнение удаления</li>
+		</ul>
+</div>
+<a name="methodget" id="methodget"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method get</strong> (line <span class="linenumber">242</span>)
+ </h4> 
+<h4><i>void</i> <strong>get(
+
+$key)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $key</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodgetRequest" id="methodgetRequest"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method getRequest</strong> (line <span class="linenumber">95</span>)
+ </h4> 
+<h4><i>array</i> <strong>getRequest(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>getRequest возвращяет массив подготовленного запроса</h5>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodgroup" id="methodgroup"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method group</strong> (line <span class="linenumber">210</span>)
+ </h4> 
+<h4><i>$this</i> <strong>group(
+string
+$colomn)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>group</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $colomn</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodinsert" id="methodinsert"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method insert</strong> (line <span class="linenumber">265</span>)
+ </h4> 
+<h4><i>mixid</i> <strong>insert(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>insert отправляет запрос на выполнение вставки</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - первичные ключи новой записи</li>
+		</ul>
+</div>
+<a name="methodjoin" id="methodjoin"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method join</strong> (line <span class="linenumber">120</span>)
+ </h4> 
+<h4><i>$this</i> <strong>join(
+
+$table, string
+$on, mixed
+$table:)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>join добавляет  join к запросу</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixed $table:</strong>: <ol><li>array array('table_name', 'table_as')</li></ol><ol><li>string 'table_name'</li></ol></li>
+			<li><strong>string $on</strong>: условия join: t1.col1 = t2.col5 ...</li>
+			<li><strong> $table</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodlimit" id="methodlimit"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method limit</strong> (line <span class="linenumber">158</span>)
+ </h4> 
+<h4><i>$this</i> <strong>limit(
+int
+$limit, [int
+$offset = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>limit</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $limit</strong>: </li>
+			<li><strong>int $offset</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodmerge" id="methodmerge"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method merge</strong> (line <span class="linenumber">105</span>)
+ </h4> 
+<h4><i>$this</i> <strong>merge(
+<a href="../Gallant/SqlQuery.html">SqlQuery</a>
+$query)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>merge объединяет запросы в 1</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>object $query</strong>: \Gallant\DB\DBQuery подготовленный запрос</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodorder" id="methodorder"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method order</strong> (line <span class="linenumber">166</span>)
+ </h4> 
+<h4><i>void</i> <strong>order(
+
+$colomn, [
+$sort = 'asc'])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $colomn</strong>: </li>
+			<li><strong> $sort</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodorderAsc" id="methodorderAsc"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method orderAsc</strong> (line <span class="linenumber">187</span>)
+ </h4> 
+<h4><i>$this</i> <strong>orderAsc(
+string
+$colomn)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>orderAsc</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $colomn</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodorderDesc" id="methodorderDesc"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method orderDesc</strong> (line <span class="linenumber">199</span>)
+ </h4> 
+<h4><i>$this</i> <strong>orderDesc(
+string
+$colomn)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>orderDesc</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $colomn</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodreAttr" id="methodreAttr"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method reAttr</strong> (line <span class="linenumber">233</span>)
+ </h4> 
+<h4><i>$this</i> <strong>reAttr(
+array
+$attr)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>attr установка отребутов запроса</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>array $attr</strong>: array(':col1' =&gt; $val, ':mail' =&gt; $mail, ...)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodselect" id="methodselect"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method select</strong> (line <span class="linenumber">255</span>)
+ </h4> 
+<h4><i>mixid</i> <strong>select(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>select отправляет запрос на выполнение выборки</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - возвращяет результат выборки</li>
+		</ul>
+</div>
+<a name="methodsql" id="methodsql"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method sql</strong> (line <span class="linenumber">291</span>)
+ </h4> 
+<h4><i>void</i> <strong>sql(
+[
+$method = 'select'])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $method</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodtable" id="methodtable"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method table</strong> (line <span class="linenumber">59</span>)
+ </h4> 
+<h4><i>$this</i> <strong>table(
+string
+$table, [string
+$as = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>table устанавливает таблицу в запросе</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $table</strong>: название таблицы, если в начале стоит !, то к имени таблицы не будет прибавлен префикс из настроек подключения</li>
+			<li><strong>string $as</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodtableName" id="methodtableName"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method tableName</strong> (line <span class="linenumber">48</span>)
+ </h4> 
+<h4><i>string</i> <strong>tableName(
+string
+$table)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>tableName возвращяет реальное название таблицы в БД с префиксом</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $table</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodupdate" id="methodupdate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method update</strong> (line <span class="linenumber">275</span>)
+ </h4> 
+<h4><i>mixid</i> <strong>update(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>update отправляет запрос на выполнение обновления</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - количество затронутых рядов</li>
+		</ul>
+</div>
+<a name="methodwhere" id="methodwhere"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method where</strong> (line <span class="linenumber">145</span>)
+ </h4> 
+<h4><i>$this</i> <strong>where(
+string
+$where)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>where добавляет условия к запросу</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $where</strong>: условия where: col1 = :col1 AND mail = :mail</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:59 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

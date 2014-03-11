@@ -10,14 +10,18 @@
 */
 namespace Gallant\Ar;
 
+use \G;
+use \Gallant\DB\SqlQuery;
+use \Gallant\Exceptions\ArException;
+
 class Builder{
 	
 	public $_init_ = false;
 	protected $data = array();
 	protected $data_update = array();
-	protected $parent_models = array();
+	protected $children_models = array();
 
-	const MODEL_AS = 'mod0_t0';
+	//const MODEL_AS = 'mod0_t0';
 
 	const ONE_TO_ONE = 'relation::ONE_TO_ONE';
 	const ONE_TO_MANY = 'relation::ONE_TO_MANY';
@@ -27,51 +31,41 @@ class Builder{
 	const CONCET_MODEL = '::';
 
 	/**
-	* __construct отправляет запрос на выполнение выборки
+	* 
 	*/
-	function __construct($parser = false){
-		$model = self::className();
+	function __construct($data = false){
+		$model = $this->className();
+		$struct_key = array_keys($this->structure());
+		$this->data = array_combine($struct_key, array_pad(array(), sizeof($struct_key), false));
+		
+		if($data instanceof Parser){
+			$this->data = array_merge($this->data, $data->modelSelf($model));
+			$this->_init_ = true;
 
-		$colons = $model::dbStructure();		
-		$arr_key = array_keys($colons);
+			$rels = $this->relations();
+			foreach ($rels as $rel_key => $rel_opc){
+				
+				$multi = ($rel_opc['relation'] == self::ONE_TO_ONE) ? false: true;
+				$rel_model = ($rel_opc['model'][0] == '\\') ? substr($rel_opc['model'], 1) : $rel_opc['model'];
 
-		$arr_val = array_pad(array(), count($colons), false);
-		$this->data = array_combine($arr_key, $arr_val);
+				$parse_pref = $model . self::CONCET_MODEL . $rel_key;
 
-		if($parser){
-			//p('__construct : '.$this->className(). ' | AS: '.$as.' | $repl:'.$repl.'|', $parser);
-
-			$self = $parser->getSelf();
-			if($self){
-				$this->data = array_merge($this->data, $self);
-
-				$this->_init_ = true;
-
-				if($relations = $this->relations()){
-					foreach ($relations as $relation_key => $relation_data) {
-						$rel_type = $relation_data['relation'];
-						$rel_model_name = $relation_data['model'];
-
-						$rel_data = $parser->getRelation($relation_key);
-
-						if($rel_data){
-							if($rel_type == self::ONE_TO_ONE){
-								$this->parent_models[$relation_key] = new $rel_model_name(new Parser($rel_data));
-							}else{
-								foreach ($rel_data as $_rel_data) {
-									$load_model = new $rel_model_name(new Parser($_rel_data));
-									if($load_model->_init_){
-										$_rel[] = $load_model;
-									}
-								}
-								if($_rel){
-									$this->parent_models[$relation_key] = new Iterator($_rel);
-								}
-							}
-						}
+				if($rel_opc['relation'] == self::ONE_TO_ONE){
+					$exp = $data->export($parse_pref, $rel_model);
+					if($exp){
+						$this->children_models[$rel_key] = new $rel_model($data);
 					}
+				}else{
+					$_data = array();
+					while($exp = $data->export($parse_pref, $rel_model)){
+						$_data[] = new $rel_model($data);
+						
+					}
+					$this->children_models[$rel_key] = new Iterator($_data);
 				}
-			}
+			}			
+		}else if(is_array($data)){
+			$this->setData($data);
 		}
 	}
 
@@ -79,7 +73,7 @@ class Builder{
 	* className 
 	* @return Class Model Name
 	*/
-	function className(){
+	static function className(){
 		return get_called_class();
 	}
 
@@ -116,171 +110,270 @@ class Builder{
 		return $colons;
 	}
 
-	/**
-	* private buildSql
-	* @param string as model table
-	* @param int num model level
-	* @return array( [0] => arQuery - pre db query, [1] => array(Model pref => db table as)  )
-	*/
-	static private function buildSql($as, $num_model = 0){
-		$table = 0;
-		$model = self::className();
-
-		if($as == self::MODEL_AS){
-			$data = Register::get($model);
-			if($data) return $data;
-		}
-
-		$pref = array();
-
-		$pre_query = new arQuery($model::provider());
-
-		if($as == self::MODEL_AS){
-			$pref[$model.self::CONCET_MODEL.'self'] = $as;
-			$pre_query->table($model::table(), $as);
-			$table ++;
-		}
-
-		$pre_query->columns(array_values($model::dbStructure()), $as);
-		
-		if($relations = $model::relations()){
-			foreach($relations as $rel_key => $relation){
-				if($as == self::MODEL_AS || $relation['load']){
-					/**
-					* @todo $rel_model is Model
-					*/
-
-					$rel_as			= 'mod'.$num_model.'_t'.$table;
-					$rel_model   	= $relation['model'];
-					$rel_type    	= $relation['relation'];
-					$rel_my_colon  	= isset($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
-					$rel_his_colon 	= isset($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
-
-					$pref[$model.self::CONCET_MODEL.$rel_key] = $rel_as;
-
-					$num_model ++;
-					$rel_query = $rel_model::buildSql($rel_as, $num_model);
-
-					if($rel_query){
-						if($rel_type == self::MANY_TABLE_BUNCH){
-							$bunch_table = $relation['table'];
-							$bunch_as = 'bunch'.$table;
-							$pre_query
-								->join(array($bunch_table, $bunch_as), "`$bunch_as`.$rel_my_colon = $as.".$model::primaryKey())
-								->join(array($rel_model::table(), $rel_as), "`$bunch_as`.$rel_his_colon = $rel_as.".$rel_model::primaryKey())
-								->merge($rel_query[0]);
-							$table ++;
-						}else{
-							$pre_query->join(array($rel_model::table(), $rel_as), "$as.$rel_my_colon = $rel_as.$rel_his_colon")->merge($rel_query[0]);
-							$pref = array_merge($pref, $rel_query[1]);
-						}	
-					}
-					$table ++;
-				}
-			}
-		}
-
-		if($as == self::MODEL_AS){
-			Register::set($model, array(clone($pre_query), $pref));
-			return array($pre_query, $pref);
-		}
-
-		return array($pre_query, $pref);
+	static private function queryConstructInit($criteria){
+		/**
+		*@todo queryConstruct -> if($criteria_or_pref instanceof Criteria){
+		*/
 	}
 
 	/**
-	* private preParser
-	* @param array source - result db select
-	* @return array - массив сгрупированный по моделям
+	*
+	*
 	*/
-	static private function preParser($source){
+	static private function queryConstruct($criteria_or_pref, $iter_model = 0){		
 		$model = self::className();
+		$model_provider = $model::provider();
 
+		$query = new SqlQuery($model_provider);
+		$glob_query = new SqlQuery($model_provider);
+
+		$pref = "m{$iter_model}_t";
+
+		$iter_table = 0;
+		$model_pref = $pref.$iter_table; 
+		$iter_table ++;
+		
+
+		$structure = $model::dbStructure();
+
+		$comby_key_pref = array();
+
+		$func_pref = function($val) use (&$my_pref){
+			return "$my_pref.$val AS `{$my_pref}_{$val}`";
+		};		
+
+		$criteria = false;
+		if($criteria_or_pref instanceof Criteria){
+			$criteria = $criteria_or_pref;
+			$func_cow = function($val){
+				return "`$val`";
+			};
+
+			$query->columns(array_map($func_cow, $structure))->table($model::table());
+
+			// where local
+			if($where = $criteria->get('where')){
+				$query->where($where);
+			}
+
+			// limit local
+			if(($limit = $criteria->get('limit')) !== false){
+				$query->limit($limit[0], $limit[1]);
+			}
+
+			// order local
+			if(!($order = $criteria->get('order'))){
+				$order = array();
+				$struc = $model::structure();
+				foreach ($struc as $key => $param){
+					if(isset($param['order'])){
+						if(isset($param['column'])){
+							$k = $param['column'];
+						}else{
+							$k = $key;
+						}
+						$order[] = array($k, $param['order']);
+					}
+				}
+			}
+			if($order){
+				$ord_func = function($val) use ($model_pref){
+					return array("{$model_pref}.{$val[0]}", $val[1]);
+				};			
+				$query->order($order);
+				$order = array_map($ord_func, $order);
+				$glob_query->order($order);
+			}
+
+			// attr local
+			if($attr = $criteria->get('attr')){
+				$glob_query->attr($attr);
+			}
+
+			// where
+			$my_pref = $model_pref;
+			$columns = array_map($func_pref, $structure);
+			$glob_query->columns($columns)->table($query, $model_pref);
+			$comby_key_pref[$model] = $model_pref;
+		}else{
+			$model_pref = $criteria_or_pref;
+		}
+
+
+		$relations = $model::relations();
+		if($relations && is_array($relations) && sizeof($relations)){
+			
+			foreach ($relations as $key => $relation){
+				$load = false;
+				if($iter_model == 0 && !isset($relation['load'])){
+					$load = true;
+				}
+				if(isset($relation['load']) && $relation['load']){
+					$load = true;
+				}
+				if($load){					
+					$rel_model = $relation['model'];
+					if(!class_exists($rel_model)){
+						throw new ArException("not fount Model: $rel_model");
+					}
+					if($rel_model::provider() != $model_provider){
+						throw new ArException("providers do not match");
+					}					
+
+					$rel_pref = $pref.$iter_table;
+					$iter_table ++;
+
+					$rel_col = $rel_model::dbStructure();
+
+					$my_pref = $rel_pref;
+					$rel_cols = array_map($func_pref, $rel_col);
+					$glob_query->columns($rel_cols);
+
+					if($criteria){
+						$rel_orders = $criteria->get('orderRelation');
+						if($rel_orders) foreach ($rel_orders as $rel_order) {
+							if($rel_order[0] == $key){
+								$glob_query->order("$rel_pref.`$rel_order[1]`", $rel_order[2]);
+							}
+						}
+						$rel_wheres = $criteria->get('whereRelation');
+						if($rel_wheres) foreach($rel_wheres as $rel_where_key => $rel_where){
+							if($rel_where_key == $key){
+								$glob_query->where($rel_pref.'.'.$rel_where);
+							}
+						}
+					}
+
+					if($relation['relation'] == self::MANY_TABLE_BUNCH){
+						$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+						$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+
+						$m_pk = $model::primaryKey();
+						$r_pk = $rel_model::primaryKey();
+						$bunch_pref = uniqid();
+
+						$glob_query->join(array($relation['table'], $bunch_pref), "`$model_pref`.`$m_pk` = `$bunch_pref`.`$my_column`");
+						$glob_query->join(array($rel_model::table(), $rel_pref), "`$rel_pref`.`$r_pk` = `$bunch_pref`.`$his_column`");
+					}else{
+						$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+						$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+
+						$glob_query->join(array($rel_model::table(), $rel_pref), "`$model_pref`.`$my_column` = `$rel_pref`.`$his_column`");
+					}
+
+					$comby_key_pref[$model.'::'.$key] = $rel_pref;
+
+					list($rel_query, $rel_query_pref) = $rel_model::queryConstruct($rel_pref, $iter_model + 1);
+					$glob_query = $glob_query->merge($rel_query);
+					$comby_key_pref = array_merge($comby_key_pref, $rel_query_pref);					
+				}
+			}
+		}
+		
+		return array($glob_query, $comby_key_pref);		
+	}
+
+	function parser($source, $prefs){
+		$model = self::className();
 		$pks = $model::primaryKey();
 		if(!is_array($pks)){
 			$pks = array($pks);
 		}
 
-		$len = strlen(self::MODEL_AS);
 		$pre_pars = array();
 
 		if(!$source) return $pre_pars;
 
+		$data = array();
+
 		foreach ($source as $line) {
 			$line = array_filter($line);
-			$_new_self = array();
-			foreach ($pks as $pk) {
-				$_new_self[$pk] = $line[self::MODEL_AS . '_' . $pk];
+			if($line){
+				$line_data = array();
+				foreach($line as $key => $value){
+					foreach ($prefs as $rel_name => $prefix) {
+						if(substr($key, 0, strlen($prefix)) == $prefix){
+							$line_data[$rel_name][substr($key, strlen($prefix) + 1)] = $value;
+						}
+					}
+				}
+
+				$new_id = array();
+				foreach ($pks as $pk) {
+					$new_id[] = $line_data[$model][$pk];
+				}
+				$new_id = implode('_', $new_id);
+
+				$data[$new_id][] = $line_data;
 			}
-			$pre_pars[implode('_', $_new_self)][] = $line;			
+			
 		}
+		$func_class = function($val) use ($model){
+			return new $model(new \Gallant\Ar\Parser($val));
+		};
 
-		return array_values($pre_pars);
+		return array_map($func_class, $data);
+		
 	}
-
 	/**
 	* fetch
-	* @param \Gallant\DB\DBQuery - подготовленный с помощью DBQuery запрос к БД
+	* @param \Gallant\Ar\Criteria - подготовленный с помощью Criteria запрос к БД
 	* @return Iterator - result model
 	*/
-	static function fetch($op_query = false){ // \Gallant\DB\DBQuery 
+	static function fetch($criteria = false){
 		$model = self::className();
-		list($pre_query, $prefs) = self::buildSql(self::MODEL_AS);
 
-		if($op_query){
-			$pre_query->merge($op_query);
+		if(!$criteria){
+			$criteria = $model::criteria();
+		}
+		if(!($criteria instanceof Criteria)){
+			throw new ArException('fetch argument : class Criteria (use MyModel::criteria())');
 		}
 
-		$data =  $pre_query->select($prefs);
+		$query = self::queryConstruct($criteria);
 
-		$result_parse = self::preParser($data);
+		$res = $query[0]->select();
 
-		$result = array();
-		foreach ($result_parse as $data) {
-			$result[] = new $model(new Parser($model, $data, $prefs));
-		}
+		$data = array();
+		$data = self::parser($res, $query[1]);
 
-		return new Iterator($result);		
+		return new Iterator($data);	
 	}
 
 	/**
 	* fetchPk
 	* @param mixid - primaryKey model
 	* Model::fetchPk(1)
-	* Model::fetchPk(1, 2, 3, ...)
 	* Model::fetchPk( array(1, 2, 3, 4 ,...) )
 	* @return Iterator - result model
 	*/
-	static function fetchPk(){
+	static function fetchPk($pk){
 		$model = self::className();
-		$param_pk = func_get_args();
-		$as = self::MODEL_AS;
-		$my_pk = $model::primaryKey();		
-
-		list($query, $prefs) = self::buildSql(self::MODEL_AS);
-
-		if(is_array($param_pk[0])){
-			$pks = $param_pk[0];
-		}else if(sizeof($param_pk) > 1){
-			$pks = $param_pk;
-		}else{
-			$pks = array($param_pk[0]);
-		}
-
-		if(sizeof($pks) > 1){
-			$query->where("`$as`.`$my_pk` IN (".implode(',', array_fill(0, sizeof($pks), '?')).")")->attr($pks);
-		}else{
-			$query->where("`$as`.`$my_pk` = ?")->attr($pks);
-		}
-
-		$data =  $query->select($prefs);
-
-		$result_parse = self::preParser($data);
-
 		$result = array();
-		foreach ($result_parse as $data) {
-			$result[] = new $model(new Parser($model, $data, $prefs));
+
+		if(!is_array($pk)){
+			$pk = array($pk);
 		}
+
+		$primaryKey = $model::primaryKey();
+		if(!is_array($primaryKey)){
+			$primaryKey = array($primaryKey);
+		}
+
+		$func_pref = function($val) use ($primaryKey){
+			return ":{$primaryKey[0]}_{$val}";
+		};
+
+		$poles = array_map($func_pref, $pk);
+		$attr = array_combine($poles, $pk);
+
+		$criteria = $model::criteria()->where("{$primaryKey[0]} IN (" . implode(',', $poles). ")")->attr($attr);
+
+		$query = self::queryConstruct($criteria);
+
+		$res = $query[0]->select();
+
+		$result = self::parser($res, $query[1]);
 
 		return new Iterator($result);
 	}
@@ -290,39 +383,31 @@ class Builder{
 	* @todo save - save data Model in db
 	* @todo insert model / update model 
 	* @param bool (@todo true - сохранит все связанные модели, false - сохранение только данные этой модели)
-	* @return mixed = если insert, то primaryKey Model. если update, то bool: 
-	* 	true - успешно
+	* @return mixed = если insert, то primaryKey Model. если update, то boolen: 
+	* 	int - успешно, количество затронутых рядов. Внимание, быть 0 если модель не изменялась
 	*	false - ошибка (если данные модели не изменились запрос отправляться не будет, вернет false)
 	*/
 	function save($save_as = false){
 		$model = self::className();
 
-		$query = new arQuery($model::provider());
-		$query->table($model::table());
-
+		$query = G::dbQuery($model::provider())->table($model::table());
 		$data = array_intersect_key($this->data_update, $this->data);
-		//p($data, $this->data_update, $this->data);
-		if(!$data){
-			return false;
-		}
+		if(!$data) return false;
 
 		if($this->_init_){
 			$pks = $model::primaryKey();
-			if(!is_array($pks)){
-				$pks = array($pks);
-			}
+			if(!is_array($pks)) $pks = array($pks);
+
 			$where = '';
 			foreach($pks as $pk){
 				$attr[":gallant_update_pk_$pk"] = $this->data[$pk];
 				unset($data[$pk]);
 				if($where) $where .= "OR";
 				$where .= " $pk = :gallant_update_pk_$pk ";
-			}
-			
+			}			
 
 			$data = array_merge($data, $attr);
-			$query->where($where)->attr($data);
-			$res = $query->update();
+			$res = $query->where($where)->attr($data)->update();
 			if($res){
 				/**
 				* @todo in log
@@ -343,10 +428,8 @@ class Builder{
 			if(!is_array($pks)){
 				$pks = array($pks);
 			}
-			foreach($pks as $pk){
-				unset($data[$pk]);
-			}
 			$new_pk = $query->attr($data)->insert();
+			var_dump($new_pk);
 			
 			if($new_pk){
 				if(!is_array($new_pk)){
@@ -355,7 +438,7 @@ class Builder{
 				$this->data = array_merge($this->data, $data);
 				$this->data_update = array();
 
-				foreach ($pks as $pk) {
+				foreach ($pks as $pk){
 					$this->data[$pk] = array_shift($_new_pk);
 				}
 
@@ -370,8 +453,7 @@ class Builder{
 				*/
 				p('save insert false');
 				return false;
-			}
-			
+			}			
 		}
 	}
 
@@ -402,5 +484,51 @@ class Builder{
 		}
 		$result = $query->where($where)->attr($attr)->delete();
 		return $result;
+	}
+
+	/**
+	* related возвращяет связаные модели
+	*
+	* @param string 'model_key'
+	* @return class Gallant\Ar\Iterator
+	*/
+	public function related($rel){
+		$rels = $this->relations();
+		if(!($relation = $rels[$rel])){
+			throw new ArException("not fount relation: $rel");
+		}
+		if(!$this->children_models[$rel] && isset($relation['load']) && $relation['load'] === false){			
+			/**
+			* @todo: загрузка связанной модели при обращение, если ее параметр load => false
+			*/
+			$model = self::className();
+			$relation = $rels[$rel];
+
+			$rel_model = $relation['model'];
+
+			if(!class_exists($rel_model)){
+				throw new ArException("not fount Model: $model");
+			}
+
+			$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+			$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+
+			$rel_id = $this->$my_column;
+			if(!$rel_id) return new Iterator;
+
+			$criteria = $rel_model::criteria()->where("$his_column = :val")->attr(array(':val' => $rel_id));
+			$data = $rel_model::fetch($criteria);
+
+			if($relation['relation'] == self::ONE_TO_ONE){
+				$data = $data->first();
+			}else{
+				throw new ArException('@todo: load related model');
+			}
+
+			$this->children_models[$rel] = $data;
+			return $this->children_models[$rel];
+		}else{
+			return $this->children_models[$rel];
+		}
 	}
 }

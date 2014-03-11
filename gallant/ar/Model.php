@@ -11,6 +11,9 @@
 
 namespace Gallant\Ar;
 
+use \G;
+use \Gallant\Exceptions\ArException;
+
 class Model extends Builder{	
 		
 	/**
@@ -23,8 +26,8 @@ class Model extends Builder{
 	* 
 	* @return array 
 	*/
-	public function structure(){
-		return array();
+	static public function structure(){
+		throw new ArException('override function structure()');
 	}
 
 	/**
@@ -32,7 +35,7 @@ class Model extends Builder{
 	* 
 	* @return string
 	*/
-	public function provider(){
+	static public function provider(){
 		return array_shift(array_keys(G::getConfig('db')));
 	}
 
@@ -41,8 +44,8 @@ class Model extends Builder{
 	* 
 	* @return string
 	*/
-	public function table(){
-		return false;
+	static public function table(){
+		throw new ArException('override function table()');
 	}
 
 	/**
@@ -53,47 +56,17 @@ class Model extends Builder{
 	* 
 	* @return mixed
 	*/
-	public function primaryKey(){
-		return false;
-	}
-
-	/**
-	* primaryKey переопределите метод с указанием первичного ключа 
-	* return 'id'
-	* если их несколько
-	* return array('id1', 'id2')
-	* 
-	* @return mixed
-	*/
-	public function primaryKeyVal(){
-		if($his->_init_){
-			$ids = $this->primaryKey();
-			if(is_array($ids)){
-
-			}else{
-				return $this->data[$ids];
-			}
-		}
-		return false;
+	static public function primaryKey(){
+		throw new ArException('override function primaryKey()');
 	}
 
 	/**
 	* relations переопределите метод с указанием связей с другими моделями
-	* @todo 
-	* array(
-	* 	'model_key' => array( - публичный ключ связанной модели
-	*		'model' => '\Model\Module', - полное имя класса модели
-	*		'my_column' => array('user_in_module', 'user_id'),
-	*		'relation' => 'ONE_TO_BUNCH', тип связи
-	*		'his_column' => 'module_id'
-	*	), 
-	*	...
-	* )
 	*
 	* @return array
 	*/
-	public function relations(){
-		return false;
+	static public function relations(){
+		return array();
 	}
 
 	/**
@@ -103,8 +76,7 @@ class Model extends Builder{
 	* @param mixed
 	*/
 	public function __set($key, $val){
-		$structure = Register::getStructure($this->className());
-		if(isset($structure[$key])){
+		if(isset($this->data[$key]) || is_null($this->data[$key])){
 			$this->data_update[$key] = $val;
 		}
 	}
@@ -126,12 +98,12 @@ class Model extends Builder{
 	}
 
 	/**
-	* getOriginal $model->getOriginal('public_key') возвращяет оригинальное значение
+	* original $model->original('public_key') возвращяет оригинальное значение, до его изменения метотами (__set, attr, setData)
 	* 
 	* @param sting
 	* @return mixed
 	*/
-	public function getOriginal($key){
+	public function original($key){
 		if(isset($this->data[$key])){
 			return $this->data[$key];
 		}else{
@@ -140,14 +112,24 @@ class Model extends Builder{
 	}
 
 	/**
-	* setData установка новых значений array('public_key' => val, ...)
-	* 
+	* attr установка и получение свойств модели
+	* $model->attr(); вернет свойства модели
+	* $model->attr(array('key' => 'value')); устанавливает свойства модели
 	* @param array
 	*/
+	public function attr($data = false){
+		if(!$data){
+			return $this->getData();
+		}else{
+			$this->setData($data);
+		}
+	}
+
 	public function setData($data){
 		if(is_array($data)){
 			$this->data_update = array_merge($this->data_update, $data);
 		}
+		return $this;
 	}
 
 	/**
@@ -160,35 +142,10 @@ class Model extends Builder{
 	}
 
 	/**
-	* related возвращяет связаные модели
-	*
-	* @param string 'model_key'
-	* @return object Gallant\Ar\Mediator
+	* criteria возвращяет подготовленный класс запроса для метода fetch
+	* @return class Criteria
 	*/
-	public function related($rel){
-
-		$rels = $this->relations();
-		if(!$rels[$rel]){
-			return false;
-		}
-		if(!$this->parent_models[$rel]){
-			return new Iterator;
-			/*$rel = $rels[$rel];
-			$rel_model = $rel['model'];
-			$rel_type = $rel['relation'];
-
-			$requery = new \Gallant\DB\DBQuery;
-			if($rel_type == 'ONE_TO_ONE'){
-				//$requery->where('');
-			}*/
-			// load parent model
-		}else{
-			return $this->parent_models[$rel];
-		}
-	}
-
-	public function getRelations(){
-		if(!$this->parent_models) return array();
-		return $this->parent_models;
+	static function criteria(){
+		return new Criteria;
 	}
 }

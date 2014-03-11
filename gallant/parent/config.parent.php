@@ -12,34 +12,32 @@
 return array(
 	'site' => array(
 		'skin' => 'default',
-		'main' => 'main',
+		'main' => 'main.php',
 		'chaster' => 'utf-8',
 		'lang' => 'en',
-		/** 
-		* @todo: gzip, htmlcompress
-		*/
 		'gzip' => false,
 		'htmlcompress' => false,
 		),
 
 	'route' => array(
-		'type' => 'request_url', //'get',
+		'site' 		=> '/', 
+		'type' => 'request', // or get
 		'index' => 'page/index',
 		'error404' => 'action404'
 		),
 
 	'path' => array(
-		'site' 		=> '%site%',
-		'template' 	=> '%site%/template',
-		'model' 	=> '%site%/model',
-		'component' => '%site%/component',
-		'include' 	=> '%site%/include',
-		'control' 	=> '%site%/control',
-		'lang' 		=> '%site%/data/lang',
-		'entry'		=> '%site%/entry.php'
+		'template' 	=> '%site%' . DIRECTORY_SEPARATOR . 'template',
+		'model' 	=> '%site%' . DIRECTORY_SEPARATOR . 'model',
+		'component' => '%site%' . DIRECTORY_SEPARATOR . 'component',
+		'include' 	=> '%site%' . DIRECTORY_SEPARATOR . 'include',
+		'control' 	=> '%site%' . DIRECTORY_SEPARATOR . 'control',
+		'entry'		=> '%site%' . DIRECTORY_SEPARATOR . 'entry.php'
 		),
 
 	'db' => array(),
 
 	'recaptcha' => array(),/* publicKey, privateKey */
+
+	'class' => array(),
 );

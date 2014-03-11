@@ -1,166 +1,404 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class Iterator</title>
-			<link rel="stylesheet" href="../media/stylesheet.css" />
-						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
-		</head>
-		<body>
-			<div class="page-body">			
-<h2 class="class-name">Class Iterator</h2>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Iterator</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Iterator
+</h2> (line <span class="linenumber">15</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
 
-<a name="sec-description"></a>
-<div class="info-box">
-	<div class="info-box-title">Description</div>
-	<div class="nav-bar">
-					<span class="disabled">Description</span> |
-															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-						
-					</div>
-	<div class="info-box-body">
-        		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Gallant\Ar\Iterator</p>
-	<ul class="tags">
-				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
-				<li><span class="field">version:</span> 1.0</li>
-				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
-			</ul>
-		<p class="notes">
-			Located in <a class="field" href="_ar---Iterator.php.html">/ar/Iterator.php</a> (line <span class="field">13</span>)
-		</p>
-		
-				
-		<pre>\
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+ArrayObject
    |
    --Iterator</pre>
-	
-			</div>
+<p>
+	<b><i>Located in File: <a href="_Iterator.php.html">/Iterator.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gallant\Ar\Iterator</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
 </div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodfilter" title="details" class="method-name">filter</a>
+        (<span class="var-type">function</span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodfirst" title="details" class="method-name">first</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodlast" title="details" class="method-name">last</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodmerge" title="details" class="method-name">merge</a>
+        (<span class="var-type"><a href="../Gallant/Iterator.html">Iterator</a></span>&nbsp;<span class="var-name">$Iterator</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodslice" title="details" class="method-name">slice</a>
+        (<span class="var-type">int</span>&nbsp;<span class="var-name">$offset</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$length</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodwalk" title="details" class="method-name">walk</a>
+        (<span class="var-type">function</span>&nbsp;<span class="var-name">$function</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
 
 
+<a name="methodfilter" id="methodfilter"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method filter</strong> (line <span class="linenumber">58</span>)
+ </h4> 
+<h4><i>void</i> <strong>filter(
+function
+$filter, [array
+$params = array()])</strong></h4>
 
-
-	<a name="sec-method-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Method Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
-		</div>
-		<div class="info-box-body">			
-			<div class="method-summary">
-																																						
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#filter" title="details" class="method-name">filter</a>
-											(<span class="var-type">function</span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#first" title="details" class="method-name">first</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#last" title="details" class="method-name">last</a>
-										()
-									</div>
-											</div>
-		</div>
-	</div>		
-
-	
-	<a name="sec-methods"></a>
-	<div class="info-box">
-		<div class="info-box-title">Methods</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
-						
-		</div>
-		<div class="info-box-body">
-			<A NAME='method_detail'></A>
-<a name="methodfilter" id="filter"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">filter</span> (line <span class="line-number">54</span>)
-	</div> 
-	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">filter возвращяет отфильтрованный Iterator</p>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			filter
-		</span>
-					(<span class="var-type">function</span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">function</span>
-				<span class="var-name">$filter</span>			</li>
-					<li>
-				<span class="var-type">array</span>
-				<span class="var-name">$params</span><span class="var-description">: $function = function($val, $key, $params){         $val - значение свойства,         $key - ключ свойства,         $params - массив $params         return bool     }</span>			</li>
-				</ul>
+<h5>filter возвращяет отфильтрованный Iterator  фильтруются данные модели</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>function $filter</strong>: </li>
+			<li><strong>array $params</strong>: $function = function($val, $key, $params){         $val - значение свойства,         $key - ключ свойства,         $params - массив $params         return bool     }</li>
+		</ul>
 		
-			
-	</div>
-<a name="methodfirst" id="first"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">first</span> (line <span class="line-number">19</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			first
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodlast" id="last"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">last</span> (line <span class="line-number">32</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			last
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-						
-		</div>
-	</div>
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodfirst" id="methodfirst"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method first</strong> (line <span class="linenumber">21</span>)
+ </h4> 
+<h4><i>void</i> <strong>first(
+)</strong></h4>
 
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodlast" id="methodlast"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method last</strong> (line <span class="linenumber">34</span>)
+ </h4> 
+<h4><i>void</i> <strong>last(
+)</strong></h4>
 
-	<p class="notes" id="credit">
-		Documentation generated on Sat, 02 Nov 2013 05:36:34 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
-	</p>
-	</div></body>
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodmerge" id="methodmerge"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method merge</strong> (line <span class="linenumber">98</span>)
+ </h4> 
+<h4><i>void</i> <strong>merge(
+<a href="../Gallant/Iterator.html">Iterator</a>
+$Iterator)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>merge объединяет текущий Iterator с переданным</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Gallant/Iterator.html">Iterator</a> $Iterator</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodslice" id="methodslice"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method slice</strong> (line <span class="linenumber">115</span>)
+ </h4> 
+<h4><i>void</i> <strong>slice(
+int
+$offset, [int
+$length = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>slice выполняет срез</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>int $offset</strong>: </li>
+			<li><strong>int $length</strong>: $function = function($model, $params){         $model - модель,         $params - массив $params     }</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodwalk" id="methodwalk"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method walk</strong> (line <span class="linenumber">82</span>)
+ </h4> 
+<h4><i>void</i> <strong>walk(
+function
+$function, [array
+$params = array()])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>walk применяет произвольную функцию ко всем элементам Iterator</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>function $function</strong>: </li>
+			<li><strong>array $params</strong>: $function = function($model, $params){         $model - модель,         $params - массив $params     }</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+		<!-- =========== Summary =========== -->
+	<h4>Inherited From Class ArrayObject (Internal Class)</h4>
+				<h4>
+<img src="../media/images/Constructor.gif" border="0" /><strong class="method"> constructor __construct ( $array )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> append ( $value )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> asort (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> count (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> exchangeArray ( $array )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> getArrayCopy (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> getFlags (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> getIterator (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> getIteratorClass (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> ksort (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> natcasesort (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> natsort (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> offsetExists ( $index )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> offsetGet ( $index )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> offsetSet ( $index, $newval )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> offsetUnset ( $index )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> serialize (  )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> setFlags ( $flags )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> setIteratorClass ( $iteratorClass )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> uasort ( $cmp_function )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> uksort ( $cmp_function )</strong> - 
+		</h4> 
+
+				<h4>
+<img src="../media/images/PublicMethod.gif" border="0" /><strong class="method"> unserialize ( $serialized )</strong> - 
+		</h4> 
+
+				<br />
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:58 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
 </html>

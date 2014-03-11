@@ -1,0 +1,21 @@
+body{
+	font-family: Tahoma ;
+	font-size: 14px;
+}
+a{
+	cursor: pointer;
+}
+footer{
+	margin: 50px;
+}
+
+.menu{
+	position: fixed;
+	top: 80px;
+	width: 280px;
+}
+.container{
+	margin-top: 80px;
+	min-height: 700px;
+}
+

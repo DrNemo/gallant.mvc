@@ -10,6 +10,6 @@
 */
 
 namespace Gallant\Exceptions;
-class ArException extends \Exception{
+class ArException extends GException{
 	
 }

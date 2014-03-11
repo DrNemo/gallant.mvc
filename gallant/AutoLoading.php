@@ -10,7 +10,8 @@
 */
 
 namespace Gallant;
-use \G as G;
+use \G;
+use \Gallant\Exceptions\CoreException;
 
 spl_autoload_register(array('Gallant\AutoLoading', 'loadingCore'));
 spl_autoload_register(array('Gallant\AutoLoading', 'loadingSite'));
@@ -18,33 +19,27 @@ spl_autoload_register(array('Gallant\AutoLoading', 'loadingSite'));
 class AutoLoading{
 
 	public static function loadingCore($inc){
-		//p('loadingCore: ' . $inc);
-		$routs = array_filter(explode('\\', $inc.'\\'),'trim');
-		
+		//p('loadingCore:' . $inc);
+		$routs = array_filter(explode('\\', $inc),'trim');
+
 		$class = array_pop($routs);
 		$routs = array_map('strtolower', $routs);
 		$type = array_shift($routs);
 
 		if($class == 'G'){
 			include_once GALLANT_CORE.'/App.php';
-			return true;
-		}else if($class == 'Entry' && $type != 'gallant'){
+		}else if($type != 'gallant'){
 			return false;			
-		}		
-
-		if($type != 'gallant'){
-			return false;
-		}
-		$path = '/';
-		if($routs){
-			$path .= implode('/', $routs).'/';
 		}
 		
-		$path = self::dirSep(GALLANT_CORE.$path.$class.'.php');
+		$path = DIRECTORY_SEPARATOR;
+		if($routs){
+			$path .= implode(DIRECTORY_SEPARATOR, $routs) . DIRECTORY_SEPARATOR;
+		}
+		$path = GALLANT_CORE.$path.$class.'.php';
+
 		if(is_file($path)){
-			//p('include_once' , $path);
 			include_once $path;
-			return true;
 		}
 		return false;
 	}
@@ -54,49 +49,41 @@ class AutoLoading{
 		$routs = array_filter(explode('\\', $inc.'\\'));
 		$type = strtolower(array_shift($routs));
 
-		$path = G::getPath($type);
-
 		if($type == 'entry'){
 			if(is_file(G::getPath('entry'))){
 				include_once G::getPath('entry');				
 				return true;
 			}
-		}
+		}		
 
-		if(!$path){
-			throw new \Gallant\Exceptions\CoreException('error loadingSite : '.$type);
+		$paths = G::getPath($type);
+		if(!$paths){
+			throw new CoreException("error loadingSite : $type ($inc)");
+		}
+		if(!is_array($paths)){
+			$paths = array($paths);
 		}
 		
 		$class = array_pop($routs);
 		$routs = array_map('strtolower', $routs);
 
-		$p2 = implode('/', $routs);
-		if(is_array($path)){
-			foreach ($path as $val) {
-				$file = self::dirSep($val.$p2.$class.'.php');
-				
-				if(is_file($file)){
-					//p('include_once' , $file);
-					include_once $file;
-					return true;
-				}
-			}
+		$to_path = implode(DIRECTORY_SEPARATOR, $routs);
+		if($to_path){
+			$file = self::dirSep($to_path .DIRECTORY_SEPARATOR . $class . '.php');
 		}else{
-			$file = self::dirSep($path.$p2.'/'.$class.'.php');
-			//p('include_once' , $file);
-			if(is_file($file)){
-			
-				//p('include_once' , $file);
-				include_once $file;
+			$file = $class . '.php';
+		}
+
+		foreach ($paths as $path) {	
+			if(is_file($path.$file)){
+				include_once $path.$file;
 				return true;
 			}
-		}		
-		return false;
+		}
 	}
 
 	function dirSep($path){
-		$dir_pre_sep = '\\';
-		$dir_pub_sep = '/';
-		return str_replace($dir_pre_sep, $dir_pub_sep, $path);
+		$dir_pre_sep = array('\\', '/');
+		return str_replace($dir_pre_sep, DIRECTORY_SEPARATOR, $path);
 	}
 }

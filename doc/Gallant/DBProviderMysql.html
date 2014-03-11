@@ -1,275 +1,331 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class DBProviderMysql</title>
-			<link rel="stylesheet" href="../media/stylesheet.css" />
-						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
-		</head>
-		<body>
-			<div class="page-body">			
-<h2 class="class-name">Class DBProviderMysql</h2>
-
-<a name="sec-description"></a>
-<div class="info-box">
-	<div class="info-box-title">Description</div>
-	<div class="nav-bar">
-					<span class="disabled">Description</span> |
-															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-						
-					</div>
-	<div class="info-box-body">
-        		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Gallant\DB\DBProviderMysql</p>
-	<ul class="tags">
-				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
-				<li><span class="field">version:</span> 1.0</li>
-				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
-			</ul>
-		<p class="notes">
-			Located in <a class="field" href="_db---DBProviderMysql.php.html">/db/DBProviderMysql.php</a> (line <span class="field">14</span>)
-		</p>
-		
-				
-		<pre></pre>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class DBProviderMysql</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
 	
-			</div>
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class DBProviderMysql
+</h2> (line <span class="linenumber">17</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_DBProviderMysql.php.html">/DBProviderMysql.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gallant\DB\DBProviderMysql</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
 </div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<hr />
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+            <span class="method-result">DBProviderMysql</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$config</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methoddebug" title="details" class="method-name">debug</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methoddelete" title="details" class="method-name">delete</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodfetch" title="details" class="method-name">fetch</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$query_sql</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$attr</span> = <span class="var-default">array()</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodinsert" title="details" class="method-name">insert</a>
+        (<span class="var-type"><a href="../Gallant/SqlQuery.html">SqlQuery</a></span>&nbsp;<span class="var-name">$query</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodselect" title="details" class="method-name">select</a>
+        (<span class="var-type"><a href="../Gallant/SqlQuery.html">SqlQuery</a></span>&nbsp;<span class="var-name">$query</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodupdate" title="details" class="method-name">update</a>
+        (<span class="var-type"><a href="../Gallant/SqlQuery.html">SqlQuery</a></span>&nbsp;<span class="var-name">$query</span>)
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
 
 
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">21</span>)
+ </h4> 
+<h4><i>DBProviderMysql</i> <strong>__construct(
 
+$config)</strong></h4>
 
-	<a name="sec-method-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Method Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
-		</div>
-		<div class="info-box-body">			
-			<div class="method-summary">
-																																																														
-				<div class="method-definition">
-											<span class="method-result">DBProviderMysql</span>
-										<a href="#__construct" title="details" class="method-name">__construct</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$config</span>)
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#delete" title="details" class="method-name">delete</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>)
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#insert" title="details" class="method-name">insert</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#replace" title="details" class="method-name">replace</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$replace</span>)
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#select" title="details" class="method-name">select</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">void</span>
-										<a href="#update" title="details" class="method-name">update</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$replice</span>)
-									</div>
-											</div>
-		</div>
-	</div>		
-
-	
-	<a name="sec-methods"></a>
-	<div class="info-box">
-		<div class="info-box-title">Methods</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
-						
-		</div>
-		<div class="info-box-body">
-			<A NAME='method_detail'></A>
-<a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">20</span>)
-	</div> 
-	
 	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">DBProviderMysql</span>
-		<span class="method-name">
-			__construct
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$config</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$config</span>			</li>
-				</ul>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $config</strong>: </li>
+		</ul>
 		
-			
-	</div>
-<a name="methoddelete" id="delete"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">delete</span> (line <span class="line-number">90</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			delete
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$DBQuery</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodinsert" id="insert"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">insert</span> (line <span class="line-number">94</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			insert
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$DBQuery</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$replice</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodreplace" id="replace"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">replace</span> (line <span class="line-number">222</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			replace
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$replace</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$sql</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$replace</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodselect" id="select"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">select</span> (line <span class="line-number">126</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			select
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$replice</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$DBQuery</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$replice</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodupdate" id="update"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">update</span> (line <span class="line-number">36</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			update
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$DBQuery</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$replice</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$DBQuery</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$replice</span>			</li>
-				</ul>
-		
-			
-	</div>
-						
-		</div>
-	</div>
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methoddebug" id="methoddebug"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method debug</strong> (line <span class="linenumber">267</span>)
+ </h4> 
+<h4><i>void</i> <strong>debug(
+)</strong></h4>
 
+	<!-- ========== Info from phpDoc block ========= -->
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methoddelete" id="methoddelete"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method delete</strong> (line <span class="linenumber">78</span>)
+ </h4> 
+<h4><i>void</i> <strong>delete(
 
-	<p class="notes" id="credit">
-		Documentation generated on Sat, 02 Nov 2013 05:36:33 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
-	</p>
-	</div></body>
+$DBQuery)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $DBQuery</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodfetch" id="methodfetch"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method fetch</strong> (line <span class="linenumber">230</span>)
+ </h4> 
+<h4><i>void</i> <strong>fetch(
+
+$query_sql, [
+$attr = array()])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $query_sql</strong>: </li>
+			<li><strong> $attr</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodinsert" id="methodinsert"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method insert</strong> (line <span class="linenumber">122</span>)
+ </h4> 
+<h4><i>void</i> <strong>insert(
+<a href="../Gallant/SqlQuery.html">SqlQuery</a>
+$query)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Gallant/SqlQuery.html">SqlQuery</a> $query</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodselect" id="methodselect"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method select</strong> (line <span class="linenumber">157</span>)
+ </h4> 
+<h4><i>void</i> <strong>select(
+<a href="../Gallant/SqlQuery.html">SqlQuery</a>
+$query)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Gallant/SqlQuery.html">SqlQuery</a> $query</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodupdate" id="methodupdate"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method update</strong> (line <span class="linenumber">36</span>)
+ </h4> 
+<h4><i>void</i> <strong>update(
+<a href="../Gallant/SqlQuery.html">SqlQuery</a>
+$query)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong><a href="../Gallant/SqlQuery.html">SqlQuery</a> $query</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:58 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
 </html>

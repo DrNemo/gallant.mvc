@@ -10,6 +10,6 @@
 */
 
 namespace Gallant\Exceptions;
-class HelperException extends \Exception{
+class HelperException extends GException{
 	
 }

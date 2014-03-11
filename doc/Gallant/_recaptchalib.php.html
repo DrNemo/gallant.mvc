@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs for page recaptchalib.php</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><h2>File: /recaptchalib.php</h2>
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ) );
+</script>
+
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+<!-- =========== Used Classes =========== -->
+<A NAME='classes_summary'><!-- --></A>
+<h3>Classes defined in this file</h3>
+
+<TABLE CELLPADDING='3' CELLSPACING='0' WIDTH='100%' CLASS="border">
+	<THEAD>
+		<TR><TD STYLE="width:20%"><h4>CLASS NAME</h4></TD><TD STYLE="width: 80%"><h4>DESCRIPTION</h4></TD></TR>
+	</THEAD>
+	<TBODY>
+				<TR BGCOLOR='white' CLASS='TableRowColor'>
+			<TD><a href="../Gallant/ReCaptchaResponse.html">ReCaptchaResponse</a></TD>
+			<TD>A ReCaptchaResponse is returned from recaptcha_check_answer()</TD>
+		</TR>
+			</TBODY>
+</TABLE>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+<!-- ============ Includes DETAIL =========== -->
+
+<h2 class="tab">Include/Require Statements</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+
+
+</div>
+<div class="tab-page" id="tabPage2">
+<!-- ============ GLOBAL DETAIL =========== -->
+
+<h2 class="tab">Global Variables</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script>
+
+</div>
+<div class="tab-page" id="tabPage3">
+<!-- ============ CONSTANT DETAIL =========== -->
+
+<A NAME='constant_detail'></A>
+<h2 class="tab">Constants</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage3" ) );</script>
+
+<a name="defineRECAPTCHA_API_SECURE_SERVER"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/Constant.gif" border="0" /> <strong class="property">RECAPTCHA_API_SECURE_SERVER</strong> (line <span class="linenumber">39</span>)
+ </h4> 
+<h4>RECAPTCHA_API_SECURE_SERVER : &quot;https://www.google.com/recaptcha/api&quot;</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<a name="defineRECAPTCHA_API_SERVER"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/Constant.gif" border="0" /> <strong class="property">RECAPTCHA_API_SERVER</strong> (line <span class="linenumber">38</span>)
+ </h4> 
+<h4>RECAPTCHA_API_SERVER : &quot;http://www.google.com/recaptcha/api&quot;</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>The reCAPTCHA server URL's</h5>
+<ul>
+	</ul>
+</div>
+<a name="defineRECAPTCHA_VERIFY_SERVER"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/Constant.gif" border="0" /> <strong class="property">RECAPTCHA_VERIFY_SERVER</strong> (line <span class="linenumber">40</span>)
+ </h4> 
+<h4>RECAPTCHA_VERIFY_SERVER : &quot;www.google.com&quot;</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+</div>
+<div class="tab-page" id="tabPage4">
+<!-- ============ FUNCTION DETAIL =========== -->
+
+<h2 class="tab">Functions</h2>
+
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage4" ) );</script>
+
+<a name="functionrecaptcha_check_answer" id="functionrecaptcha_check_answer"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">recaptcha_check_answer</strong> (line <span class="linenumber">153</span>)
+ </h4> 
+<h4><i><a href="../Gallant/ReCaptchaResponse.html">ReCaptchaResponse</a></i> <strong>recaptcha_check_answer(
+string $privkey, string $remoteip, string $challenge, string $response, [array $extra_params = array()])</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Calls an HTTP POST function to verify if the user's guess was correct</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $privkey</strong>: </li>
+			<li><strong>string $remoteip</strong>: </li>
+			<li><strong>string $challenge</strong>: </li>
+			<li><strong>string $response</strong>: </li>
+			<li><strong>array $extra_params</strong>: an array of extra variables to post to the server</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="functionrecaptcha_get_html" id="functionrecaptcha_get_html"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">recaptcha_get_html</strong> (line <span class="linenumber">106</span>)
+ </h4> 
+<h4><i>string</i> <strong>recaptcha_get_html(
+string $pubkey, [string $error = null], [boolean $use_ssl = false])</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gets the challenge HTML (javascript and non-javascript version).</h5>
+<div class="desc"><p>This is called from the browser, and the resulting reCAPTCHA HTML widget  is embedded within the HTML form it was called from.</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $pubkey</strong>: A public key for reCAPTCHA</li>
+			<li><strong>string $error</strong>: The error given by reCAPTCHA (optional, default is null)</li>
+			<li><strong>boolean $use_ssl</strong>: Should the request be made over ssl? (optional, default is false)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - - The HTML to be embedded in the user's form.</li>
+		</ul>
+</div>
+<a name="functionrecaptcha_get_signup_url" id="functionrecaptcha_get_signup_url"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">recaptcha_get_signup_url</strong> (line <span class="linenumber">203</span>)
+ </h4> 
+<h4><i>void</i> <strong>recaptcha_get_signup_url(
+[string $domain = null], [string $appname = null])</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>gets a URL where the user can sign up for reCAPTCHA. If your application  has a configuration page where you enter a key, you should provide a link  using this function.</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $domain</strong>: The domain where the page is hosted</li>
+			<li><strong>string $appname</strong>: The name of your application</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="functionrecaptcha_mailhide_html" id="functionrecaptcha_mailhide_html"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">recaptcha_mailhide_html</strong> (line <span class="linenumber">268</span>)
+ </h4> 
+<h4><i>void</i> <strong>recaptcha_mailhide_html(
+ $pubkey,  $privkey,  $email)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gets html to display an email address given a public an private key.</h5>
+<div class="desc"><p>to get a key, go to:</p><p>http://www.google.com/recaptcha/mailhide/apikey</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $pubkey</strong>: </li>
+			<li><strong> $privkey</strong>: </li>
+			<li><strong> $email</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="functionrecaptcha_mailhide_url" id="functionrecaptcha_mailhide_url"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">recaptcha_mailhide_url</strong> (line <span class="linenumber">231</span>)
+ </h4> 
+<h4><i>void</i> <strong>recaptcha_mailhide_url(
+ $pubkey,  $privkey,  $email)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $pubkey</strong>: </li>
+			<li><strong> $privkey</strong>: </li>
+			<li><strong> $email</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="function_recaptcha_aes_encrypt" id="function_recaptcha_aes_encrypt"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_aes_encrypt</strong> (line <span class="linenumber">215</span>)
+ </h4> 
+<h4><i>void</i> <strong>_recaptcha_aes_encrypt(
+ $val,  $ky)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $val</strong>: </li>
+			<li><strong> $ky</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="function_recaptcha_aes_pad" id="function_recaptcha_aes_pad"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_aes_pad</strong> (line <span class="linenumber">207</span>)
+ </h4> 
+<h4><i>void</i> <strong>_recaptcha_aes_pad(
+ $val)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $val</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="function_recaptcha_http_post" id="function_recaptcha_http_post"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_http_post</strong> (line <span class="linenumber">67</span>)
+ </h4> 
+<h4><i>array</i> <strong>_recaptcha_http_post(
+string $host, string $path, array $data, [int $port = 80])</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Submits an HTTP POST to a reCAPTCHA server</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $host</strong>: </li>
+			<li><strong>string $path</strong>: </li>
+			<li><strong>array $data</strong>: </li>
+			<li><strong>int $port</strong>: port</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - response</li>
+		</ul>
+</div>
+<a name="function_recaptcha_mailhide_email_parts" id="function_recaptcha_mailhide_email_parts"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_mailhide_email_parts</strong> (line <span class="linenumber">249</span>)
+ </h4> 
+<h4><i>void</i> <strong>_recaptcha_mailhide_email_parts(
+ $email)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>gets the parts of the email to expose to the user.</h5>
+<div class="desc"><p>eg, given johndoe@example,com return [&quot;john&quot;, &quot;example.com&quot;].  the email is then displayed as john...@example.com</p></div>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $email</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="function_recaptcha_mailhide_urlbase64" id="function_recaptcha_mailhide_urlbase64"><!-- --></a>
+<div style="background='#ffffff'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_mailhide_urlbase64</strong> (line <span class="linenumber">226</span>)
+ </h4> 
+<h4><i>void</i> <strong>_recaptcha_mailhide_urlbase64(
+ $x)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $x</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="function_recaptcha_qsencode" id="function_recaptcha_qsencode"><!-- --></a>
+<div style="background='#eeeeee'">
+<h4>
+  <img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">_recaptcha_qsencode</strong> (line <span class="linenumber">47</span>)
+ </h4> 
+<h4><i>string</i> <strong>_recaptcha_qsencode(
+$data $data)</strong></h4>
+
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Encodes the given data into a query string format</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>$data $data</strong>: - array of string elements to be encoded</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - - encoded request</li>
+		</ul>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:59 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
+</html>

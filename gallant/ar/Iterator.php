@@ -10,7 +10,9 @@
 */
 namespace Gallant\Ar;
 
-class Iterator extends \ArrayObject{
+use \ArrayObject;
+
+class Iterator extends ArrayObject{
 
 	/**
 	*	
@@ -45,9 +47,9 @@ class Iterator extends \ArrayObject{
 	* @param function $filter
 	* @param array $params
 	*
-	*	$function = function($val, $key, $params){
-	*		$val - значение свойства, 
-	*		$key - ключ свойства, 
+	*	$function = function($model, $index, $params){
+	*		$model - модель
+	*		$index - ключ
 	*		$params - массив $params
 	*		return bool
 	*	}
@@ -58,46 +60,10 @@ class Iterator extends \ArrayObject{
 		$copy_iter = $this->getArrayCopy();
 
 		// iter to Iterator
-		foreach ($copy_iter as $line => $model) {
-			
-			$data = $model->getData();
-			// iter to prop in model
-			foreach ($data as $key => $value) {
-				// iter to filter
-				if($filter($value, $key, $params) === false){
-					unset($copy_iter[$line]);
-				}				
+		foreach ($copy_iter as $index => $model) {
+			if($filter($model, $index, $params) !== true){
+				unset($copy_iter[$index]);
 			}
-		}
-		return new Iterator($copy_iter);
-	}
-
-	/**
-	* filterRelations возвращяет отфильтрованный Iterator
-	* фильтруются связанные модели
-	*
-	* @param function $filter
-	* @param array $params
-	*
-	*	$function = function($val, $key, $params){
-	*		$val - значение свойства, 
-	*		$key - ключ свойства, 
-	*		$params - массив $params
-	*		return bool
-	*	}
-	*/
-	function filterRelations($filter, array $params = array()){
-		if(!$this->count()) return new Iterator;
-		$copy_iter = $this->getArrayCopy();
-
-		foreach ($copy_iter as $line => $model) {
-			$relations = $model->getRelations();
-
-			foreach($relations as $key => $rel_model){
-				if($filter($rel_model, $key, $params) === false){
-					unset($copy_iter[$line]);
-				}
-			}			
 		}
 		return new Iterator($copy_iter);
 	}
@@ -110,6 +76,7 @@ class Iterator extends \ArrayObject{
 	*
 	*	$function = function($model, $params){
 	*		$model - модель, 
+	*    	$index - ключ
 	*		$params - массив $params
 	*	}
 	*/
@@ -117,27 +84,38 @@ class Iterator extends \ArrayObject{
 		if(!$this->count()) return new Iterator;
 		$copy_iter = $this->getArrayCopy();
 
-		foreach ($copy_iter as $line => $model) {
-			$function($model, $params);
+		foreach ($copy_iter as $index => $model) {
+			$function($model, $index, $params);
 		}
 		$copy_iter = array_filter($copy_iter);
 		return new Iterator($copy_iter);
 	}
 
 	/**
-	* walk применяет произвольную функцию ко всем элементам Iterator
+	* merge объединяет текущий Iterator с переданным
 	*
-	* @param function $function
-	* @param array $params
+	* @param Iterator $Iterator
+	*/
+	function merge(Iterator $Iterator){
+		foreach ($Iterator as $value) {
+			$this->append($value);
+		}
+	}
+
+	/**
+	* slice выполняет срез 
+	*
+	* @param int $offset 
+	* @param int $length
 	*
 	*	$function = function($model, $params){
 	*		$model - модель, 
 	*		$params - массив $params
 	*	}
 	*/
-	function merge(\Gallant\ar\Iterator $Iterator){
-		foreach ($Iterator as $value) {
-			$this->append($value);
-		}
+	function slice($offset, $length = false){
+		$copy_iter = $this->getArrayCopy();
+		$new_iter = array_slice($copy_iter, $offset, $length);
+		return new Iterator($new_iter);
 	}
 }

@@ -10,7 +10,8 @@
 */
 
 namespace Gallant\Helpers;
-use \G as G;
+use \G;
+use \Gallant\Exceptions\HelperException;
 
 class Mailer{
 	private $option = false;
@@ -22,10 +23,10 @@ class Mailer{
 	function __construct($key){
 		$mails = G::getConfig('mailer');
 		if(!$mails){
-			throw new \Gallant\Exceptions\HelperException('error config mailer');
+			throw new HelperException('error config mailer');
 		}
 		if(!isset($mails[$key])){
-			throw new \Gallant\Exceptions\HelperException('error config mailer: '.$key);
+			throw new HelperException('error config mailer: '.$key);
 		}
 
 		G::includeComponent('PHPMailer/class.phpmailer.php');
@@ -54,7 +55,7 @@ class Mailer{
 			$this->phpmailer->Username   = $this->option->user; 
 			$this->phpmailer->Password   = $this->option->password;
 		}else{
-			throw new \Gallant\Exceptions\HelperException('no implementation provider: '.$this->option->provider);
+			throw new HelperException('no implementation provider: '.$this->option->provider);
 		}		
 	}
 
@@ -78,7 +79,7 @@ class Mailer{
 	}
 
 	function loadTemplate($template, $Result = array()){
-		throw new \Gallant\Exceptions\HelperException('no implementation function loadTemplate');
+		throw new HelperException('no implementation function loadTemplate');
 	}
 
 	function send($name = false){
@@ -88,7 +89,7 @@ class Mailer{
 		try{
 			$this->phpmailer->MsgHTML($this->content);
 			return $this->phpmailer->Send();
-		}catch(phpmailerException $e){
+		}catch(\phpmailerException $e){
 			return false;
 		}	
 	}

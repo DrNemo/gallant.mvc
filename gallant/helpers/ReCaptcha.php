@@ -11,7 +11,8 @@
 */
 
 namespace Gallant\Helpers;
-use \G as G;
+use \G;
+use \Gallant\Exceptions\HelperException;
 
 G::includeComponent('recaptchalib.php');
 
@@ -25,7 +26,7 @@ class ReCaptcha{
 		if(!self::$_publicKey){
 			$conf = G::getConfig('recaptcha');
 			if(!$conf['publicKey'] || !$conf['privateKey']){
-				throw new \Gallant\Exceptions\HelperException('error config ReCaptcha');
+				throw new HelperException('error config ReCaptcha');
 			}
 			self::$_publicKey = $conf['publicKey'];
 			self::$_privateKey = $conf['privateKey'];
@@ -45,7 +46,5 @@ class ReCaptcha{
 	static function htmlForm(){
 		return recaptcha_get_html(self::getPublicKey());
 	}
-
-	/*static function */
 }
 

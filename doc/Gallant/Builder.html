@@ -1,641 +1,515 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class Builder</title>
-			<link rel="stylesheet" href="../media/stylesheet.css" />
-						<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
-		</head>
-		<body>
-			<div class="page-body">			
-<h2 class="class-name">Class Builder</h2>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Docs For Class Builder</title>
+  <link rel="stylesheet" href="../media/stylesheet.css" />
+  <script src="../media/lib/classTree.js"></script>
+<link id="webfx-tab-style-sheet" type="text/css" rel="stylesheet" href="../media/lib/tab.webfx.css" />
+<script type="text/javascript" src="../media/lib/tabpane.js"></script>
+  <script language="javascript" type="text/javascript" src="../media/lib/ua.js"></script>
+<script language="javascript" type="text/javascript">
+	var imgPlus = new Image();
+	var imgMinus = new Image();
+	imgPlus.src = "../media/images/plus.gif";
+	imgMinus.src = "../media/images/minus.gif";
+	
+	function showNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgMinus.src;
+		oTable.style.display = "block";
+	}
+	
+	function hideNode(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+				var oImg = document.layers["img" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+				var oImg = document.all["img" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+				var oImg = document.getElementById("img" + Node);
+        		break;
+        }
+		oImg.src = imgPlus.src;
+		oTable.style.display = "none";
+	}
+	
+	function nodeIsVisible(Node){
+        switch(navigator.family){
+        	case 'nn4':
+        		// Nav 4.x code fork...
+				var oTable = document.layers["span" + Node];
+        		break;
+        	case 'ie4':
+        		// IE 4/5 code fork...
+				var oTable = document.all["span" + Node];
+        		break;
+        	case 'gecko':
+        		// Standards Compliant code fork...
+				var oTable = document.getElementById("span" + Node);
+        		break;
+        }
+		return (oTable && oTable.style.display == "block");
+	}
+	
+	function toggleNodeVisibility(Node){
+		if (nodeIsVisible(Node)){
+			hideNode(Node);
+		}else{
+			showNode(Node);
+		}
+	}
+</script>
+<!-- template designed by Julien Damon based on PHPEdit's generated templates, and tweaked by Greg Beaver -->
+<body bgcolor="#ffffff" ><!-- Start of Class Data -->
+<h2>
+	Class Builder
+</h2> (line <span class="linenumber">17</span>)
+<div class="tab-pane" id="tabPane1">
+<script type="text/javascript">
+tp1 = new WebFXTabPane( document.getElementById( "tabPane1" ));
+</script>
 
-<a name="sec-description"></a>
-<div class="info-box">
-	<div class="info-box-title">Description</div>
-	<div class="nav-bar">
-					<span class="disabled">Description</span> |
-							<a href="#sec-descendents">Descendents</a>
-			|											<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-						
-											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-						
-			</div>
-	<div class="info-box-body">
-        		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Gallant\Ar\Builder</p>
-	<ul class="tags">
-				<li><span class="field">author:</span> DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
-				<li><span class="field">version:</span> 1.0</li>
-				<li><span class="field">copyright:</span> 2013 DrNemo</li>
-				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
-			</ul>
-		<p class="notes">
-			Located in <a class="field" href="_ar---Builder.php.html">/ar/Builder.php</a> (line <span class="field">13</span>)
-		</p>
-		
-				
-		<pre></pre>
-	
-			</div>
-</div>
-
-	<a name="sec-descendents"></a>
-	<div class="info-box">
-		<div class="info-box-title">Direct descendents</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-			<span class="disabled">Descendents</span>
-			|												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-								|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<table cellpadding="2" cellspacing="0" class="class-table">
-				<tr>
-					<th class="class-table-header">Class</th>
-					<th class="class-table-header">Description</th>
-				</tr>
-								<tr>
-					<td style="padding-right: 2em"><a href="../Gallant/Model.html">Model</a></td>
-					<td>
-											Gallant\Ar\Model
-										</td>
-				</tr>
-							</table>
-		</div>
-	</div>
-
-	<a name="sec-const-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Class Constant Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
-						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
-												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-				 
-				|
-										| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<div class="const-summary">
-								<div class="const-title">
-					<a href="#CONCET_MODEL" title="details" class="const-name">CONCET_MODEL</a> = 					<span class="var-type"> '::'</span>
-
-				</div>
-								<div class="const-title">
-					<a href="#MANY_TABLE_BUNCH" title="details" class="const-name">MANY_TABLE_BUNCH</a> = 					<span class="var-type"> 'relation::MANY_TABLE_BUNCH'</span>
-
-				</div>
-								<div class="const-title">
-					<a href="#MANY_TO_MANY" title="details" class="const-name">MANY_TO_MANY</a> = 					<span class="var-type"> 'relation::MANY_TO_MANY'</span>
-
-				</div>
-								<div class="const-title">
-					<a href="#MODEL_AS" title="details" class="const-name">MODEL_AS</a> = 					<span class="var-type"> 'mod0_t0'</span>
-
-				</div>
-								<div class="const-title">
-					<a href="#ONE_TO_MANY" title="details" class="const-name">ONE_TO_MANY</a> = 					<span class="var-type"> 'relation::ONE_TO_MANY'</span>
-
-				</div>
-								<div class="const-title">
-					<a href="#ONE_TO_ONE" title="details" class="const-name">ONE_TO_ONE</a> = 					<span class="var-type"> 'relation::ONE_TO_ONE'</span>
-
-				</div>
-							</div>
-		</div>
-	</div>
-
-	<a name="sec-var-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variable Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendents</a> |
-						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
-							| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<div class="var-summary">
-																																																<div class="var-title">
-					<span class="var-type">mixed</span>
-					<a href="#$data" title="details" class="var-name">$data</a>
-				</div>
-																<div class="var-title">
-					<span class="var-type">mixed</span>
-					<a href="#$data_update" title="details" class="var-name">$data_update</a>
-				</div>
-																<div class="var-title">
-					<span class="var-type">mixed</span>
-					<a href="#$parent_models" title="details" class="var-name">$parent_models</a>
-				</div>
-																<div class="var-title">
-					<span class="var-type">mixed</span>
-					<a href="#$_init_" title="details" class="var-name">$_init_</a>
-				</div>
-											</div>
-		</div>
-	</div>
-
-	<a name="sec-method-summary"></a>
-	<div class="info-box">
-		<div class="info-box-title">Method Summary</span></div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendents</a> |
-															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-							
-															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-				 
-				|
-						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
-		</div>
-		<div class="info-box-body">			
-			<div class="method-summary">
-																																		
-				<div class="method-definition">
-					static 						<span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
-										<a href="#fetch" title="details" class="method-name">fetch</a>
-											([<span class="var-type">\Gallant\DB\DBQuery</span>&nbsp;<span class="var-name">$op_query</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-					static 						<span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
-										<a href="#fetchPk" title="details" class="method-name">fetchPk</a>
-											(<span class="var-type">mixid</span>&nbsp;<span class="var-name">0</span>)
-									</div>
-																																		
-				<div class="method-definition">
-											<span class="method-result">Builder</span>
-										<a href="#__construct" title="details" class="method-name">__construct</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$parser</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">Class</span>
-										<a href="#className" title="details" class="method-name">className</a>
-										()
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">bool</span>
-										<a href="#delete" title="details" class="method-name">delete</a>
-											([<span class="var-type">bool</span>&nbsp;<span class="var-name">$delete_as</span> = <span class="var-default">false</span>])
-									</div>
-																														
-				<div class="method-definition">
-											<span class="method-result">mixed</span>
-										<a href="#save" title="details" class="method-name">save</a>
-											([<span class="var-type">bool</span>&nbsp;<span class="var-name">$save_as</span> = <span class="var-default">false</span>])
-									</div>
-														
-				<div class="method-definition">
-											<span class="method-result">serialize</span>
-										<a href="#serialize" title="details" class="method-name">serialize</a>
-										()
-									</div>
-											</div>
-		</div>
-	</div>		
-
-	<a name="sec-vars"></a>
-	<div class="info-box">
-		<div class="info-box-title">Variables</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendents</a> |
-										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
-						
-			
-												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-							
-										| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			
-<a name="var$data" id="$data"><!-- --></A>
-<div class="oddrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			<span class="var-type">mixed</span>
-			<span class="var-name">$data</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">16</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
-<a name="var$data_update" id="$data_update"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			<span class="var-type">mixed</span>
-			<span class="var-name">$data_update</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">17</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
-<a name="var$parent_models" id="$parent_models"><!-- --></A>
-<div class="oddrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			<span class="var-type">mixed</span>
-			<span class="var-name">$parent_models</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">18</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> protected</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
-<a name="var$_init_" id="$_init_"><!-- --></A>
-<div class="evenrow">
-
-	<div class="var-header">
-		<span class="var-title">
-			<span class="var-type">mixed</span>
-			<span class="var-name">$_init_</span>
-			 = <span class="var-default"> false</span>			(line <span class="line-number">15</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	
-		
-		
-
-</div>
-						
-		</div>
-	</div>
-	
-	<a name="sec-methods"></a>
-	<div class="info-box">
-		<div class="info-box-title">Methods</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendents</a> |
-															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
-							
-										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
-						
-		</div>
-		<div class="info-box-body">
-			<A NAME='method_detail'></A>
-<a name="methodfetch" id="fetch"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">static fetch</span> (line <span class="line-number">221</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">fetch</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> - result model</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
-		<span class="method-name">
-			fetch
-		</span>
-					([<span class="var-type">\Gallant\DB\DBQuery</span>&nbsp;<span class="var-name">$op_query</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">\Gallant\DB\DBQuery</span>
-				<span class="var-name">$op_query</span><span class="var-description">: - подготовленный с помощью DBQuery запрос к БД</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodfetchPk" id="fetchPk"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">static fetchPk</span> (line <span class="line-number">249</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">fetchPk</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> - result model</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
-		<span class="method-name">
-			fetchPk
-		</span>
-					(<span class="var-type">mixid</span>&nbsp;<span class="var-name">0</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">mixid</span>
-				<span class="var-name">0</span><span class="var-description">: - primaryKey model  Model::fetchPk(1)  Model::fetchPk(1, 2, 3, ...)  Model::fetchPk( array(1, 2, 3, 4 ,...) )</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="method__construct" id="__construct"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">32</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">__construct отправляет запрос на выполнение выборки</p>
-	
-	<div class="method-signature">
-		<span class="method-result">Builder</span>
-		<span class="method-name">
-			__construct
-		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$parser</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$parser</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodclassName" id="className"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">className</span> (line <span class="line-number">80</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">className</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> Model Name</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">Class</span>
-		<span class="method-name">
-			className
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methoddelete" id="delete"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">delete</span> (line <span class="line-number">372</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">return:</span> true - успешно     false - ошибка</li>
-				<li><span class="field">todo:</span> delete</li>
-				<li><span class="field">todo:</span> delete data Model in db</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">bool</span>
-		<span class="method-name">
-			delete
-		</span>
-					([<span class="var-type">bool</span>&nbsp;<span class="var-name">$delete_as</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">bool</span>
-				<span class="var-name">$delete_as</span><span class="var-description">: (@todo true - удалит все связанные модели, false - удалит только данные этой модели)</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsave" id="save"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<span class="method-title">save</span> (line <span class="line-number">292</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">return:</span> = если insert, то primaryKey Model. если update, то bool:      true - успешно     false - ошибка (если данные модели не изменились запрос отправляться не будет, вернет false)</li>
-				<li><span class="field">todo:</span> save - save data Model in db</li>
-				<li><span class="field">todo:</span> insert model / update model</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">mixed</span>
-		<span class="method-name">
-			save
-		</span>
-					([<span class="var-type">bool</span>&nbsp;<span class="var-name">$save_as</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type">bool</span>
-				<span class="var-name">$save_as</span><span class="var-description">: (@todo true - сохранит все связанные модели, false - сохранение только данные этой модели)</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodserialize" id="serialize"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<span class="method-title">serialize</span> (line <span class="line-number">88</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">serialize</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> object Model</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">serialize</span>
-		<span class="method-name">
-			serialize
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-						
-		</div>
-	</div>
-
-	<a name="sec-consts"></a>
-	<div class="info-box">
-		<div class="info-box-title">Class Constants</div>
-		<div class="nav-bar">
-			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
-										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
-						
-			
-												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
-														| 
-									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
-							
-					</div>
-		<div class="info-box-body">
-			<a name="constCONCET_MODEL" id="CONCET_MODEL"><!-- --></A>
-<div class="evenrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">CONCET_MODEL</span>
-			 = <span class="const-default"> '::'</span>
-			(line <span class="line-number">27</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constMANY_TABLE_BUNCH" id="MANY_TABLE_BUNCH"><!-- --></A>
-<div class="oddrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">MANY_TABLE_BUNCH</span>
-			 = <span class="const-default"> 'relation::MANY_TABLE_BUNCH'</span>
-			(line <span class="line-number">24</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constMANY_TO_MANY" id="MANY_TO_MANY"><!-- --></A>
-<div class="evenrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">MANY_TO_MANY</span>
-			 = <span class="const-default"> 'relation::MANY_TO_MANY'</span>
-			(line <span class="line-number">25</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constMODEL_AS" id="MODEL_AS"><!-- --></A>
-<div class="oddrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">MODEL_AS</span>
-			 = <span class="const-default"> 'mod0_t0'</span>
-			(line <span class="line-number">20</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constONE_TO_MANY" id="ONE_TO_MANY"><!-- --></A>
-<div class="evenrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">ONE_TO_MANY</span>
-			 = <span class="const-default"> 'relation::ONE_TO_MANY'</span>
-			(line <span class="line-number">23</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constONE_TO_ONE" id="ONE_TO_ONE"><!-- --></A>
-<div class="oddrow">
-
-	<div class="const-header">
-		<span class="const-title">
-			<span class="const-name">ONE_TO_ONE</span>
-			 = <span class="const-default"> 'relation::ONE_TO_ONE'</span>
-			(line <span class="line-number">22</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-						
-		</div>
-	</div>
-
-	<p class="notes" id="credit">
-		Documentation generated on Sat, 02 Nov 2013 05:36:33 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+<div class="tab-page" id="Description">
+<h2 class="tab">Description</h2>
+<pre>
+</pre>
+<p>
+	<b><i>Located in File: <a href="_Builder.php.html">/Builder.php</a></i></b><br>
+</p>
+<!-- ========== Info from phpDoc block ========= -->
+<h5>Gallant\Ar\Builder</h5>
+<ul>
+		<li><strong>author:</strong> - DrNemo &lt;<a href="mailto:drnemo@bk.ru">drnemo@bk.ru</a>&gt;</li>
+		<li><strong>version:</strong> - 1.0</li>
+		<li><strong>copyright:</strong> - 2013 DrNemo</li>
+		<li><strong>license:</strong> - <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></li>
+	</ul>
+<br /><hr />
+<span class="type">Classes extended from Builder:</span>
+ 		<dl>
+	<dt><a href="../Gallant/Model.html">Model</a></dt>
+		<dd>Gallant\Ar\Model</dd>
+	</dl>
 	</p>
-	</div></body>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "Description" ) );</script>
+<div class="tab-page" id="tabPage1">
+
+<h2 class="tab">Class Variables</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$children_models" title="details" class="property"><strong>$children_models</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$data" title="details" class="property"><strong>$data</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$data_update" title="details" class="property"><strong>$data_update</strong></a>
+</div>
+<div class="var-title">
+    <span class="var-type">mixed</span>
+    <a href="#var$_init_" title="details" class="property"><strong>$_init_</strong></a>
+</div>
+<hr />
+<a name="var$children_models" id="var$children_models"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$children_models = array()</strong> (line <span class="linenumber">22</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$data" id="var$data"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$data = array()</strong> (line <span class="linenumber">20</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$data_update" id="var$data_update"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$data_update = array()</strong> (line <span class="linenumber">21</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - protected</li>
+	</ul>
+</div>
+<a name="var$_init_" id="var$_init_"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/PublicProperty.gif" border="0" /> <strong class="property">$_init_ =  false</strong> (line <span class="linenumber">19</span>)
+ </h4>
+<h4>Data type : mixed</h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+		<li><strong>access:</strong> - public</li>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage1" ) );</script>
+</div>
+<div class="tab-page" id="constantsTabpage">
+
+<h2 class="tab">Class Constants</h2>
+<!-- ============ VARIABLE DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="const-title">
+    <a href="#constCONCET_MODEL" title="details" class="property"><strong>CONCET_MODEL</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constMANY_TABLE_BUNCH" title="details" class="property"><strong>MANY_TABLE_BUNCH</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constMANY_TO_MANY" title="details" class="property"><strong>MANY_TO_MANY</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constONE_TO_MANY" title="details" class="property"><strong>ONE_TO_MANY</strong></a>
+</div>
+<div class="const-title">
+    <a href="#constONE_TO_ONE" title="details" class="property"><strong>ONE_TO_ONE</strong></a>
+</div>
+<hr />
+<a name="constCONCET_MODEL" id="constCONCET_MODEL"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">CONCET_MODEL =  '::'</strong> (line <span class="linenumber">31</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<a name="constMANY_TABLE_BUNCH" id="constMANY_TABLE_BUNCH"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">MANY_TABLE_BUNCH =  'relation::MANY_TABLE_BUNCH'</strong> (line <span class="linenumber">28</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<a name="constMANY_TO_MANY" id="constMANY_TO_MANY"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">MANY_TO_MANY =  'relation::MANY_TO_MANY'</strong> (line <span class="linenumber">29</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<a name="constONE_TO_MANY" id="constONE_TO_MANY"><!-- --></A>
+<div style="background='#eeeeee'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">ONE_TO_MANY =  'relation::ONE_TO_MANY'</strong> (line <span class="linenumber">27</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<a name="constONE_TO_ONE" id="constONE_TO_ONE"><!-- --></A>
+<div style="background='#ffffff'">
+<h4>
+<img src="../media/images/Constant.gif" border="0" /> <strong class="property">ONE_TO_ONE =  'relation::ONE_TO_ONE'</strong> (line <span class="linenumber">26</span>)
+ </h4>
+<!-- ========== Info from phpDoc block ========= -->
+<ul>
+	</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "constantsTabpage" ) );</script>
+</div>
+<div class="tab-page" id="tabPage2">
+<h2 class="tab">Method Detail</h2>
+<!-- ============ METHOD DETAIL =========== -->
+<strong>Summary:</strong><br />
+<div class="method-summary">
+    <div class="method-definition">
+    static         <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
+        <a href="#methodfetch" title="details" class="method-name">fetch</a>
+        ([<span class="var-type">\Gallant\Ar\Criteria</span>&nbsp;<span class="var-name">$criteria</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+    static         <span class="method-result"><a href="../Gallant/Iterator.html">Iterator</a></span>
+        <a href="#methodfetchPk" title="details" class="method-name">fetchPk</a>
+        (<span class="var-type">mixid</span>&nbsp;<span class="var-name">$pk</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Class</span>
+        <a href="#methodclassName" title="details" class="method-name">className</a>
+        ()
+        </div>
+    <div class="method-definition">
+            <span class="method-result">Builder</span>
+        <a href="#method__construct" title="details" class="method-name">__construct</a>
+        ([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">bool</span>
+        <a href="#methoddelete" title="details" class="method-name">delete</a>
+        ([<span class="var-type">bool</span>&nbsp;<span class="var-name">$delete_as</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">void</span>
+        <a href="#methodparser" title="details" class="method-name">parser</a>
+        (<span class="var-type"></span>&nbsp;<span class="var-name">$source</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$prefs</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">class</span>
+        <a href="#methodrelated" title="details" class="method-name">related</a>
+        (<span class="var-type">string</span>&nbsp;<span class="var-name">$rel</span>)
+        </div>
+    <div class="method-definition">
+            <span class="method-result">mixed</span>
+        <a href="#methodsave" title="details" class="method-name">save</a>
+        ([<span class="var-type">bool</span>&nbsp;<span class="var-name">$save_as</span> = <span class="var-default">false</span>])
+        </div>
+    <div class="method-definition">
+            <span class="method-result">serialize</span>
+        <a href="#methodserialize" title="details" class="method-name">serialize</a>
+        ()
+        </div>
+</div>
+<hr />
+<A NAME='method_detail'></A>
+
+
+<a name="methodfetch" id="methodfetch"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method fetch</strong> (line <span class="linenumber">311</span>)
+ </h4> 
+<h4><i><a href="../Gallant/Iterator.html">Iterator</a></i> <strong>fetch(
+[\Gallant\Ar\Criteria
+$criteria = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>fetch</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>\Gallant\Ar\Criteria $criteria</strong>: - подготовленный с помощью Criteria запрос к БД</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - - result model</li>
+		</ul>
+</div>
+<a name="methodfetchPk" id="methodfetchPk"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Static Method fetchPk</strong> (line <span class="linenumber">338</span>)
+ </h4> 
+<h4><i><a href="../Gallant/Iterator.html">Iterator</a></i> <strong>fetchPk(
+mixid
+$pk)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>fetchPk</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>mixid $pk</strong>: - primaryKey model  Model::fetchPk(1)  Model::fetchPk( array(1, 2, 3, 4 ,...) )</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - - result model</li>
+		</ul>
+</div>
+<a name="methodclassName" id="methodclassName"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method className</strong> (line <span class="linenumber">76</span>)
+ </h4> 
+<h4><i>Class</i> <strong>className(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>className</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - Model Name</li>
+		</ul>
+</div>
+<a name="method__construct" id="method__construct"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/Constructor.gif" border="0" /> <strong class="method">Constructor __construct</strong> (line <span class="linenumber">36</span>)
+ </h4> 
+<h4><i>Builder</i> <strong>__construct(
+[
+$data = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $data</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methoddelete" id="methoddelete"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method delete</strong> (line <span class="linenumber">456</span>)
+ </h4> 
+<h4><i>bool</i> <strong>delete(
+[bool
+$delete_as = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>bool $delete_as</strong>: (@todo true - удалит все связанные модели, false - удалит только данные этой модели)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - true - успешно     false - ошибка</li>
+			<li><strong>todo</strong> - delete</li>
+			<li><strong>todo</strong> - delete data Model in db</li>
+		</ul>
+</div>
+<a name="methodparser" id="methodparser"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method parser</strong> (line <span class="linenumber">264</span>)
+ </h4> 
+<h4><i>void</i> <strong>parser(
+
+$source, 
+$prefs)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong> $source</strong>: </li>
+			<li><strong> $prefs</strong>: </li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+		</ul>
+</div>
+<a name="methodrelated" id="methodrelated"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method related</strong> (line <span class="linenumber">482</span>)
+ </h4> 
+<h4><i>class</i> <strong>related(
+string
+$rel)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>related возвращяет связаные модели</h5>
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>string $rel</strong>: 'model_key'</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - Gallant\Ar\Iterator</li>
+			<li><strong>access</strong> - public</li>
+		</ul>
+</div>
+<a name="methodsave" id="methodsave"><!-- --></a>
+<div style="background='#ffffff'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method save</strong> (line <span class="linenumber">378</span>)
+ </h4> 
+<h4><i>mixed</i> <strong>save(
+[bool
+$save_as = false])</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+		<h4>Parameters</h4>
+	<ul>
+			<li><strong>bool $save_as</strong>: (@todo true - сохранит все связанные модели, false - сохранение только данные этой модели)</li>
+		</ul>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - = если insert, то primaryKey Model. если update, то boolen:      int - успешно, количество затронутых рядов. Внимание, быть 0 если модель не изменялась     false - ошибка (если данные модели не изменились запрос отправляться не будет, вернет false)</li>
+			<li><strong>todo</strong> - save - save data Model in db</li>
+			<li><strong>todo</strong> - insert model / update model</li>
+		</ul>
+</div>
+<a name="methodserialize" id="methodserialize"><!-- --></a>
+<div style="background='#eeeeee'"><h4>
+<img src="../media/images/PublicMethod.gif" border="0" /> <strong class="method">Method serialize</strong> (line <span class="linenumber">84</span>)
+ </h4> 
+<h4><i>serialize</i> <strong>serialize(
+)</strong></h4>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<h5>serialize</h5>
+		
+	<h4>Info</h4>
+	<ul>
+			<li><strong>return</strong> - object Model</li>
+		</ul>
+</div>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "tabPage2" ) );</script></div>
+<div class="tab-page" id="iVars">
+<h2 class="tab">Inherited Variables</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iVars" ) );</script>
+<!-- =========== VAR INHERITED SUMMARY =========== -->
+<A NAME='var_inherited_summary'><!-- --></A>
+<h3>Inherited Class Variable Summary</h3>
+
+	</div>
+<div class="tab-page" id="iMethods">
+<h2 class="tab">Inherited Methods</h2>
+<script type="text/javascript">tp1.addTabPage( document.getElementById( "iMethods" ) );</script>
+<!-- =========== INHERITED METHOD SUMMARY =========== -->
+<A NAME='functions_inherited'><!-- --></A>
+<h3>Inherited Method Summary</h3>
+
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+setupAllTabs();
+
+//]]>
+</script>
+	<div id="credit">
+		<hr />
+		Documentation generated on Thu, 06 Mar 2014 17:31:57 +0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</div>
+</body>
 </html>

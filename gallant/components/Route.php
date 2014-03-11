@@ -1,6 +1,7 @@
 <?
 /**
 * Gallant\Components\Route
+* Компонент Route, определяет какой control и action будет вызван. А так же дополнительные параметры вызова
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
@@ -10,7 +11,8 @@
 */
 
 namespace Gallant\Components;
-use \G as G;
+use \G;
+use \Gallant\Exceptions\CoreException;
 
 class Route{
 	private $control = false;
@@ -42,47 +44,14 @@ class Route{
 
 		if($config_route['type'] == 'get'){
 			$route = G::getRequest('get', 'route');
-		}else if($config_route['type'] == 'request_url'){
+		}else if($config_route['type'] == 'request'){
 			$route = parse_url($_SERVER['REQUEST_URI']);
 			$route = $route['path'];
 		}else{
-			throw new \Gallant\Exceptions\CoreException('error type route');
+			throw new CoreException('error type route');
 		}
-		$routes = array_values(array_filter(explode('/', strtolower($route).'/'), 'trim'));
-
-		if(sizeof($routes) > 0){
-			$this->_routes = $routes;
-		}
-	}
-
-	function getRoutes(){
-		return $this->_routes;
-	}
-
-	function setRoutes($routes){
-		return $this->_routes = $routes;
-	}
-
-	function getUrl(){
-		return $this->_urls;
-	}
-
-	function getUrlStr(){
-		return '/'.strtolower(implode('/', $this->_urls));
-	}
-
-	function getPath(){
-		return $this->_path;
-	}
-
-	function getPathStr(){
-		return '/'.strtolower(implode('/', $this->_path));
-	}
-
-	function getRequestUrl(){
-		$url = parse_url($_SERVER['REQUEST_URI']);
-		return $url['path'];
-	}    
+		$this->setRoutes($route);
+	}  
 
 	function route(){
 		$default_control = self::PREF_CONTROL.$this->default_control;
@@ -97,11 +66,11 @@ class Route{
 		array_walk($routes, G::$filter['html'], G::$filter['html']);
 		
 		if(!$folder_control){
-			throw new \Gallant\Exceptions\CoreException('error path control in config');
+			throw new CoreException('error path control in config');
 		}
 
 		$_control = '\\Control\\';
-		$_action = G::isAjax() ? 'ajax' : 'action';
+		$_action = G::isAjax() ? self::PREF_AJAX : self::PREF_ACTION;
 
 		$_control_flag = $_action_flag = false;
 
@@ -121,14 +90,14 @@ class Route{
 						$folder_control .= $rout.'/';
 
 						$this->_urls[] = $rout;
-						$this->_path[] = $rout;
+						$this->_path[] = $routU;
 					// наличее контроллера в "папке"
 					}else if(class_exists($_control.self::PREF_CONTROL.$routU)){
 						$_control .= self::PREF_CONTROL.$routU;
 						$_control_flag = true;
 
 						$this->_urls[] = $rout;
-						$this->_path[] = $rout;
+						$this->_path[] = $routU;
 					// если контроллер не найден
 					}else{
 						/* ищем default control в текущей папке */
@@ -142,15 +111,12 @@ class Route{
 								$_action .= $routU;
 								$_action_flag = true;
 
-								$this->_path[] = $rout;
+								$this->_path[] = $routU;
 								$this->_urls[] = $rout;
 							/* иначе ищем метод 404*/
 							}else if(method_exists($_control, $action_404)){
 								$_action = $action_404;
 								$_action_flag = true;
-
-								$this->_urls[] = '404';
-
 								$this->_path[] = '404';
 								$param[] = $rout;
 							/* вызываем корневой default control и его метод 404 */
@@ -173,7 +139,7 @@ class Route{
 							$this->_path = array($this->default_control, '404');
 
 						}else{
-							throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
+							throw new CoreException('error not method 404 in default control');
 						}
 					}
 				}else if(!$_action_flag){
@@ -183,19 +149,13 @@ class Route{
 
 						$this->_urls[] = $rout;
 						$this->_path[] = $rout;
+
 					}else if(method_exists($_control, $action_404)){
 						$_action = $action_404;
 						$_action_flag = true;
 
 						$this->_urls[] = '404';
 						$this->_path[] = '404';
-
-					}else if(method_exists($_control, $default_action)){
-						$_action = $default_action;
-						$_action_flag = true;
-						
-						$this->_path[] = $this->default_action;
-						$param[] = $rout;
 
 					}else if(method_exists('\\Control\\'.$default_control, $action_404)){
 						$_control = '\\Control\\'.$default_control;
@@ -205,7 +165,7 @@ class Route{
 						$this->_urls = array($this->default_control, '404');
 						$this->_path = array($this->default_control, '404');
 					}else{
-						throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
+						throw new CoreException('error: not method 404 in default control');
 					}
 				}
 			}else{
@@ -214,49 +174,36 @@ class Route{
 					if(class_exists($_control.$default_control)){
 						$_control .= $default_control;
 						$_control_flag = true;
-
-						$this->_urls[] = $this->default_control;
 						$this->_path[] = $this->default_control;
-
 					}else if(class_exists('\\Control\\'.$default_control)){
 						$_control = '\\Control\\'.$default_control;
 						$_control_flag = true;
-						$this->_urls[] = $this->default_control;
+						$this->_path[] = $this->default_control;
 						if(method_exists($_control, $action_404)){
 							$_action = $action_404;
-
-							$this->_urls[] = '404';
 							$this->_path[] = '404';
-
 							$_action_flag = true;
 						}else{
-							throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
+							throw new CoreException('error not method 404 in default control');
 						}
 					}
 				}
 				if(!$_action_flag){
 					if(method_exists($_control, $default_action)){
 						$_action = $default_action;
-						$_action_flag = true;
-						
+						$_action_flag = true;						
 						$this->_path[] = $this->default_action;
-
 					}else if(method_exists($_control, $action_404)){
 						$_action = $action_404;
 						$_action_flag = true;
-
-						$this->_urls[] = '404';
 						$this->_path[] = '404';
-
 					}else if(method_exists('\\Control\\'.$default_control, $action_404)){
 						$_control = '\\Control\\'.$default_control;
 						$_action = $action_404;
 						$_control_flag = $_action_flag = true;
-
-						$this->_urls = array($this->default_control, '404');
 						$this->_path = array($this->default_control, '404');
 					}else{
-						throw new \Gallant\Exceptions\CoreException('error not method 404 in default control');
+						throw new CoreException('error not method 404 in default control');
 					}
 				}
 			}
@@ -269,33 +216,118 @@ class Route{
 		$this->control = $_control;
 		$this->action = $_action; 
 		$this->param = $param;
+	}
 
-		
-	}    
+	private function errorPage($code){
+		/**
+		*@todo
+		*/
+	}
 
+	/**
+	* getRoutes возвращяет адрес вызванного контроллера 
+	* 
+	* @return array 
+	*/
+	function getRoutes(){
+		return $this->_routes;
+	}
+
+	/**
+	* setRoutes позволяет изменить адрес контроллера, однако вызван должен быть до Entry::render
+	* 
+	* @param string 
+	*/
+	function setRoutes($routes){
+		$this->_routes = array_values(array_filter(explode('/', strtolower($routes).'/'), 'trim'));
+		$this->route();
+	}
+
+	/**
+	* getUrl вернет корректный url для текущего контроллера в виде массива
+	* 
+	* @return array 
+	*/
+	function getUrl(){
+		return $this->_urls;
+	}
+
+	/**
+	* getUrlStr вернет корректный url для текущего контроллера в виде строки адреса
+	* 
+	* @return string 
+	*/
+	function getUrlStr(){
+		return '/'.strtolower(implode('/', $this->_urls)).'/';
+	}
+
+	/**
+	* getUrl вернет путь к текущемму контроллеру в виде массива
+	* 
+	* @return array 
+	*/
+	function getPath(){
+		return $this->_path;
+	}
+
+	/**
+	* getPathStr вернет корректный url для текущего контроллера в виде строки адреса
+	* 
+	* @return string 
+	*/
+	function getPathStr(){
+		return '/'.strtolower(implode('/', $this->_path)).'/';
+	}
+
+	/**
+	* setControl позволяет изменить выбранный контроллер, однако вызван должен быть до Entry::render
+	* 
+	* @param string - class name (Control\Test\controlPage) 
+	*/
 	function setControl($control){
 		if(!class_exists('\\'.$control)){
-			throw new \Gallant\Exceptions\CoreException('error not control :'.$control);
+			throw new CoreException('error not control :'.$control);
 		}
 		$this->control = $control;
 	}
 
+	/**
+	* getControl вернет имя выбраного контроллера
+	* 
+	* @return string - control name (Control\Test\controlPage) 
+	*/
 	function getControl(){
 		return $this->control;
 	}
 
+	/**
+	* setAction позволяет изменить выбранный action, однако вызван должен быть до Entry::render
+	* 
+	* @param string - action name (actionMyIndex) 
+	*/
 	function setAction($action){
 		if(!method_exists('\\'.$this->control, $action)){
-			throw new \Gallant\Exceptions\CoreException('error not method "'.$action.'" in control :'.$this->control);
+			throw new CoreException('error not method "'.$action.'" in control :'.$this->control);
 		}
 		$this->action = $action;
 	}
 
+	/**
+	* getAction вернет имя выбраного action
+	* 
+	* @return string - action name (actionMyIndex) 
+	*/
 	function getAction(){
 		return $this->action;
 	}
 
-	function getParam($format){
+	/**
+	* getParam вернет дополнительные параметры роутинга
+	* 
+	* @param $format mixed
+	* @return array - action name (actionMyIndex) 
+	*/
+	function getParam($format = false){
 		if(is_array($format)){
 			$format_count = sizeof($format);
 			$param_count = sizeof($this->param);

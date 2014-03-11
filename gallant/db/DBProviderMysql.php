@@ -11,34 +11,40 @@
 
 namespace Gallant\DB;
 
+use \PDO;
+use \Gallant\Exceptions\CoreException;
+
 class DBProviderMysql{
 	private $pdo = false;
-	private $count = 0;
 	private $report = array();
-	private $structure = array();
 
 	function __construct($config){
 		if (!class_exists('\PDO')){
-			throw new \Gallant\Exceptions\CoreException('Fatal Error: To work needs the support of PDO.');
+			throw new CoreException('Fatal Error: To work needs the support of PDO.');
 		}
 		try{
-			if(!$this->pdo = new \PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass'])) die('Fatal Error: Error connect');
+			if(!$this->pdo = new PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass'])) die('Fatal Error: Error connect');
 			$this->pdo->query("SET CHARACTER SET $config[character]");		
 			$this->pdo->query("SET character_set_client = '$config[character]'");
 			$this->pdo->query("SET character_set_connection = '$config[character]'");
 			$this->pdo->query("SET character_set_results = '$config[character]'");
 		}catch (Exception $e) {
-			throw new \Gallant\Exceptions\CoreException('Fatal Error: Error connect '.  $e->getMessage());
-		}
-		
+			throw new CoreException('Fatal Error: Error connect '.  $e->getMessage());
+		}		
 	}
 
-	function update($DBQuery, $replice){
-		$sql = "UPDATE `".$DBQuery['table'][0]['name']."` SET ";
-		$data = $DBQuery['attr'];
+	function update(SqlQuery $query){
+		$tables = $query->get('table');
+		if(!is_array($tables) || sizeof($tables) == 0){
+			throw new CoreException("No calling table()");
+		}
+
+		$sql = "UPDATE `".$tables[0][0]."` SET ";
+
+		$data = $query->get('attr');
 
 		if(!$data){
-			throw new \Gallant\Exceptions\CoreException('Fatal Error: update not attr');
+			throw new CoreException('Fatal Error: update not attr');
 		}
 
 		$update = array();
@@ -59,30 +65,14 @@ class DBProviderMysql{
 		}
 		$sql .= "$upd";
 
-		// where
-		if($DBQuery['where']){
-			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
+		////////////////// where
+		$where = $query->get('where');
+		if($where){
+			$sql .= " WHERE ".implode(' AND ', $where);
 		}
+		$query->reAttr($attr);
 
-		///////////////////////////////
-		// p($sql, $attr, $data);
-		if(!$pdo_query = $this->pdo->prepare($sql)){			
-			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
-		}
-
-		if($attr){
-			$exec = $pdo_query->execute($attr);
-		}else{
-			$exec = $pdo_query->execute();
-		}
-
-		if($exec){
-			$this->report[$this->count] = $sql;
-			$this->count ++;
-			return $exec;
-		}else{
-			return false;
-		}
+		return $sql;
 	}
 
 	function delete($DBQuery){
@@ -110,7 +100,7 @@ class DBProviderMysql{
 		////////////////// QUERY
 		// p($sql, $attr);
 		if(!$pdo_query = $this->pdo->prepare($sql)){			
-			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
+			throw new CoreException("DB error query sql");			
 		}
 
 		if($attr){
@@ -129,11 +119,17 @@ class DBProviderMysql{
 		}
 	}
 
-	function insert($DBQuery, $replice = false){
-		$sql = "INSERT INTO `".$DBQuery['table'][0]['name']."` ";
-		if($DBQuery['attr']){
-			$attr_keys = array_keys($DBQuery['attr']);
-			$attr_val = array_values($DBQuery['attr']);
+	function insert(SqlQuery $query){
+		$tables = $query->get('table');
+		if(!is_array($tables) || sizeof($tables) == 0){
+			throw new CoreException("No calling table()");
+		}
+		$sql = "INSERT INTO `".$tables[0][0]."` ";
+
+		$attr = $query->get('attr');
+		if($attr){
+			$attr_keys = array_keys($attr);
+			$attr_val = array_values($attr);
 			$f = function($val){
 				return "`$val`";
 			};
@@ -145,48 +141,51 @@ class DBProviderMysql{
 			
 			$attr_execute = array_map($f2, $attr_keys);
 			
-			$sql .= " VALUES ( ".implode(', ', $attr_execute)." );";
+			$sql .= " VALUES ( ".implode(', ', $attr_execute)." ) ";
 
 			$attr = array_combine($attr_execute, $attr_val);
 		}else{
 			$sql .= " () VALUES ()";
 		}
-
-		// p($sql, $attr);
-		if(!$pdo_query = $this->pdo->prepare($sql)){			
-			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
+		if($attr){
+			$query->reAttr($attr);
 		}
-		$exec = $pdo_query->execute($attr);
-		
-		return $this->pdo->lastInsertId();
+
+		return $sql;
 	}
 
-	function select($DBQuery, $replice = false){
+	function select(SqlQuery $query){
 		$sql = "SELECT ";
 
-		////////////////// colons 
-		if($DBQuery['columns']){
-			$sql .= implode(', ', $DBQuery['columns']);
+		////////////////// colons
+		$columns = $query->get('columns');
+		if(is_array($columns) && sizeof($columns)){
+			$sql .= implode(', ', $columns);
 		}else{
 			$sql .= '*';
 		}
 
-
 		////////////////// table
+		$tables = $query->get('table');
+		if(!is_array($tables) || sizeof($tables) == 0){
+			throw new CoreException("No calling table()");
+		}
 		$f_table = function(&$val, $key){
-			$val = "`$val[name]` AS `$val[as]`";
+			$name = "$val[0]";
+			if($val[1]){
+				$name .= " AS `$val[1]`";
+			}
+			$val = $name;
 		};
-		$table = $DBQuery['table'];
-		array_walk($table, $f_table);
-		$sql .= " FROM ".implode(', ', $table);
-
+		array_walk($tables, $f_table);
+		$sql .= " FROM ".implode(', ', $tables);
 
 		////////////////// join
-		if(isset($DBQuery['join'])){
-			$joins = $DBQuery['join'];
+		$joins = $query->get('join');
+		if($joins){
 			$f_join = function(&$val, $key){
-				$t = ($val['as']) ? "`$val[table]` AS `$val[as]`" : "`$val[table]`";
-				$val = " LEFT JOIN $t ON $val[on]";
+				$t = ($val[1]) ? "$val[0] AS `$val[1]`" : "`$val[0]`";
+				$val = " LEFT JOIN $t ON $val[2]";
 			};
 			array_walk($joins, $f_join);
 			$sql .= implode(' ', $joins);
@@ -194,72 +193,78 @@ class DBProviderMysql{
 
 
 		////////////////// where
-		if(isset($DBQuery['where'])){
-			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
+		$where = $query->get('where');
+		if($where){
+			$sql .= " WHERE ".implode(' AND ', $where);
 		}
 
 		////////////////// group
-		if(isset($DBQuery['group'])){
-			$sql .= " GROUP BY $DBQuery[group]";
+		$group = $query->get('group');
+		if($group){
+			$sql .= " GROUP BY $group";
 		}
 
 		////////////////// order
-		if(isset($DBQuery['order'])){
+		if($orders = $query->get('order')){
 			$sql .= " ORDER BY ";
 			$sql_order = '';
-			foreach($DBQuery['order'] as $order){
+			foreach($orders as $order){
 				if($sql_order) $sql_order .= ', ';
-				$sort = ($order[0] == 'asc') ? 'ASC' : 'DESC';
-				$sql_order .= " $order[1] $sort ";
+				$sort = ($order[1] == 'ASC') ? 'ASC' : 'DESC';
+				$sql_order .= " $order[0] $sort ";
 			}
 			$sql .= $sql_order;
 		}		
 
 		////////////////// limit
-		if(isset($DBQuery['limit'])){
-			$sql .= " LIMIT $DBQuery[limit]";
-			if(isset($DBQuery['ofset'])){
-				$sql .= ", $DBQuery[ofset]";
+		if(($limit = $query->get('limit')) !== false){
+			$sql .= " LIMIT $limit";
+			if($offset = $query->get('offset')){
+				$sql .= ", $offset";
 			}
 		}
 
-		////////////////// attr
-		$attr = false;
-		if(isset($DBQuery['attr'])){
-			$attr = $DBQuery['attr'];
+		return $sql;
+	}
+
+	function fetch($query_sql, $attr = array()){
+		$type = substr($query_sql, 0, 6);
+		//p($type, $query_sql, $attr);
+
+		if(!$pdo_query = $this->pdo->prepare($query_sql)){			
+			throw new CoreException("DB error query sql: $query_sql");			
 		}
 
-		////////////////// REPLACE
-		if($replice){
-			$sql = self::replace($sql, $replice);
-		}
-		
-		////////////////// QUERY
-		// p($sql, $attr, $replice);
-		if(!$pdo_query = $this->pdo->prepare($sql)){			
-			throw new \Gallant\Exceptions\CoreException("DB error query sql");			
-		}
-
-		if($attr){
+		if($attr && sizeof($attr)){
 			$exec = $pdo_query->execute($attr);
 		}else{
 			$exec = $pdo_query->execute();
 		}
-		
 
-		if(!$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC)){
+		$this->report[] = array($type, $query_sql, $attr);
+		
+		if($type == 'SELECT'){
+			$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC);
+			if(!$result){
+				return false;
+			}else{				
+				return $result;
+			}
+		}else if($type == 'INSERT'){
+			$return_id = $this->pdo->lastInsertId();
+
+			if($pdo_query->rowCount()){
+				if($return_id) return $return_id;
+				return true;
+			}
+			
 			return false;
-		}else{
-			// p($result);
-			$this->report[$this->count] = $sql;
-			$this->count ++;
-			return $result;
+		}else if($type == 'UPDATE'){
+			return $exec;
 		}
 	}
 
-	function replace($sql, $replace){
-		$keys = array_map(function($val){return "{{{$val}}}";}, array_keys($replace));
-
-		return str_replace($keys, array_values($replace), $sql);
+	function debug(){
+		return $this->report;
 	}
 }
