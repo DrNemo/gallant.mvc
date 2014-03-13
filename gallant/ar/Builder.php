@@ -110,12 +110,6 @@ class Builder{
 		return $colons;
 	}
 
-	static private function queryConstructInit($criteria){
-		/**
-		*@todo queryConstruct -> if($criteria_or_pref instanceof Criteria){
-		*/
-	}
-
 	/**
 	*
 	*
@@ -158,6 +152,7 @@ class Builder{
 
 			// limit local
 			if(($limit = $criteria->get('limit')) !== false){
+				if(!isset($limit[1])) $limit[1] = false;
 				$query->limit($limit[0], $limit[1]);
 			}
 
@@ -245,8 +240,8 @@ class Builder{
 					}
 
 					if($relation['relation'] == self::MANY_TABLE_BUNCH){
-						$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
-						$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+						$my_column = isset($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+						$his_column = isset($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
 
 						$m_pk = $model::primaryKey();
 						$r_pk = $rel_model::primaryKey();
@@ -255,15 +250,15 @@ class Builder{
 						$glob_query->join(array($relation['table'], $bunch_pref), "`$model_pref`.`$m_pk` = `$bunch_pref`.`$my_column`");
 						$glob_query->join(array($rel_model::table(), $rel_pref), "`$rel_pref`.`$r_pk` = `$bunch_pref`.`$his_column`");
 					}else{
-						$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
-						$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+						$my_column = isset($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+						$his_column = isset($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
 
 						$glob_query->join(array($rel_model::table(), $rel_pref), "`$model_pref`.`$my_column` = `$rel_pref`.`$his_column`");
 					}
 
 					$comby_key_pref[$model.'::'.$key] = $rel_pref;
-
-					list($rel_query, $rel_query_pref) = $rel_model::queryConstruct($rel_pref, $iter_model + 1);
+					$iter_model += 1;
+					list($rel_query, $rel_query_pref) = $rel_model::queryConstruct($rel_pref, $iter_model);
 					$glob_query = $glob_query->merge($rel_query);
 					$comby_key_pref = array_merge($comby_key_pref, $rel_query_pref);					
 				}
@@ -309,11 +304,10 @@ class Builder{
 			
 		}
 		$func_class = function($val) use ($model){
-			return new $model(new \Gallant\Ar\Parser($val));
+			return new $model(new Parser($val));
 		};
 
 		return array_map($func_class, $data);
-		
 	}
 	/**
 	* fetch
@@ -429,7 +423,6 @@ class Builder{
 				$pks = array($pks);
 			}
 			$new_pk = $query->attr($data)->insert();
-			var_dump($new_pk);
 			
 			if($new_pk){
 				if(!is_array($new_pk)){
@@ -469,8 +462,7 @@ class Builder{
 	function delete($delete_as = false){
 		$model = self::className();
 
-		$query = new arQuery($model::provider());
-		$query->table($model::table());
+		$query = G::dbQuery($model::provider())->table($model::table());
 
 		$pks = $model::primaryKey();
 		if(!is_array($pks)) $pks = array($pks);
@@ -497,7 +489,7 @@ class Builder{
 		if(!($relation = $rels[$rel])){
 			throw new ArException("not fount relation: $rel");
 		}
-		if(!$this->children_models[$rel] && isset($relation['load']) && $relation['load'] === false){			
+		if((!isset($this->children_models[$rel]) || is_null($this->children_models[$rel])) && isset($relation['load']) && $relation['load'] === false){			
 			/**
 			* @todo: загрузка связанной модели при обращение, если ее параметр load => false
 			*/
@@ -510,8 +502,8 @@ class Builder{
 				throw new ArException("not fount Model: $model");
 			}
 
-			$my_column = ($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
-			$his_column = ($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
+			$my_column = isset($relation['my_column']) ? $relation['my_column'] : $model::primaryKey();
+			$his_column = isset($relation['his_column']) ? $relation['his_column'] : $rel_model::primaryKey();
 
 			$rel_id = $this->$my_column;
 			if(!$rel_id) return new Iterator;
@@ -527,8 +519,10 @@ class Builder{
 
 			$this->children_models[$rel] = $data;
 			return $this->children_models[$rel];
-		}else{
+		}else if(isset($this->children_models[$rel]) && !is_null($this->children_models[$rel])){
 			return $this->children_models[$rel];
+		}else{
+			return false;
 		}
 	}
 }

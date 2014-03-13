@@ -82,7 +82,7 @@ class SqlQuery{
 	* @return $this
 	*/
 	function columns($column){
-		if(!$this->query['columns']) $this->query['columns'] = array_values($column);
+		if(!isset($this->query['columns'])) $this->query['columns'] = array_values($column);
 		else $this->query['columns'] = array_merge($this->query['columns'], array_values($column));
 		return $this;
 	}
@@ -165,7 +165,7 @@ class SqlQuery{
 
 	function order($colomn, $sort = 'asc'){
 		$sort = strtoupper($sort);
-		if(!$this->query['order']){
+		if(!isset($this->query['order'])){
 			$this->query['order'] = array();
 		}
 		if(is_array($colomn)){
@@ -283,8 +283,8 @@ class SqlQuery{
 	* @return mixid количество затронутых рядов
 	*/
 	final function delete($replice = false){
-		/*$this->query['type'] = 'delete';
-		return G::DB($this->provider)->delete($this->query, $replice)->fetch();*/
+		$sql = G::DB($this->provider)->delete($this);
+		return G::DB($this->provider)->fetch($sql, $this->get('attr'));
 	}
 
 

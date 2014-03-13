@@ -23,7 +23,7 @@ class Parser{
 		if(!$this->source) return array();
 		$result = array();
 		foreach ($this->source as &$line) {
-			if($line[$model]){
+			if(isset($line[$model])){
 				$result = $line[$model];
 				unset($line[$model]);
 				break;
@@ -39,7 +39,7 @@ class Parser{
 		
 		$ext = false;
 		foreach ($this->source as &$line){
-			if($line[$pref]){
+			if(isset($line[$pref])){
 				$line[$model] = $line[$pref];
 				unset($line[$pref]);
 				$ext = true;

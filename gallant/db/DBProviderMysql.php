@@ -75,48 +75,28 @@ class DBProviderMysql{
 		return $sql;
 	}
 
-	function delete($DBQuery){
-		$sql = "DELETE FROM `".$DBQuery['table'][0]['name']."` ";
+	function delete(SqlQuery $query){
+		$tables = $query->get('table');
+		if(!is_array($tables) || sizeof($tables) == 0){
+			throw new CoreException("No calling table()");
+		}
+		$sql = "DELETE FROM `".$tables[0][0]."` ";
 
 		////////////////// where
-		if($DBQuery['where']){
-			$sql .= " WHERE ".implode(' AND ', $DBQuery['where']);
+		$where = $query->get('where');
+		if($where){
+			$sql .= " WHERE ".implode(' AND ', $where);
 		}
 
 		////////////////// limit
-		if(isset($DBQuery['limit'])){
-			$sql .= " LIMIT $DBQuery[limit]";
-			if(isset($DBQuery['ofset'])){
-				$sql .= ", $DBQuery[ofset]";
+		if(($limit = $query->get('limit')) !== false){
+			$sql .= " LIMIT $limit";
+			if($offset = $query->get('offset')){
+				$sql .= ", $offset";
 			}
 		}
 
-		////////////////// attr
-		$attr = false;
-		if(isset($DBQuery['attr'])){
-			$attr = $DBQuery['attr'];
-		}
-
-		////////////////// QUERY
-		// p($sql, $attr);
-		if(!$pdo_query = $this->pdo->prepare($sql)){			
-			throw new CoreException("DB error query sql");			
-		}
-
-		if($attr){
-			$exec = $pdo_query->execute($attr);
-		}else{
-			$exec = $pdo_query->execute();
-		}
-		
-
-		if(!$result = $pdo_query->rowCount()){
-			return false;
-		}else{
-			$this->report[$this->count] = $sql;
-			$this->count ++;
-			return $result;
-		}
+		return $sql;
 	}
 
 	function insert(SqlQuery $query){
@@ -261,6 +241,10 @@ class DBProviderMysql{
 			return false;
 		}else if($type == 'UPDATE'){
 			return $exec;
+		}else if($type == 'DELETE'){
+			return $pdo_query->rowCount();
+		}else{
+			throw new CoreException("Not fount handler: $type");
 		}
 	}
 

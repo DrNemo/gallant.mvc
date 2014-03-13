@@ -102,6 +102,10 @@ class Template{
 		return $this->main;
 	}
 
+	function ob(){
+		ob_start();
+	}
+
 	function tpl($file = false, $Result = array()){
 		$Result = (object)$Result;
 		if($file){
@@ -128,7 +132,7 @@ class Template{
 	}
 
 	function render($result = false){
-		ob_clean();
+		//ob_clean();
 		ob_start();
 
 		if(!G::isAjax()){

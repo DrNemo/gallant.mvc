@@ -47,7 +47,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.1.0 alfa";
+		return "0.1.1 alfa";
 	}
 	
 	/**
@@ -87,8 +87,6 @@ class G{
 
 		self::$_route = new Route();
 
-		self::$_route->route();	
-
 		G::includeComponent('array_column.php');
 		
 		$entry = false;
@@ -99,6 +97,8 @@ class G{
 
 		$control = self::getControl();
 		$action = self::getAction();
+
+		self::template()->ob();
 
 		$apply = new $control();
 		$result = $apply->$action();
@@ -242,6 +242,7 @@ class G{
 		if($type != 'post' && $type != 'get' && $type != 'files'){
 			throw new CoreException('error type Request in function G::getRequest($type, $key, $filter)');
 		}
+		$param = false;
 		if(!$key){
 			$param = self::$request[$type];
 		}else if(isset(self::$request[$type][$key])){

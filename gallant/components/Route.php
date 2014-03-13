@@ -25,21 +25,21 @@ class Route{
 
 	private $param = array();
 
-	private $_routes = array();
+	private $routes = array();
 
-	private $_urls = array();
-	private $_path = array();
+	private $urls = array(); // url active control
 
 	const PREF_CONTROL = 'control';
 	const PREF_ACTION = 'action';
 	const PREF_AJAX = 'ajax';
+	const PREF_NAMESPACE = '\\Control\\';
 
 	function __construct(){
 		$config_route = G::getConfig('route');
 		
 		list($control, $action) = explode('/', $config_route['index']);
-		$this->default_control = ucfirst($control);
-		$this->default_action = ucfirst($action);
+		$this->default_control = $control;
+		$this->default_action = $action;
 		$this->error_404 = $config_route['error404'];
 
 		if($config_route['type'] == 'get'){
@@ -51,177 +51,110 @@ class Route{
 			throw new CoreException('error type route');
 		}
 		$this->setRoutes($route);
-	}  
+	}
 
-	function route(){
-		$default_control = self::PREF_CONTROL.$this->default_control;
-		$default_action = self::PREF_ACTION.$this->default_action;
+	private function route(){
+		$action_pref = G::isAjax() ? self::PREF_AJAX : self::PREF_ACTION;
 
-		$action_404 = $this->error_404;
-		$folder_control = G::getPath('control');
-
-		$routes = $this->_routes;
-		$routes = array_filter($routes);
-
-		array_walk($routes, G::$filter['html'], G::$filter['html']);
+		$routes = $this->routes;
+		$this->urls = array();
+		$param = array();
 		
-		if(!$folder_control){
-			throw new CoreException('error path control in config');
+		$namespace = self::PREF_NAMESPACE;
+		$pod_folder = DIRECTORY_SEPARATOR;
+		$control = false;
+		$action = false;
+		$param = array();
+
+		$control_folder = G::getPath('control');
+		if(!$control_folder){
+			throw new CoreException('error config path control');
+		}
+		if(!is_array($control_folder)){
+			$control_folder = array($control_folder);
 		}
 
-		$_control = '\\Control\\';
-		$_action = G::isAjax() ? self::PREF_AJAX : self::PREF_ACTION;
-
-		$_control_flag = $_action_flag = false;
-
-		$param = array();
-		while(!$_control_flag || !$_action_flag){
-
-			$rout = false;
+		while(!$control || !$action){
 			if($routes){
 				$rout = array_shift($routes);
 				$routU = ucfirst($rout);
 			}
-			if($rout){
-				if(!$_control_flag){
-					// проверка наличия папки
-					if(is_dir($folder_control.$rout) && !$_control_flag){
-						$_control .= $rout.'\\';
-						$folder_control .= $rout.'/';
 
-						$this->_urls[] = $rout;
-						$this->_path[] = $routU;
-					// наличее контроллера в "папке"
-					}else if(class_exists($_control.self::PREF_CONTROL.$routU)){
-						$_control .= self::PREF_CONTROL.$routU;
-						$_control_flag = true;
-
-						$this->_urls[] = $rout;
-						$this->_path[] = $routU;
-					// если контроллер не найден
-					}else{
-						/* ищем default control в текущей папке */
-						if(class_exists($_control.$default_control)){
-							$_control .= $default_control;
-							$_control_flag = true;
-
-							$this->_path[] = $this->default_control;
-							/* ищем метод в default control */
-							if(method_exists($_control, $_action.$routU)){
-								$_action .= $routU;
-								$_action_flag = true;
-
-								$this->_path[] = $routU;
-								$this->_urls[] = $rout;
-							/* иначе ищем метод 404*/
-							}else if(method_exists($_control, $action_404)){
-								$_action = $action_404;
-								$_action_flag = true;
-								$this->_path[] = '404';
-								$param[] = $rout;
-							/* вызываем корневой default control и его метод 404 */
+			if(!$control){ // search control
+				if(!isset($rout)){
+					$rout = $this->default_control;
+					$routU = ucfirst($this->default_control);
+				}
+				if(class_exists($namespace . self::PREF_CONTROL . $routU)){
+					$control = $namespace . self::PREF_CONTROL . $routU;
+					$this->urls[] = $rout;
+					continue;
+				}else{
+					$search_folder = false;
+					foreach($control_folder as $folder){
+						if(is_dir($folder . $pod_folder . $rout)){
+							$namespace .= $routU . '\\';
+							$pod_folder .= $rout . DIRECTORY_SEPARATOR;
+							$search_folder = true;
+							$this->urls[] = $rout;
+							break;
+						}
+					}
+					if(!$search_folder){
+						$def_contr = ucfirst($this->default_control);
+						if(class_exists($namespace . self::PREF_CONTROL . $def_contr)){
+							$control = $namespace . self::PREF_CONTROL . $def_contr;
+							$this->urls[] = $this->default_control;
+							if(method_exists($control, $action_pref . $routU)){
+								$action = $action_pref.$routU;
+								$this->urls[] = $rout;
 							}else{
-								$_control = '\\Control\\'.$default_control;
-								$_action = $action_404;
-								$_control_flag = $_action_flag = true;
-								
-								$this->_urls = array($this->default_control, '404');
-								$this->_path = array($this->default_control, '404');
-
-								$param[] = $rout;
+								list($control, $action) = $this->error404($control);
 							}
-						}else if(method_exists('\\Control\\'.$default_control, $action_404)){
-							$_control = '\\Control\\'.$default_control;
-							$_action = $action_404;
-							$_control_flag = $_action_flag = true;
-
-							$this->_urls = array($this->default_control, '404');
-							$this->_path = array($this->default_control, '404');
-
 						}else{
-							throw new CoreException('error not method 404 in default control');
+							list($control, $action) = $this->error404($control);
 						}
-					}
-				}else if(!$_action_flag){
-					if(method_exists($_control, $_action.$routU)){                        
-						$_action .= $routU;
-						$_action_flag = true;
-
-						$this->_urls[] = $rout;
-						$this->_path[] = $rout;
-
-					}else if(method_exists($_control, $action_404)){
-						$_action = $action_404;
-						$_action_flag = true;
-
-						$this->_urls[] = '404';
-						$this->_path[] = '404';
-
-					}else if(method_exists('\\Control\\'.$default_control, $action_404)){
-						$_control = '\\Control\\'.$default_control;
-						$_action = $action_404;
-						$_action_flag = $_control_flag = true;
-
-						$this->_urls = array($this->default_control, '404');
-						$this->_path = array($this->default_control, '404');
-					}else{
-						throw new CoreException('error: not method 404 in default control');
-					}
-				}
-			}else{
-				// если нет контроллера
-				if(!$_control_flag){
-					if(class_exists($_control.$default_control)){
-						$_control .= $default_control;
-						$_control_flag = true;
-						$this->_path[] = $this->default_control;
-					}else if(class_exists('\\Control\\'.$default_control)){
-						$_control = '\\Control\\'.$default_control;
-						$_control_flag = true;
-						$this->_path[] = $this->default_control;
-						if(method_exists($_control, $action_404)){
-							$_action = $action_404;
-							$this->_path[] = '404';
-							$_action_flag = true;
-						}else{
-							throw new CoreException('error not method 404 in default control');
-						}
-					}
-				}
-				if(!$_action_flag){
-					if(method_exists($_control, $default_action)){
-						$_action = $default_action;
-						$_action_flag = true;						
-						$this->_path[] = $this->default_action;
-					}else if(method_exists($_control, $action_404)){
-						$_action = $action_404;
-						$_action_flag = true;
-						$this->_path[] = '404';
-					}else if(method_exists('\\Control\\'.$default_control, $action_404)){
-						$_control = '\\Control\\'.$default_control;
-						$_action = $action_404;
-						$_control_flag = $_action_flag = true;
-						$this->_path = array($this->default_control, '404');
-					}else{
-						throw new CoreException('error not method 404 in default control');
 					}
 				}
 			}
+			if($control && !$action){ // search action
+				if(!isset($rout)){
+					$rout = $this->default_action;
+					$routU = ucfirst($this->default_action);
+				}
+				if(method_exists($control, $action_pref . $routU)){
+					$action = $action_pref.$routU;
+					$this->urls[] = $rout;
+				}else if(method_exists($control, $action_pref . $this->default_action)){
+					$action = $action_pref . $this->default_action;
+					$this->urls[] = $this->default_action;
+				}else{
+					list($control, $action) = $this->error404($control);
+				}
+			}
+			unset($rout, $routU);
 		}
-		
+
+		$this->control = $control;
+		$this->action = $action;
+
 		if($routes){
 			$param = array_merge($param, $routes);
 		}
-
-		$this->control = $_control;
-		$this->action = $_action; 
 		$this->param = $param;
 	}
 
-	private function errorPage($code){
-		/**
-		*@todo
-		*/
+	private function error404($control){
+		header("HTTP/1.0 404 Not Found");
+		if(method_exists($control, $this->error_404)){
+			$this->urls[] = $this->error_404;
+			return array($control, $this->error_404);
+		}else if(method_exists(self::PREF_NAMESPACE . self::PREF_CONTROL . $this->default_control, $this->error_404)){
+			$this->urls = array($this->default_control, $this->error_404);
+			return array(self::PREF_NAMESPACE . self::PREF_CONTROL . $this->default_control, $this->error_404);
+		}else{
+			throw new CoreException("Not found 404 method, use $control extends \Gallant\Prototype\controlDefault");
+		}
 	}
 
 	/**
@@ -230,7 +163,7 @@ class Route{
 	* @return array 
 	*/
 	function getRoutes(){
-		return $this->_routes;
+		return $this->routes;
 	}
 
 	/**
@@ -239,7 +172,9 @@ class Route{
 	* @param string 
 	*/
 	function setRoutes($routes){
-		$this->_routes = array_values(array_filter(explode('/', strtolower($routes).'/'), 'trim'));
+		$routes = array_values(array_filter(explode('/', strtolower($routes).'/'), 'trim'));
+		array_walk($routes, G::$filter['html'], G::$filter['html']);
+		$this->routes = $routes;
 		$this->route();
 	}
 
@@ -249,7 +184,7 @@ class Route{
 	* @return array 
 	*/
 	function getUrl(){
-		return $this->_urls;
+		return $this->urls;
 	}
 
 	/**
@@ -258,25 +193,7 @@ class Route{
 	* @return string 
 	*/
 	function getUrlStr(){
-		return '/'.strtolower(implode('/', $this->_urls)).'/';
-	}
-
-	/**
-	* getUrl вернет путь к текущемму контроллеру в виде массива
-	* 
-	* @return array 
-	*/
-	function getPath(){
-		return $this->_path;
-	}
-
-	/**
-	* getPathStr вернет корректный url для текущего контроллера в виде строки адреса
-	* 
-	* @return string 
-	*/
-	function getPathStr(){
-		return '/'.strtolower(implode('/', $this->_path)).'/';
+		return '/'.strtolower(implode('/', $this->urls)).'/';
 	}
 
 	/**
