@@ -33,7 +33,7 @@ class Parser{
 		return $result;
 	}
 
-	function export($pref, $model){
+	function export($pref, $model){	
 		$this->source = array_filter($this->source, 'sizeof');
 		if(!$this->source) return false;
 		
@@ -42,14 +42,11 @@ class Parser{
 			if(isset($line[$pref])){
 				$line[$model] = $line[$pref];
 				unset($line[$pref]);
+				
 				$ext = true;
 				break;
 			}
 		}
-
-		if($ext){
-			return new Parser($this->source);
-		}
-		return false;
+		return $ext;
 	}
 }

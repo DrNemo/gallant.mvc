@@ -13,6 +13,7 @@ namespace Gallant\Ar;
 
 use \G;
 use \Gallant\Exceptions\ArException;
+use \Gallant\Exceptions\CoreException;
 
 class Model extends Builder{	
 		
@@ -67,6 +68,18 @@ class Model extends Builder{
 	*/
 	static public function relations(){
 		return array();
+	}
+
+	/**
+	* __isset проверяет наличее аргумента у модели
+	* 
+	* @param sting
+	* @param mixed
+	*/
+	public function __isset($key){
+		if(isset($this->data[$key])) return true;
+		if(isset($this->data_update[$key])) return true;
+		return false;
 	}
 
 	/**
@@ -148,4 +161,24 @@ class Model extends Builder{
 	static function criteria(){
 		return new Criteria;
 	}
+
+	/**
+	* onLoad событие вызывается после загрузки модели из бд
+	*/ 
+	protected function onLoad(){}
+
+	/**
+	* onBeforeSave событие вызывается перед сохранения модели в бд
+	*/
+	function onBeforeSave(){}
+
+	/**
+	* onAfterSave событие вызывается после сохранения модели в бд
+	*/
+	function onAfterSave(){}
+
+	/**
+	* onDelete событие вызывается после удаления модели
+	*/
+	function onDelete(){}
 }

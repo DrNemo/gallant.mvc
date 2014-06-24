@@ -12,7 +12,7 @@
 namespace Gallant\Widgets;
 
 use \G;
-use \Gallant\Exceptions\CoreException;
+use \Gallant\Exceptions\WidgetException;
 
 class Controler{
 	protected $config;
@@ -23,12 +23,15 @@ class Controler{
 
 	protected $widget;
 
-	function __construct($name, $data){
-		$this->value = $data;
+	final function __construct($name, $template = ''){
 		$this->widget = $name;
+		if($options){
+			$this->setOptions($options);
+		}
+		$this->setTemplate($this->dir());
 	}
 
-	public function options($options){
+	final public function setOptions($options){
 		foreach ($options as $key => $value) {
 			if(isset($this->config[$key])){
 				$this->config[$key] = $value;
@@ -37,31 +40,44 @@ class Controler{
 		return $this;
 	}
 
-	public function opt($key){
+	final public function getOption($key){
 		if(isset($this->config[$key])){
 			return $this->config[$key];
 		}
-		throw new CoreException("not found widget option : $key");
+		throw new WidgetException("not found widget option : $key");
 	}
 
-	public function render(){
-		if(!$this->template){
-			$tpl = __DIR__ . DIRECTORY_SEPARATOR . $this->widget . DIRECTORY_SEPARATOR . 'template.php';
-			$this->tpl($tpl);
+	final public function render($data = false, $file = false){
+		if($file){
+			$this->setTemplate($file);
 		}
+		if($data){
+			$this->setData($data);
+		}
+
 		ob_start();
-		include $this->template;
+		include $this->template . DIRECTORY_SEPARATOR . 'template.php';
 		return ob_get_clean();
 	}
 
-	public function data(){
+	final public function getData(){
 		return $this->value;
 	}
 
-	public function tpl($file){
+	final public function setData($data){
+		$this->value = $data;
+		return $this;
+	}
+
+	final public function setTemplate($tpl){
+		$file = $tpl . DIRECTORY_SEPARATOR . 'template.php';
 		if(!is_file($file)){
-			throw new CoreException("not found widget template: $file");
+			throw new WidgetException("not found widget template: $tpl");
 		}
-		$this->template = $file;
+		$this->template = $tpl;
+	}
+
+	public function dir(){
+		throw new WidgetException('override function $this->dir()');
 	}
 }

@@ -30,7 +30,13 @@ class Template{
 	private $gzip = false;
 	private $htmlcompress = false;
 
-	public $folder;
+	private $folder;
+
+	private $meta = array(
+		'title' => '',
+		'description' => '',
+		'keywords' => ''
+		);
 
 	function __construct(){
 		ob_start();
@@ -83,6 +89,7 @@ class Template{
 			'js' => $this->folder_template_http.$this->skin.'/js/',
 			'images' => $this->folder_template_http.$this->skin.'/images/',
 			'css' => $this->folder_template_http.$this->skin.'/css/',
+			'widget' => $this->folder_template_http.$this->skin.'/widget/',
 			);
 	}
 
@@ -103,27 +110,28 @@ class Template{
 	}
 
 	function ob(){
+		$this->content_controller .= ob_get_clean();
 		ob_start();
+		return $this->content_controller;
 	}
 
 	function tpl($file = false, $Result = array()){
 		$Result = (object)$Result;
 		if($file){
 			if(!is_file($this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php')){
-				echo 'not file tpl: '.$file;
+				throw new CoreException('Not file tpl: '.$file);
 			}else{
 				include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php';
 			}
 		}
-		$this->content_controller = ob_get_clean();
-		return $this->content_controller;
+		return $this->ob();
 	}
 
 	function layer($file, $Result = array()){
 		ob_start();
 		$Result = (object)$Result;
 		if(!is_file($this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'layer' . DIRECTORY_SEPARATOR . $file . '.php')){
-			echo '<div>not file layer: '.$file.'</div>';
+			throw new CoreException('Not file layer: '.$file);
 		}else{			
 			include $this->folder_template.$this->skin. DIRECTORY_SEPARATOR . 'layer' . DIRECTORY_SEPARATOR . $file.'.php';			
 		}
@@ -132,10 +140,9 @@ class Template{
 	}
 
 	function render($result = false){
-		//ob_clean();
-		ob_start();
-
 		if(!G::isAjax()){
+			ob_start();
+
 			include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . $this->main;
 			$this->content_page = ob_get_clean();
 			ob_start();
@@ -147,7 +154,7 @@ class Template{
 				$content = $this->htmlcompress($content);
 			}			
 		}else{
-			$content = $this->getContentController();
+			$content = ob_get_clean() . $this->getContentController();
 			if($this->htmlcompress){
 				$content = $this->htmlcompress($content);
 			}
@@ -218,20 +225,34 @@ class Template{
 		return $this->folder['images'].$img;
 	}
 
-	function link($path){
+	/**
+	* link
+	* @param string $url - адрес страницы
+	* @param array $arg - массив get параметров
+	* @param string $anchor - якорь
+	*/
+	function link($url = false, $arg = false, $anchor = false){
 		$route = G::getConfig('route');
+		if(!$url) $url = G::route()->getUrlStr();
+		if(!$url && !$arg) $arg = G::getRequest('get');
+		$link = $url;
+		if($arg){
+			$f = function($key, $val){
+				return "$key=$val";
+			};
+			$get = implode('&', array_map($f, array_keys($arg), array_values($arg)));
+			$link .= '?'.$get;
+		}
+		if($anchor){
+			$link .= '#'.$anchor;
+		}
 		if($route['type'] == 'get'){
-			return '?route='.$path;
+			return '?route='.$link;
 		}else{
-			return $path;
+			return $link;
 		}
 	}
 
-	private $meta = array(
-		'title' => '',
-		'description' => '',
-		'keywords' => ''
-		);
 	function getMeta($key){
 		if(isset($this->meta[$key])){
 			return $this->meta[$key];
@@ -293,12 +314,38 @@ class Template{
 	}
 
 	public function widget($name, $data = NULL){
-		$widget = ucfirst(strtolower($name));
-		$widget_class = '\Gallant\Widgets\\'.$widget.'\\Widget'.$widget;
-		if(!class_exists($widget_class)){
-			throw new CoreException("not found widget: $widget ($widget_class)");
+		$widget_name = ucfirst(strtolower($name));
+
+		$widget_class = '\Gallant\Widgets\\'.$widget_name.'\\Widget'.$widget_name;
+		$widget_user_class = '\Widgets\\'.$widget_name.'\\Widget'.$widget_name;
+		
+		$widget = false;
+		if(class_exists($widget_class)){
+			$widget = new $widget_class($name, $data);			
 		}
-		$widget = new $widget_class($name, $data);
+		if(class_exists($widget_user_class)){
+			$widget = new $widget_user_class($name, $data);	
+		}
+		if(!$widget){
+			throw new CoreException("not found widget: $name ($widget_class or $widget_user_class)");
+		}
 		return $widget;
+	}
+
+	public function warning($errors = false, $class = 'alert alert-warning'){
+		if(!$errors){
+			$errors = G::getErrorKeys();
+		}else{
+			$errors = is_array($errors) ? $errors : array($errors);
+		}
+		
+		$func_tpl = function($val) use ($class){
+			if($msg = G::getError($val)){
+				return "<div class=\"{$class} {$val}\">{$msg}</div>";
+			}else{
+				return '';
+			}
+		};
+		return implode(array_map($func_tpl, $errors));
 	}
 }

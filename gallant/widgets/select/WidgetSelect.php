@@ -26,4 +26,8 @@ class WidgetSelect extends \Gallant\Widgets\Controler{
 		return $this;
 	}
 
+	public function dir(){
+		return __DIR__;
+	}
+
 }

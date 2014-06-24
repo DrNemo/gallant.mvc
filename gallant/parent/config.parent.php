@@ -32,7 +32,8 @@ return array(
 		'component' => '%site%' . DIRECTORY_SEPARATOR . 'component',
 		'include' 	=> '%site%' . DIRECTORY_SEPARATOR . 'include',
 		'control' 	=> '%site%' . DIRECTORY_SEPARATOR . 'control',
-		'entry'		=> '%site%' . DIRECTORY_SEPARATOR . 'entry.php'
+		'entry'		=> '%site%' . DIRECTORY_SEPARATOR . 'entry.php',
+		'widgets'	=> '%site%' . DIRECTORY_SEPARATOR . 'widget',
 		),
 
 	'db' => array(),

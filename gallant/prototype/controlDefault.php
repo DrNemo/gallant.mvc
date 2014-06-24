@@ -1,6 +1,6 @@
 <?
 namespace Gallant\Prototype;
-use \G as G;
+use \G;
 
 class controlDefault{
 	function action404(){

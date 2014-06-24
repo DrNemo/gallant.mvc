@@ -21,19 +21,16 @@ class Builder{
 	protected $data_update = array();
 	protected $children_models = array();
 
-	//const MODEL_AS = 'mod0_t0';
-
 	const ONE_TO_ONE = 'relation::ONE_TO_ONE';
 	const ONE_TO_MANY = 'relation::ONE_TO_MANY';
 	const MANY_TABLE_BUNCH = 'relation::MANY_TABLE_BUNCH';
-	const MANY_TO_MANY = 'relation::MANY_TO_MANY';
 
 	const CONCET_MODEL = '::';
 
 	/**
 	* 
 	*/
-	function __construct($data = false){
+	final function __construct($data = false){
 		$model = $this->className();
 		$struct_key = array_keys($this->structure());
 		$this->data = array_combine($struct_key, array_pad(array(), sizeof($struct_key), false));
@@ -44,26 +41,41 @@ class Builder{
 
 			$rels = $this->relations();
 			foreach ($rels as $rel_key => $rel_opc){
-				
-				$multi = ($rel_opc['relation'] == self::ONE_TO_ONE) ? false: true;
-				$rel_model = ($rel_opc['model'][0] == '\\') ? substr($rel_opc['model'], 1) : $rel_opc['model'];
-
-				$parse_pref = $model . self::CONCET_MODEL . $rel_key;
-
-				if($rel_opc['relation'] == self::ONE_TO_ONE){
-					$exp = $data->export($parse_pref, $rel_model);
-					if($exp){
-						$this->children_models[$rel_key] = new $rel_model($data);
-					}
+				if(isset($rel_opc['load']) && $rel_opc['load'] === false){
+					$this->children_models[$rel_key] = null;
 				}else{
-					$_data = array();
-					while($exp = $data->export($parse_pref, $rel_model)){
-						$_data[] = new $rel_model($data);
-						
+					$rel_model = ($rel_opc['model'][0] == '\\') ? substr($rel_opc['model'], 1) : $rel_opc['model'];
+
+					$parse_pref = $model . self::CONCET_MODEL . $rel_key;
+
+					if($rel_opc['relation'] == self::ONE_TO_ONE){
+						$exp = $data->export($parse_pref, $rel_model);
+						if($exp){
+							$this->children_models[$rel_key] = new $rel_model($data);
+						}else{
+							$this->children_models[$rel_key] = false;
+						}
+					}else{
+						$_data = array();
+
+						$pks = $rel_model::primaryKey();
+						if(!is_array($pks)){
+							$pks = array($pks);
+						}
+						$pk = $pks[0];
+
+						while($exp = $data->export($parse_pref, $rel_model)){
+							$mod = new $rel_model($data);
+							if(!$data_save[$mod->$pk]){
+								$data_save[$mod->$pk] = true;
+								$_data[] = $mod;
+							}
+						}
+						$this->children_models[$rel_key] = new Iterator($_data);
 					}
-					$this->children_models[$rel_key] = new Iterator($_data);
 				}
-			}			
+			}
+			$this->onLoad();
 		}else if(is_array($data)){
 			$this->setData($data);
 		}
@@ -73,7 +85,7 @@ class Builder{
 	* className 
 	* @return Class Model Name
 	*/
-	static function className(){
+	final static function className(){
 		return get_called_class();
 	}
 
@@ -136,8 +148,10 @@ class Builder{
 			return "$my_pref.$val AS `{$my_pref}_{$val}`";
 		};		
 
+		$parent_model = false;
 		$criteria = false;
 		if($criteria_or_pref instanceof Criteria){
+			$parent_model = true;
 			$criteria = $criteria_or_pref;
 			$func_cow = function($val){
 				return "`$val`";
@@ -200,7 +214,7 @@ class Builder{
 			
 			foreach ($relations as $key => $relation){
 				$load = false;
-				if($iter_model == 0 && !isset($relation['load'])){
+				if($parent_model && !isset($relation['load'])){
 					$load = true;
 				}
 				if(isset($relation['load']) && $relation['load']){
@@ -268,7 +282,7 @@ class Builder{
 		return array($glob_query, $comby_key_pref);		
 	}
 
-	function parser($source, $prefs){
+	static function parser($source, $prefs){
 		$model = self::className();
 		$pks = $model::primaryKey();
 		if(!is_array($pks)){
@@ -342,6 +356,9 @@ class Builder{
 	* @return Iterator - result model
 	*/
 	static function fetchPk($pk){
+		if(!$pk){
+			throw new ArException("fetchPk: $pk");
+		}
 		$model = self::className();
 		$result = array();
 
@@ -383,6 +400,7 @@ class Builder{
 	*/
 	function save($save_as = false){
 		$model = self::className();
+		$this->onBeforeSave();
 
 		$query = G::dbQuery($model::provider())->table($model::table());
 		$data = array_intersect_key($this->data_update, $this->data);
@@ -403,6 +421,7 @@ class Builder{
 			$data = array_merge($data, $attr);
 			$res = $query->where($where)->attr($data)->update();
 			if($res){
+				$this->onAfterSave();
 				/**
 				* @todo in log
 				*/
@@ -436,6 +455,7 @@ class Builder{
 				}
 
 				$this->_init_ = true;
+				$this->onAfterSave();
 				/**
 				* @todo in log
 				*/
@@ -475,6 +495,8 @@ class Builder{
 			$attr[":$pk"] = $this->$pk;
 		}
 		$result = $query->where($where)->attr($attr)->delete();
+
+		$this->onDelete();
 		return $result;
 	}
 
@@ -485,15 +507,15 @@ class Builder{
 	* @return class Gallant\Ar\Iterator
 	*/
 	public function related($rel){
+		$model = self::className();
 		$rels = $this->relations();
+
 		if(!($relation = $rels[$rel])){
 			throw new ArException("not fount relation: $rel");
 		}
-		if((!isset($this->children_models[$rel]) || is_null($this->children_models[$rel])) && isset($relation['load']) && $relation['load'] === false){			
-			/**
-			* @todo: загрузка связанной модели при обращение, если ее параметр load => false
-			*/
-			$model = self::className();
+		if(!is_null($this->children_models[$rel])){
+			return $this->children_models[$rel];
+		}else{
 			$relation = $rels[$rel];
 
 			$rel_model = $relation['model'];
@@ -511,18 +533,31 @@ class Builder{
 			$criteria = $rel_model::criteria()->where("$his_column = :val")->attr(array(':val' => $rel_id));
 			$data = $rel_model::fetch($criteria);
 
+			/**
+			* @todo: MANY_TABLE_BUNCH
+			*/
+			if($relation['relation'] == self::MANY_TABLE_BUNCH){
+				throw new ArException('@todo: load related model');
+			}
+
 			if($relation['relation'] == self::ONE_TO_ONE){
 				$data = $data->first();
-			}else{
-				throw new ArException('@todo: load related model');
 			}
 
 			$this->children_models[$rel] = $data;
 			return $this->children_models[$rel];
-		}else if(isset($this->children_models[$rel]) && !is_null($this->children_models[$rel])){
-			return $this->children_models[$rel];
-		}else{
-			return false;
 		}
+	}
+
+	static function count(){
+		$model = self::className();
+		$colons = $model::primaryKey();
+		if(!is_array($colons)){
+			$colons = array($colons);
+		}
+		$colon = array_shift($colons);
+		$row = G::dbQuery($model::provider())->table($model::table())->columns(array("COUNT($colon) AS count_items"))->select();
+
+		return ($row[0]['count_items']) ? $row[0]['count_items'] : 0;
 	}
 }

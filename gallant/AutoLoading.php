@@ -44,21 +44,21 @@ class AutoLoading{
 		return false;
 	}
 
-	static public function loadingSite($inc){
-		//p('loadingSite: ' . $inc);
+	static public function loadingSite($inc){		
 		$routs = array_filter(explode('\\', $inc.'\\'));
 		$type = strtolower(array_shift($routs));
-
+		//p('loadingSite: ' . $inc . ' : ' . $type);
+		if($type == 'gallant') return;
 		if($type == 'entry'){
 			if(is_file(G::getPath('entry'))){
 				include_once G::getPath('entry');				
 				return true;
 			}
-		}		
+		}
 
 		$paths = G::getPath($type);
 		if(!$paths){
-			throw new CoreException("error loadingSite : $type ($inc)");
+			return false;
 		}
 		if(!is_array($paths)){
 			$paths = array($paths);
@@ -82,7 +82,7 @@ class AutoLoading{
 		}
 	}
 
-	function dirSep($path){
+	static function dirSep($path){
 		$dir_pre_sep = array('\\', '/');
 		return str_replace($dir_pre_sep, DIRECTORY_SEPARATOR, $path);
 	}

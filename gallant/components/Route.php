@@ -88,6 +88,7 @@ class Route{
 				if(class_exists($namespace . self::PREF_CONTROL . $routU)){
 					$control = $namespace . self::PREF_CONTROL . $routU;
 					$this->urls[] = $rout;
+					unset($rout, $routU);
 					continue;
 				}else{
 					$search_folder = false;
@@ -97,6 +98,7 @@ class Route{
 							$pod_folder .= $rout . DIRECTORY_SEPARATOR;
 							$search_folder = true;
 							$this->urls[] = $rout;
+							unset($rout, $routU);
 							break;
 						}
 					}
@@ -108,6 +110,7 @@ class Route{
 							if(method_exists($control, $action_pref . $routU)){
 								$action = $action_pref.$routU;
 								$this->urls[] = $rout;
+								unset($rout, $routU);
 							}else{
 								list($control, $action) = $this->error404($control);
 							}
@@ -122,9 +125,10 @@ class Route{
 					$rout = $this->default_action;
 					$routU = ucfirst($this->default_action);
 				}
-				if(method_exists($control, $action_pref . $routU)){
+				if(method_exists($control, $action_pref . $routU)){					
 					$action = $action_pref.$routU;
 					$this->urls[] = $rout;
+					unset($rout, $routU);
 				}else if(method_exists($control, $action_pref . $this->default_action)){
 					$action = $action_pref . $this->default_action;
 					$this->urls[] = $this->default_action;
@@ -132,7 +136,6 @@ class Route{
 					list($control, $action) = $this->error404($control);
 				}
 			}
-			unset($rout, $routU);
 		}
 
 		$this->control = $control;

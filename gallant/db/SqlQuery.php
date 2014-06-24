@@ -31,7 +31,8 @@ class SqlQuery{
 	function __construct($provider = false){
 		$db = G::getConfig('db');
 		if(!$provider){
-			$provider = array_shift(array_keys($db));
+			$key_db  = array_keys($db);
+			$provider = array_shift($key_db);
 		}
 		$this->pref = $db[$provider]['pref'];
 		$this->config = $db[$provider];
@@ -69,7 +70,6 @@ class SqlQuery{
 				($as) ? $as : ''
 				);			
 		}
-		$this->table_num ++;
 		return $this;
 	}
 
@@ -81,7 +81,7 @@ class SqlQuery{
 	* @param string $pref префикс для колонок
 	* @return $this
 	*/
-	function columns($column){
+	function columns(array $column){
 		if(!isset($this->query['columns'])) $this->query['columns'] = array_values($column);
 		else $this->query['columns'] = array_merge($this->query['columns'], array_values($column));
 		return $this;
@@ -186,8 +186,6 @@ class SqlQuery{
 	*/
 	function orderAsc($colomn){
 		return $this->order($colomn, 'asc');
-		$this->query['order'][] = array('asc', $colomn);
-		return $this;
 	}
 
 	/**
@@ -197,8 +195,7 @@ class SqlQuery{
 	* @return $this
 	*/
 	function orderDesc($colomn){
-		$this->query['order'][] = array('desc', $colomn);
-		return $this;
+		return $this->order($colomn, 'desc');
 	}
 
 	/**
@@ -253,8 +250,9 @@ class SqlQuery{
 	* @return mixid возвращяет результат выборки
 	*/
 	final function select(){
-		$sql = G::DB($this->provider)->select($this);
-		return G::DB($this->provider)->fetch($sql, $this->get('attr'));
+		$query = clone($this);
+		$sql = G::DB($query->provider)->select($query);
+		return G::DB($query->provider)->fetch($sql, $query->get('attr'));
 	}	
 
 	/**
@@ -263,8 +261,9 @@ class SqlQuery{
 	* @return mixid первичные ключи новой записи
 	*/
 	final function insert(){
-		$sql = G::DB($this->provider)->insert($this);
-		return G::DB($this->provider)->fetch($sql, $this->get('attr'));
+		$query = clone($this);
+		$sql = G::DB($query->provider)->insert($query);
+		return G::DB($query->provider)->fetch($sql, $query->get('attr'));
 	}
 
 	/**
@@ -273,8 +272,9 @@ class SqlQuery{
 	* @return mixid количество затронутых рядов
 	*/
 	final function update(){
-		$sql = G::DB($this->provider)->update($this);
-		return G::DB($this->provider)->fetch($sql, $this->get('attr'));
+		$query = clone($this);
+		$sql = G::DB($query->provider)->update($query);
+		return G::DB($query->provider)->fetch($sql, $query->get('attr'));
 	}
 
 	/**
@@ -283,12 +283,14 @@ class SqlQuery{
 	* @return mixid количество затронутых рядов
 	*/
 	final function delete($replice = false){
-		$sql = G::DB($this->provider)->delete($this);
-		return G::DB($this->provider)->fetch($sql, $this->get('attr'));
+		$query = clone($this);
+		$sql = G::DB($query->provider)->delete($query);
+		return G::DB($query->provider)->fetch($sql, $query->get('attr'));
 	}
 
 
 	function sql($method = 'select'){
-		return G::DB($this->provider)->$method($this);
+		$query = clone($this);
+		return G::DB($query->provider)->$method($query);
 	}
 }

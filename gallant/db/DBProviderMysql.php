@@ -23,14 +23,14 @@ class DBProviderMysql{
 			throw new CoreException('Fatal Error: To work needs the support of PDO.');
 		}
 		try{
-			if(!$this->pdo = new PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass'])) die('Fatal Error: Error connect');
-			$this->pdo->query("SET CHARACTER SET $config[character]");		
-			$this->pdo->query("SET character_set_client = '$config[character]'");
-			$this->pdo->query("SET character_set_connection = '$config[character]'");
-			$this->pdo->query("SET character_set_results = '$config[character]'");
-		}catch (Exception $e) {
+			$this->pdo = new PDO("mysql:host=$config[host];dbname=$config[table]", $config['user'], $config['pass']);			
+		}catch(PDOException $e){
 			throw new CoreException('Fatal Error: Error connect '.  $e->getMessage());
-		}		
+		}
+		$this->pdo->query("SET CHARACTER SET $config[character]");		
+		$this->pdo->query("SET character_set_client = '$config[character]'");
+		$this->pdo->query("SET character_set_connection = '$config[character]'");
+		$this->pdo->query("SET character_set_results = '$config[character]'");	
 	}
 
 	function update(SqlQuery $query){
@@ -224,25 +224,25 @@ class DBProviderMysql{
 		$this->report[] = array($type, $query_sql, $attr);
 		
 		if($type == 'SELECT'){
-			$result = $pdo_query->fetchAll(\PDO::FETCH_ASSOC);
-			if(!$result){
-				return false;
-			}else{				
-				return $result;
-			}
+			$result = $pdo_query->fetchAll(PDO::FETCH_ASSOC);
+			if(!$result) $result = array();				
+			return $result;
+
 		}else if($type == 'INSERT'){
 			$return_id = $this->pdo->lastInsertId();
-
-			if($pdo_query->rowCount()){
-				if($return_id) return $return_id;
-				return true;
-			}
-			
+			if($return_id) return $return_id;
+			if($count = $pdo_query->rowCount()) return $count;			
 			return false;
+
 		}else if($type == 'UPDATE'){
+			if($exec){
+				return $pdo_query->rowCount();
+			}
 			return $exec;
+
 		}else if($type == 'DELETE'){
 			return $pdo_query->rowCount();
+			
 		}else{
 			throw new CoreException("Not fount handler: $type");
 		}

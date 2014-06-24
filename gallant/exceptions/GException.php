@@ -20,8 +20,8 @@ class GException extends \Exception{
 	function __construct($message = NULL, $code = 0) {
 		$this->stack = debug_backtrace(false);
 		if($this->stack[0] && $this->stack[0]['class'] == __CLASS__){
-			$this->file = $info[0]['file'];
-			$this->line = $info[0]['line'];
+			$this->file = $this->stack[0]['file'];
+			$this->line = $this->stack[0]['line'];
 			unset($this->stack[0]);
 		}
 		$this->message = $message;
@@ -34,11 +34,17 @@ class GException extends \Exception{
 		//ob_clean();
 		echo $this->css();
 		echo "<div class=\"GallantExceptions\">
-			<div class=\"GallantExceptionsTitle\">Gallant\CoreException: <b>$this->message</b> [ error code <b>$this->code</b> ]</div>
+			<div class=\"GallantExceptionsTitle\">Gallant\Exception\GException:<br> <b>$this->message</b> [ error code <b>$this->code</b> ]</div>
 			<div class=\"GallantExceptionsStack\"> <b>Function Stack:</b>";
 
 		if($this->stack) foreach ($this->stack as $data) {
-			echo "<div class=\"GallantExceptionsStekItem\"><b>File:</b> $data[file]:$data[line], <b>Function:</b> $data[class]$data[type]$data[function], <b>Args:</b>";
+			if(!isset($data['file'])) $data['file'] = 'N/A';
+			if(!isset($data['line'])) $data['line'] = 'N/A';
+			if(!isset($data['class'])) $data['class'] = 'N/A';
+			if(!isset($data['type'])) $data['type'] = 'N/A';
+			if(!isset($data['function'])) $data['function'] = 'N/A';
+
+			echo "<div class=\"GallantExceptionsStekItem\"><b>File:</b> $data[file]:$data[line], <b>Function:</b> $data[class] $data[type] $data[function], <b>Args:</b>";
 			echo "<pre>";
 			print_r($data['args']);
 			echo "</pre></div>";

@@ -10,6 +10,7 @@
 
 namespace Gallant\Components;
 use \G as G;
+use \Gallant\Exceptions\CoreException;
 
 class File{
 	public $folder = false;
@@ -17,28 +18,32 @@ class File{
 	public $ext = false;
 	public $path = false;
 	public $src = false;
+	public $chmod = false;
 
-	function __construct($file){
+	function __construct($file, $chmod = '0755'){
 		if(is_file($file)){
+			$this->chmod = fileperms($file);
 			$pars = pathinfo($file);
 			$this->folder = $pars['dirname'].'/';
 			$this->file = $pars['basename'];
 			$this->ext = $pars['extension'];
 			$this->path = $file;
 			$this->src = substr($this->path, strlen(FOLDER_ROOT));
+		}else{
+			throw new CoreException("Not found file: $file");
 		}
 	}
 
 	static function load($load, $new_file){
-
-		$file = pathinfo($load['name']);
-		$ext = $file['extension'];
+		$ext = pathinfo($load['name'], PATHINFO_EXTENSION);		
 		$new_file = str_replace('%ext%', $ext, $new_file);
 		self::dir($new_file);
 
 		if ($load["error"] == UPLOAD_ERR_OK && is_uploaded_file($load['tmp_name']) && $new_file) {
 			if(move_uploaded_file($load['tmp_name'], $new_file)){
 				return new File($new_file);
+			}else{
+				return false;
 			}
 		}
 		return false;
@@ -52,11 +57,33 @@ class File{
 			while ($dirs) {
 				$d = array_shift($dirs);
 				$re_dir .= $d.'/';
+
 				if(!is_dir($re_dir)){
-					mkdir($re_dir, 0755);
+					mkdir($re_dir, 0777);
 				}
 			}
 		}
+	}
+
+	static function readfile($folder){
+		if(!is_dir($folder)){
+			throw new CoreException("Not found folder: $folder");
+		}
+		$files = array();
+		$_f = scandir($folder);
+		$end_str = $folder[strlen($folder) - 1];
+		if($end_str == '/' && $end_str = '\\'){
+			$folder = substr($folder, 0, strlen($folder) - 1) . DIRECTORY_SEPARATOR;
+		}else{
+			$folder .= DIRECTORY_SEPARATOR;
+		}
+
+		if($_f) foreach ($_f as $file) {
+			if(is_file($folder.'/'.$file)){
+				$files[] = new File($folder.$file);
+			}
+		}
+		return $files;
 	}
 
 	function copy($new_file, $folder = true){
@@ -71,7 +98,7 @@ class File{
 	}
 
 	function delete(){
-
+		return unlink($this->path);
 	}
 
 	function size(){
@@ -80,5 +107,19 @@ class File{
 
 	function info(){
 
+	}
+
+	private $image_info = false;
+	function image(){
+		if(!$this->image_info){
+			$size = getimagesize($this->path);
+			$this->image_info = array(
+				'width' => $size[0],
+				'height' => $size[1],
+				'mime' => $size['mime']
+			);
+		}
+		
+		return (object)$this->image_info;
 	}
 }

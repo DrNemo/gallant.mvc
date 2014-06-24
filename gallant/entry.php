@@ -10,8 +10,6 @@
 * @version 1.0
 */
 
-use \Gallant\Exceptions\CoreException;
-
 if(!defined('GALLANT_SYSTEM') || GALLANT_SYSTEM !== true) die('NOT GALLANT_SYSTEM');
 
 define('GALLANT_CORE', __DIR__);
@@ -33,6 +31,7 @@ if(!defined('FOLDER_SITE')){
 }
 
 include GALLANT_CORE.'/AutoLoading.php';
+include GALLANT_CORE.'/exceptions/GException.php';
 
 function p(){
 	$p = func_get_args();
@@ -50,8 +49,8 @@ function p(){
 	}
 	echo '</pre>';
 }
-/*
+
 set_error_handler(
 	function($code, $message){
-		throw new CoreException($message, $code);
-	}, E_ALL & ~E_NOTICE);*/
+		throw new \Gallant\Exceptions\GException($message, $code);
+	}, E_ALL ^ E_NOTICE);

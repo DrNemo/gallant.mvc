@@ -40,6 +40,8 @@ class G{
 	private static $DBprovider = array();
 
 	private static $error = array();
+
+	private static $cookie;
 	
 	/**
 	* G::version
@@ -47,7 +49,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.1.1 alfa";
+		return "0.1.2 alfa";
 	}
 	
 	/**
@@ -59,6 +61,8 @@ class G{
 		session_start();
 
 		self::$_domen = $_SERVER['SERVER_NAME'];
+
+		self::$cookie = $_COOKIE;
 
 		self::$filter['html'] = function(&$v,$k,$filter){
 			if(!is_array($v)){
@@ -103,6 +107,8 @@ class G{
 		$apply = new $control();
 		$result = $apply->$action();
 
+		self::template()->ob();
+
 		if($entry){
 			Entry::render();
 		}
@@ -112,6 +118,7 @@ class G{
 		if($entry){
 			Entry::destroy();
 		}
+
 		/**
 		* @todo destroy
 		*/ 
@@ -177,7 +184,7 @@ class G{
 	* 
 	* @return string domen name
 	*/
-	public static function getDomen(){
+	public static function getDomain(){
 		return self::$_domen;
 	}
 
@@ -299,6 +306,62 @@ class G{
 	public static function removeSession($key){
 		unset($_SESSION['gallant_system']['close_session'][$key]);
 		unset($_SESSION[$key]);
+	}
+
+	/**
+	* setCookie
+	*
+	* Установка Cookie
+	* 
+	* @param string $key имя Cookie
+	* @param string $val значение Cookie
+	* @param int $time время жизни Cookie
+	*/
+	public static function setCookie($key, $val, $time = null){
+		if(is_null($time)){
+			$time = 1411200;
+		}
+		return setcookie($key, $val, time() + $time, '/', false, false, false);
+	}
+
+	/**
+	* getCookie
+	*
+	* Установка Cookie
+	* 
+	* @param string $key имя Cookie
+	*/
+	public static function getCookie($key){
+		if(isset(self::$cookie[$key])){
+			return self::$cookie[$key];
+		}
+		return false;
+	}
+
+	/**
+	* isCookie
+	*
+	* Проверка наличия Cookie
+	* 
+	* @param string $key имя Cookie
+	*/
+	public static function isCookie($key){
+		if(isset(self::$cookie[$key])){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* removeCookie
+	*
+	* Удаление Cookie
+	* 
+	* @param string $key имя Cookie
+	*/
+	public static function removeCookie($key){
+		unset(self::$cookie[$key]);
+		return setcookie($key, '', time() - 3600);
 	}
 
 	/**
@@ -431,16 +494,24 @@ class G{
 	*/
 	public static function includeComponent($path){
 		$path_core = GALLANT_CORE . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR;
-		$path_site = self::getPath('include') . DIRECTORY_SEPARATOR;
+		// include core component
 		if(is_file($path_core.$path)){
 			include_once $path_core.$path;
 			return;
-		}else if(is_file($path_site.$path)){
-			include_once $path_site.$path;
-			return;
-		}else{
-			throw new CoreException('Error includeComponent (not file): '.$path);
 		}
+		
+		$path_sites = self::getPath('include');
+		if(!is_array($path_sites)){
+			$path_sites = array($path_sites);
+		}
+		// include site component
+		foreach ($path_sites as $path_site) {
+			if(is_file($path_site . $path)){
+				include_once $path_site.$path;
+				return;
+			}
+		}
+		throw new CoreException('Error includeComponent (not file): '.$path);
 	}
 
 	/**
@@ -492,5 +563,15 @@ class G{
 			return $val;
 		}
 		return false;
+	}
+
+	/**
+	* getFlagKeys - return keys flash messages
+	*/
+	public static function getFlagKeys(){
+		if(isset($_SESSION['gallant_system']['flash_messages'])){
+			return array_keys($_SESSION['gallant_system']['flash_messages']);
+		}
+		return array();
 	}
 }
