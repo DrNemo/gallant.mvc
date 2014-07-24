@@ -49,7 +49,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.1.2 alfa";
+		return "0.1.3 alfa";
 	}
 	
 	/**

@@ -22,6 +22,8 @@ class SqlQuery{
 	protected $config;
 	protected $provider = false;
 
+	private $table_num = 0;
+
 	/**
 	* __construct
 	* 
@@ -81,9 +83,11 @@ class SqlQuery{
 	* @param string $pref префикс для колонок
 	* @return $this
 	*/
-	function columns(array $column){
-		if(!isset($this->query['columns'])) $this->query['columns'] = array_values($column);
-		else $this->query['columns'] = array_merge($this->query['columns'], array_values($column));
+	function columns(array $column, $reset = false){
+		if(!isset($this->query['columns']) || $reset){
+			$this->query['columns'] = array();
+		}		
+		$this->query['columns'] = array_merge($this->query['columns'], array_values($column));
 		return $this;
 	}
 

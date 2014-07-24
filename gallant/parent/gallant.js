@@ -11,8 +11,9 @@
 
 var Gallant = {
 	ref : function(url){
-		if(!url) return document.location.href;
-		else{
+		if(!url){
+			document.location.href = document.location.href;
+		}else{
 			document.location.href = url;
 		}
 	}

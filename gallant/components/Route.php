@@ -43,9 +43,9 @@ class Route{
 		$this->error_404 = $config_route['error404'];
 
 		if($config_route['type'] == 'get'){
-			$route = G::getRequest('get', 'route');
+			$route = urldecode(G::getRequest('get', 'route'));
 		}else if($config_route['type'] == 'request'){
-			$route = parse_url($_SERVER['REQUEST_URI']);
+			$route = parse_url(urldecode($_SERVER['REQUEST_URI']));
 			$route = $route['path'];
 		}else{
 			throw new CoreException('error type route');

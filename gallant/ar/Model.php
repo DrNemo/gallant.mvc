@@ -170,15 +170,15 @@ class Model extends Builder{
 	/**
 	* onBeforeSave событие вызывается перед сохранения модели в бд
 	*/
-	function onBeforeSave(){}
+	protected function onBeforeSave(){}
 
 	/**
 	* onAfterSave событие вызывается после сохранения модели в бд
 	*/
-	function onAfterSave(){}
+	protected function onAfterSave(){}
 
 	/**
 	* onDelete событие вызывается после удаления модели
 	*/
-	function onDelete(){}
+	protected function onDelete(){}
 }

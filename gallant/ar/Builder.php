@@ -25,8 +25,6 @@ class Builder{
 	const ONE_TO_MANY = 'relation::ONE_TO_MANY';
 	const MANY_TABLE_BUNCH = 'relation::MANY_TABLE_BUNCH';
 
-	const CONCET_MODEL = '::';
-
 	/**
 	* 
 	*/
@@ -36,7 +34,7 @@ class Builder{
 		$this->data = array_combine($struct_key, array_pad(array(), sizeof($struct_key), false));
 		
 		if($data instanceof Parser){
-			$this->data = array_merge($this->data, $data->modelSelf($model));
+			$this->data = array_merge($this->data, $data->modelSelf());
 			$this->_init_ = true;
 
 			$rels = $this->relations();
@@ -46,32 +44,22 @@ class Builder{
 				}else{
 					$rel_model = ($rel_opc['model'][0] == '\\') ? substr($rel_opc['model'], 1) : $rel_opc['model'];
 
-					$parse_pref = $model . self::CONCET_MODEL . $rel_key;
+					$parse_pref = $model . '::' . $rel_key;
+
+					$exports = $data->export($rel_key, $rel_model::primaryKey());
 
 					if($rel_opc['relation'] == self::ONE_TO_ONE){
-						$exp = $data->export($parse_pref, $rel_model);
-						if($exp){
-							$this->children_models[$rel_key] = new $rel_model($data);
+						if(isset($exports[0])){
+							$this->children_models[$rel_key] = new $rel_model($exports[0]);
 						}else{
 							$this->children_models[$rel_key] = false;
 						}
 					}else{
-						$_data = array();
-
-						$pks = $rel_model::primaryKey();
-						if(!is_array($pks)){
-							$pks = array($pks);
+						$data_save = array();
+						foreach ($exports as $export) {
+							$data_save[] = new $rel_model($export);
 						}
-						$pk = $pks[0];
-
-						while($exp = $data->export($parse_pref, $rel_model)){
-							$mod = new $rel_model($data);
-							if(!$data_save[$mod->$pk]){
-								$data_save[$mod->$pk] = true;
-								$_data[] = $mod;
-							}
-						}
-						$this->children_models[$rel_key] = new Iterator($_data);
+						$this->children_models[$rel_key] = new Iterator($data_save);
 					}
 				}
 			}
@@ -126,7 +114,7 @@ class Builder{
 	*
 	*
 	*/
-	static private function queryConstruct($criteria_or_pref, $iter_model = 0){		
+	static private function queryConstruct($criteria_or_pref, $iter_model = 0, $str_pref = 'self'){		
 		$model = self::className();
 		$model_provider = $model::provider();
 
@@ -172,15 +160,10 @@ class Builder{
 
 			// order local
 			if(!($order = $criteria->get('order'))){
-				$order = array();
 				$struc = $model::structure();
 				foreach ($struc as $key => $param){
 					if(isset($param['order'])){
-						if(isset($param['column'])){
-							$k = $param['column'];
-						}else{
-							$k = $key;
-						}
+						$k = (isset($param['db'])) ? $param['db'] : $key;
 						$order[] = array($k, $param['order']);
 					}
 				}
@@ -189,7 +172,7 @@ class Builder{
 				$ord_func = function($val) use ($model_pref){
 					return array("{$model_pref}.{$val[0]}", $val[1]);
 				};			
-				$query->order($order);
+				//$query->order($order);
 				$order = array_map($ord_func, $order);
 				$glob_query->order($order);
 			}
@@ -203,9 +186,10 @@ class Builder{
 			$my_pref = $model_pref;
 			$columns = array_map($func_pref, $structure);
 			$glob_query->columns($columns)->table($query, $model_pref);
-			$comby_key_pref[$model] = $model_pref;
+			$comby_key_pref[$str_pref] = $model_pref;
 		}else{
 			$model_pref = $criteria_or_pref;
+			//$str_pref .= '::'.$criteria_or_pref;
 		}
 
 
@@ -270,9 +254,9 @@ class Builder{
 						$glob_query->join(array($rel_model::table(), $rel_pref), "`$model_pref`.`$my_column` = `$rel_pref`.`$his_column`");
 					}
 
-					$comby_key_pref[$model.'::'.$key] = $rel_pref;
+					$comby_key_pref[$str_pref.'::'.$key] = $rel_pref;
 					$iter_model += 1;
-					list($rel_query, $rel_query_pref) = $rel_model::queryConstruct($rel_pref, $iter_model);
+					list($rel_query, $rel_query_pref) = $rel_model::queryConstruct($rel_pref, $iter_model, $str_pref.'::'.$key);
 					$glob_query = $glob_query->merge($rel_query);
 					$comby_key_pref = array_merge($comby_key_pref, $rel_query_pref);					
 				}
@@ -282,17 +266,11 @@ class Builder{
 		return array($glob_query, $comby_key_pref);		
 	}
 
-	static function parser($source, $prefs){
+	static private function parser($source, $prefs){
+		$data = array();
+		if(!$source) return $data;
+
 		$model = self::className();
-		$pks = $model::primaryKey();
-		if(!is_array($pks)){
-			$pks = array($pks);
-		}
-
-		$pre_pars = array();
-
-		if(!$source) return $pre_pars;
-
 		$data = array();
 
 		foreach ($source as $line) {
@@ -302,27 +280,24 @@ class Builder{
 				foreach($line as $key => $value){
 					foreach ($prefs as $rel_name => $prefix) {
 						if(substr($key, 0, strlen($prefix)) == $prefix){
-							$line_data[$rel_name][substr($key, strlen($prefix) + 1)] = $value;
+							$k = substr($key, strlen($prefix) + 1);
+							$line_data[$rel_name][$k] = $value;
 						}
 					}
 				}
-
-				$new_id = array();
-				foreach ($pks as $pk) {
-					$new_id[] = $line_data[$model][$pk];
-				}
-				$new_id = implode('_', $new_id);
-
-				$data[$new_id][] = $line_data;
-			}
-			
+				$data[] = $line_data;
+			}			
 		}
+		$parser = new Parser($data);
+		$result = $parser->export('self', $model::primaryKey());		
+
 		$func_class = function($val) use ($model){
-			return new $model(new Parser($val));
+			return new $model($val);
 		};
 
-		return array_map($func_class, $data);
+		return array_map($func_class, $result);
 	}
+	
 	/**
 	* fetch
 	* @param \Gallant\Ar\Criteria - подготовленный с помощью Criteria запрос к БД
@@ -387,6 +362,26 @@ class Builder{
 		$result = self::parser($res, $query[1]);
 
 		return new Iterator($result);
+	}
+
+	/**
+	* count
+	* @param \Gallant\Ar\Criteria - подготовленный с помощью Criteria запрос к БД
+	* @return int - result count model
+	*/
+	static function count($criteria = false){
+		$model = self::className();
+		if(!$criteria){
+			$criteria = $model::criteria();
+		}
+		if(!($criteria instanceof Criteria)){
+			throw new ArException('fetch argument : class Criteria (use MyModel::criteria())');
+		}
+		$query = self::queryConstruct($criteria);
+		$structure = array_keys($model::structure());
+		$colon = array_shift($structure);
+		$row = $query[0]->columns(array("COUNT(m0_t0.$colon) AS count_items"), true)->select();
+		return ($row[0]['count_items']) ? $row[0]['count_items'] : 0;
 	}
 
 
@@ -547,17 +542,5 @@ class Builder{
 			$this->children_models[$rel] = $data;
 			return $this->children_models[$rel];
 		}
-	}
-
-	static function count(){
-		$model = self::className();
-		$colons = $model::primaryKey();
-		if(!is_array($colons)){
-			$colons = array($colons);
-		}
-		$colon = array_shift($colons);
-		$row = G::dbQuery($model::provider())->table($model::table())->columns(array("COUNT($colon) AS count_items"))->select();
-
-		return ($row[0]['count_items']) ? $row[0]['count_items'] : 0;
 	}
 }
