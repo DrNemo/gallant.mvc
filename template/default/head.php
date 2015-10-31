@@ -1,3 +1,6 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <!DOCTYPE html>
 <html lang="ru">
 	<head>
@@ -7,7 +10,7 @@
 	    <meta name="Keywords" content="<?=$this->getMeta('keywords')?>" />
 
 	    <?
-	    // подключяем общие файлы для всео сайта
+	    // подключяем общие файлы для всего сайта
 	    echo $this->includeCss('bootstrap.min.css', 'bootstrap-theme.min.css');
 	    echo $this->includeJs('jquery-2.0.3.min.js', 'bootstrap.min.js');
 	    ?>

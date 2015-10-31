@@ -1,3 +1,6 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <h1>Настройка Gallant</h1>
 <p>Основная настройка фрейморка производится в файле config.php</p>
 <ul>

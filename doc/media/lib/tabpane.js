@@ -87,7 +87,7 @@ function WebFXTabPane( el, bUseCookie ) {
 
 WebFXTabPane.prototype = {
 
-	classNameTag:		"dynamic-tab-pane-control",
+	classNameTag:		"dynamic-tab-pane-controller",
 
 	setSelectedIndex:	function ( n ) {
 		if (this.selectedIndex != n) {

@@ -57,26 +57,27 @@ class Template{
 
 	function setSkin($skin){
 		$folders = G::getPath('template');
-		$templ = false;
-		if(is_array($folders)){
-			foreach ($folders as $folder) {
-				if(is_dir($folder.$skin)){
-					$templ = $folder;
-					break;
-				}
-			}
-		}else{
-			$templ = $folders;
+		if(!is_array($folders)){
+			$folders = [$folders];
 		}
-		if(!$templ){
+		$templ = 'default';
+		foreach ($folders as $folder) {
+			if(is_dir($folder.$skin)){
+				$templ = $folder;
+				break;
+			}
+		}
+
+		if(!is_dir($templ)){
 			throw new CoreException('error template not folder template');
-		}else if(!is_dir($templ.$skin)){
+		}
+		if(!is_dir($templ.$skin)){
 			throw new CoreException('error template skin folder: '.$skin);
 		}
 
 		$this->folder_template = $templ;
 
-		$http_path = substr($templ, strlen(FOLDER_ROOT));
+		$http_path = substr($templ, strlen(FOLDER_SITE) + 1);
 		if(DIRECTORY_SEPARATOR == '\\'){
 			$http_path = str_replace(DIRECTORY_SEPARATOR, '/', $http_path);
 		}
@@ -95,6 +96,14 @@ class Template{
 
 	function getSkin(){
 		return $this->skin;
+	}
+
+	public function toUrl(){
+
+	}
+
+	public function createUrl($controller, $action, $param){
+
 	}
 
 	function setMain($main){
@@ -118,10 +127,11 @@ class Template{
 	function tpl($file = false, $Result = array()){
 		$Result = (object)$Result;
 		if($file){
-			if(!is_file($this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php')){
-				throw new CoreException('Not file tpl: '.$file);
+			$tpl = $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . $file . '.php';
+			if(!is_file($tpl)){
+				throw new CoreException('Not file tpl: '.$tpl);
 			}else{
-				include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'control' . DIRECTORY_SEPARATOR . $file . '.php';
+				include $this->folder_template.$this->skin . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . $file . '.php';
 			}
 		}
 		return $this->ob();
@@ -184,7 +194,7 @@ class Template{
 	}
 
 	private $file_js = array();
-	function setJs(){
+	function addJs(){
 		$files = func_get_args();		
 		if(is_array($files[0])) $files = $files[0];
 		$this->file_js = array_merge($files, $this->file_js);
@@ -203,7 +213,7 @@ class Template{
 	}
 
 	private $file_css = array();
-	function setCss(){
+	function addCss(){
 		$files = func_get_args();
 		if(is_array($files[0])) $files = $files[0];
 		$this->file_css = array_merge($files, $this->file_css);

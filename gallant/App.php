@@ -14,6 +14,7 @@ use \Gallant\GConst;
 use \Gallant\Exceptions\CoreException;
 use \Gallant\Components\Template;
 use \Gallant\Components\Route;
+use \Gallant\Components\Entry;
 
 class G{
 	private function __construct(){}
@@ -49,7 +50,7 @@ class G{
 	* @return string version
 	*/
 	public static function version(){
-		return "0.1.3 alfa";
+		return "0.1.4 alfa-refactory";
 	}
 	
 	/**
@@ -87,47 +88,58 @@ class G{
 		
 		self::$config = array_replace_recursive($def_config, $app_config);
 		
-		self::$template = new Template();
+		self::$template = static::getComponent(Template::class);
 
-		self::$_route = new Route();
+		self::$_route = static::getComponent(Route::class);
 
-		G::includeComponent('array_column.php');
-		
-		$entry = false;
-		if(class_exists('Entry')){
-			Entry::init();
-			$entry = true;
-		}
+        $bootstrapClass = G::getConfig('bootstrap');
+        if(!is_subclass_of($bootstrapClass, Entry::class)){
+            throw new CoreException('Bootstrap Class don`t parent \Gallant\Components\Entry');
+        }
+
+        $bootstrapClass::init();
 
 		$control = self::getControl();
 		$action = self::getAction();
 
 		self::template()->ob();
 
+        if(!class_exists($control)){
+            throw new CoreException('Not found controller: ' . $control);
+        }
 		$apply = new $control();
 		$result = $apply->$action();
 
 		self::template()->ob();
 
-		if($entry){
-			Entry::render();
-		}
+        $bootstrapClass::render();
 
 		self::template()->render($result);
 
-		if($entry){
-			Entry::destroy();
-		}
+        $bootstrapClass::destroy();
 
 		/**
 		* @todo destroy
-		*/ 
+		*/
 	}
+
+    /**
+     * Позволяет переопределить базовые классы через конфиг, раздел class
+     * @param $className
+     * @return object $className
+     */
+    public static function getComponent($className, array $args = []){
+        $classes = static::getConfig('class');
+        if(isset($classes[$className])){
+            $className = $classes[$className];
+        }
+        return new $className($args);
+    }
 
 	/**
 	* route
 	* 
-	* @return object Gallant\Components\Template
+	* @return Gallant\Components\Route
 	*/
 	public static function route(){
 		return self::$_route;
@@ -136,7 +148,7 @@ class G{
 	/**
 	* template
 	* 
-	* @return object Gallant\Components\Template
+	* @return Gallant\Components\Template
 	*/
 	public static function template(){
 		return self::$template;
@@ -380,7 +392,7 @@ class G{
 	*
 	* Возвращение текущего контроллера
 	* 
-	* @return string $control имя контроллера
+	* @return string $controller имя контроллера
 	*/
 	public static function getControl(){
 		return self::$_route->getControl();

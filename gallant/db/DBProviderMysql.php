@@ -13,6 +13,7 @@ namespace Gallant\DB;
 
 use \PDO;
 use \Gallant\Exceptions\CoreException;
+use PDOException;
 
 class DBProviderMysql{
 	private $pdo = false;

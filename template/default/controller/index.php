@@ -1,3 +1,6 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <h1>Gallant - open source PHP framework</h1>
 <p>
 	Gallant - это свободно распростроняемый MVC-framework.<br>

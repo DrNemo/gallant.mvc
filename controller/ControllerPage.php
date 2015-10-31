@@ -1,8 +1,9 @@
 <?
-namespace Control;
+namespace Controller;
 use \G as G;
+use \Gallant\Prototype\controlDefault;
 
-class controlPage extends \Gallant\Prototype\controlDefault{
+class ControllerPage extends controlDefault{
 	
 	function actionIndex(){
 		G::template()->tpl('index');

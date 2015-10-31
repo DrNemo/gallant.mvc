@@ -8,7 +8,7 @@ class Post extends Model{
 		parent::__construct($data);
 	}*/
 	// Указываем какое подключение будем использовать, ключ указывается в config
-	function provider(){
+	static function provider(){
 		return 'db.prod';
 	}
 
@@ -18,17 +18,17 @@ class Post extends Model{
 	}
 
 	// Указываем какую таблицу использует модель
-	function table(){
+	static function table(){
 		return 'post';
 	}
 
 	// Указываем primary key
-	function primaryKey(){
+	static function primaryKey(){
 		return 'id';
 	}
 
 	// Указываем связи с другими моделями
-	function relations(){
+	static function relations(){
 		return array(			
 			'auter' => array(
 				'model' => '\Model\Blog\Auter',//  название модели			
@@ -46,7 +46,7 @@ class Post extends Model{
 	}
 
 	// структура таблицы
-	function structure(){
+	static function structure(){
 		return array(
 			'id' => array(),
 			'id_auter' => array('order' => 'ASC'),

@@ -1,8 +1,9 @@
 <?
-namespace Control\Test;
+namespace Controller\Test;
 use \G as G;
+use \Gallant\Prototype\controlDefault;
 
-class controlMy extends \Gallant\Prototype\controlDefault{
+class ControllerMy extends controlDefault{
 	
 	function actionIndex(){
 		p('Control\Test\controlMy->actionIndex()');

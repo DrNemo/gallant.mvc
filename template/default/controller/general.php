@@ -1,3 +1,6 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <h1>Active Record</h1>
 <p>
 	Подробнее о шаблоне проектирования Active Record можно почитать <a target="_blank" href="http://ru.wikipedia.org/wiki/ActiveRecord">тут</a> (http://ru.wikipedia.org/wiki/ActiveRecord)<br><br>

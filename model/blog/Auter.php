@@ -4,22 +4,22 @@ use \Gallant\Ar\Model;
 
 class Auter extends Model{
 	// Указываем какое подключение будем использовать, ключ указывается в config
-	function provider(){
+	static function provider(){
 		return 'db.prod';
 	}
 
 	// Указываем какую таблицу использует модель
-	function table(){
+	static function table(){
 		return 'auter';
 	}
 
 	// Указываем primary key
-	function primaryKey(){
+	static function primaryKey(){
 		return 'id';
 	}
 
 	// Указываем связи с другими моделями
-	function relations(){
+	static function relations(){
 		return array(			
 			'posts' => array(
 				'model' => '\Model\Blog\Post',//  название модели	
@@ -30,7 +30,7 @@ class Auter extends Model{
 	}
 
 	// структура таблицы
-	function structure(){
+	static function structure(){
 		return array(
 			'id' => array(),
 			'name' => array()

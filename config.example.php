@@ -11,5 +11,7 @@ return array(
 			'pref' => 'ar_base_', // ваш префикс для таблиц
 			'character' => 'utf8' // Кодировка подключения
 		)
-	)
+	),
+
+	'bootstrap' => Entry::class
 );

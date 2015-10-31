@@ -1,10 +1,13 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <h1>Роутинг</h1>
 <p>
 	Запрошенный url <code>G::route()->getRoutes()</code><br>Запрошенный url для этой страницы: <?p(G::route()->getRoutes())?>
 	Для изменения вызываемого url используйте <code>G::route()->setRoutes('my/new/url')</code><br><br>
 	Текущая страница доступна по адресам: <code>/route</code> и <code>/page/route</code>, контроллер этой страницы <code>/example/control/controlPage.php</code><br>
 	Url текущего контроллера <code>G::route()->getUrlStr()</code>: <code><?=G::route()->getUrlStr()?></code><br>
-	Полный url текущего контроллера <code>G::route()->getPathStr()</code>: <code><?=G::route()->getPathStr()?></code><br>
+	Полный url текущего контроллера <code>G::route()->getPathStr()</code>: <code><?=implode('/', G::route()->getRoutes())?></code><br>
 	Текущий контроллер: <code>G::getControl()</code> или <code>G::route()->getControl()</code>: <code><?=G::getControl()?></code><br>
 	Текущий action: <code>G::getAction()</code> или <code>G::route()->getAction()</code>: <code><?=G::getAction()?></code><br>
 </p>

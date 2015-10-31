@@ -9,36 +9,40 @@
 * @version 1.0
 */
 
-return array(
-	'site' => array(
+use \Gallant\Components\Entry;
+
+return [
+	'site' => [
 		'skin' => 'default',
 		'main' => 'main.php',
 		'chaster' => 'utf-8',
 		'lang' => 'en',
 		'gzip' => false,
 		'htmlcompress' => false,
-		),
+		],
 
-	'route' => array(
+	'route' => [
 		'site' 		=> '/', 
-		'type' => 'request', // or get
+		'type' => 'get', // or get
 		'index' => 'page/index',
 		'error404' => 'action404'
-		),
+		],
 
-	'path' => array(
+	'path' => [
 		'template' 	=> '%site%' . DIRECTORY_SEPARATOR . 'template',
 		'model' 	=> '%site%' . DIRECTORY_SEPARATOR . 'model',
 		'component' => '%site%' . DIRECTORY_SEPARATOR . 'component',
 		'include' 	=> '%site%' . DIRECTORY_SEPARATOR . 'include',
-		'control' 	=> '%site%' . DIRECTORY_SEPARATOR . 'control',
+		'controller' 	=> '%site%' . DIRECTORY_SEPARATOR . 'controller',
 		'entry'		=> '%site%' . DIRECTORY_SEPARATOR . 'entry.php',
 		'widgets'	=> '%site%' . DIRECTORY_SEPARATOR . 'widget',
-		),
+		],
 
-	'db' => array(),
+	'db' => [],
 
-	'recaptcha' => array(),/* publicKey, privateKey */
+	'recaptcha' => [],/* publicKey, privateKey */
 
-	'class' => array(),
-);
+	'bootstrap' => Entry::class,
+
+	'class' => [],
+];

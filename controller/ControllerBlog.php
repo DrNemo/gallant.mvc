@@ -1,10 +1,11 @@
 <?
-namespace Control;
+namespace Controller;
 use \G;
 use \Model\Blog\Post;
 use \Model\Blog\Auter;
+use \Gallant\Prototype\controlDefault;
 
-class controlBlog extends \Gallant\Prototype\controlDefault{
+class ControllerBlog extends controlDefault{
 	
 	function actionIndex(){
 		$url_param = G::getParam();

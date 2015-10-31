@@ -1,3 +1,6 @@
+<?
+/** @var $this Gallant\Components\Template */
+?>
 <h1>Модели</h1>
 <p>
 	Описания моделей осуществляетя переопределением методов класса <code>\Gallant\Ar\Model</code><br>

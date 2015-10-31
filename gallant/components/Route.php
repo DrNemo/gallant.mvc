@@ -1,7 +1,7 @@
 <?
 /**
 * Gallant\Components\Route
-* Компонент Route, определяет какой control и action будет вызван. А так же дополнительные параметры вызова
+* Компонент Route, определяет какой controller и action будет вызван. А так же дополнительные параметры вызова
 * 
 * @package Gallant
 * @copyright 2013 DrNemo
@@ -27,12 +27,11 @@ class Route{
 
 	private $routes = array();
 
-	private $urls = array(); // url active control
+	private $urls = array(); // url active controller
 
-	const PREF_CONTROL = 'control';
+    const BASE_NAMESPACE = 'Controller';
+	const PREF_CONTROL = 'Controller';
 	const PREF_ACTION = 'action';
-	const PREF_AJAX = 'ajax';
-	const PREF_NAMESPACE = '\\Control\\';
 
 	function __construct(){
 		$config_route = G::getConfig('route');
@@ -43,7 +42,7 @@ class Route{
 		$this->error_404 = $config_route['error404'];
 
 		if($config_route['type'] == 'get'){
-			$route = urldecode(G::getRequest('get', 'route'));
+			$route = urldecode(G::getRequest('get', '_r'));
 		}else if($config_route['type'] == 'request'){
 			$route = parse_url(urldecode($_SERVER['REQUEST_URI']));
 			$route = $route['path'];
@@ -54,110 +53,75 @@ class Route{
 	}
 
 	private function route(){
-		$action_pref = G::isAjax() ? self::PREF_AJAX : self::PREF_ACTION;
-
 		$routes = $this->routes;
-		$this->urls = array();
-		$param = array();
-		
-		$namespace = self::PREF_NAMESPACE;
-		$pod_folder = DIRECTORY_SEPARATOR;
-		$control = false;
-		$action = false;
-		$param = array();
+		$this->urls = [];
 
-		$control_folder = G::getPath('control');
-		if(!$control_folder){
-			throw new CoreException('error config path control');
-		}
+		$control_folder = G::getPath('controller');
 		if(!is_array($control_folder)){
-			$control_folder = array($control_folder);
+			$control_folder = [$control_folder];
 		}
 
-		while(!$control || !$action){
-			if($routes){
-				$rout = array_shift($routes);
-				$routU = ucfirst($rout);
-			}
+        $namespace = '\\';
+        $namespace_path = '';
 
-			if(!$control){ // search control
-				if(!isset($rout)){
-					$rout = $this->default_control;
-					$routU = ucfirst($this->default_control);
-				}
-				if(class_exists($namespace . self::PREF_CONTROL . $routU)){
-					$control = $namespace . self::PREF_CONTROL . $routU;
-					$this->urls[] = $rout;
-					unset($rout, $routU);
-					continue;
-				}else{
-					$search_folder = false;
-					foreach($control_folder as $folder){
-						if(is_dir($folder . $pod_folder . $rout)){
-							$namespace .= $routU . '\\';
-							$pod_folder .= $rout . DIRECTORY_SEPARATOR;
-							$search_folder = true;
-							$this->urls[] = $rout;
-							unset($rout, $routU);
-							break;
-						}
-					}
-					if(!$search_folder){
-						$def_contr = ucfirst($this->default_control);
-						if(class_exists($namespace . self::PREF_CONTROL . $def_contr)){
-							$control = $namespace . self::PREF_CONTROL . $def_contr;
-							$this->urls[] = $this->default_control;
-							if(method_exists($control, $action_pref . $routU)){
-								$action = $action_pref.$routU;
-								$this->urls[] = $rout;
-								unset($rout, $routU);
-							}else{
-								list($control, $action) = $this->error404($control);
-							}
-						}else{
-							list($control, $action) = $this->error404($control);
-						}
-					}
-				}
-			}
-			if($control && !$action){ // search action
-				if(!isset($rout)){
-					$rout = $this->default_action;
-					$routU = ucfirst($this->default_action);
-				}
-				if(method_exists($control, $action_pref . $routU)){					
-					$action = $action_pref.$routU;
-					$this->urls[] = $rout;
-					unset($rout, $routU);
-				}else if(method_exists($control, $action_pref . $this->default_action)){
-					$action = $action_pref . $this->default_action;
-					$this->urls[] = $this->default_action;
-				}else{
-					list($control, $action) = $this->error404($control);
-				}
-			}
-		}
+        $control = false;
+        $action = false;
 
-		$this->control = $control;
-		$this->action = $action;
+        /**
+         * @todo а если несколько директорий?
+         */
+        while(sizeof($routes)){
+            $rout = array_shift($routes);
+            $routU = ucfirst($rout);
 
-		if($routes){
-			$param = array_merge($param, $routes);
-		}
-		$this->param = $param;
-	}
+            foreach($control_folder as $folder){
+                if(is_dir($folder . $namespace_path . $rout)){
+                    $namespace_path .= $rout . DIRECTORY_SEPARATOR;
+                    $namespace .= $routU . '\\';
+                    continue;
+                }
 
-	private function error404($control){
-		header("HTTP/1.0 404 Not Found");
-		if(method_exists($control, $this->error_404)){
-			$this->urls[] = $this->error_404;
-			return array($control, $this->error_404);
-		}else if(method_exists(self::PREF_NAMESPACE . self::PREF_CONTROL . $this->default_control, $this->error_404)){
-			$this->urls = array($this->default_control, $this->error_404);
-			return array(self::PREF_NAMESPACE . self::PREF_CONTROL . $this->default_control, $this->error_404);
-		}else{
-			throw new CoreException("Not found 404 method, use $control extends \Gallant\Prototype\controlDefault");
-		}
+                if(class_exists(static::BASE_NAMESPACE . $namespace . static::PREF_CONTROL . $routU)){
+                    $control = static::BASE_NAMESPACE . $namespace . static::PREF_CONTROL . $routU;
+                    continue;
+                }
+
+                if(!$control){
+                    $control = static::BASE_NAMESPACE . '\\' . static::PREF_CONTROL . ucfirst($this->default_control);
+                }
+
+                if($control){
+                    if(method_exists($control, static::PREF_ACTION . $routU)){
+                        $action = static::PREF_ACTION . $routU;
+                    }
+
+                    if(!$action && method_exists($control, static::PREF_ACTION . $this->default_action)){
+                        $action = static::PREF_ACTION . ucfirst($this->default_action);
+                    }
+
+                    if(!$action && method_exists($control, static::PREF_ACTION . $this->error_404)){
+                        $action = static::PREF_ACTION . $this->error_404;
+                    }
+
+                    if(!$action){
+                        $control = static::PREF_CONTROL . ucfirst($this->default_action);
+                        $action = static::PREF_ACTION . ucfirst($this->error_404);
+                    }
+                    break(2);
+                }
+            }
+        }
+        if(!$control){
+            $control = static::BASE_NAMESPACE . '\\' . static::PREF_CONTROL . ucfirst($this->default_control);
+            $action = static::PREF_ACTION . ucfirst($this->default_action);
+        }
+        if(sizeof($routes)){
+            $this->param = $routes;
+        }
+
+        $this->control = $control;
+        $this->action = $action;
+
 	}
 
 	/**
@@ -206,7 +170,7 @@ class Route{
 	*/
 	function setControl($control){
 		if(!class_exists('\\'.$control)){
-			throw new CoreException('error not control :'.$control);
+			throw new CoreException('error not controller :'.$control);
 		}
 		$this->control = $control;
 	}
@@ -214,7 +178,7 @@ class Route{
 	/**
 	* getControl вернет имя выбраного контроллера
 	* 
-	* @return string - control name (Control\Test\controlPage) 
+	* @return string - controller name (Control\Test\controlPage)
 	*/
 	function getControl(){
 		return $this->control;
@@ -227,7 +191,7 @@ class Route{
 	*/
 	function setAction($action){
 		if(!method_exists('\\'.$this->control, $action)){
-			throw new CoreException('error not method "'.$action.'" in control :'.$this->control);
+			throw new CoreException('error not method "'.$action.'" in controller :'.$this->control);
 		}
 		$this->action = $action;
 	}
