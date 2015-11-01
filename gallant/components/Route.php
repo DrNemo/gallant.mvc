@@ -52,7 +52,7 @@ class Route{
 		$this->setRoutes($route);
 	}
 
-	private function route(){
+	protected function route(){
 		$routes = $this->routes;
 		$this->urls = [];
 
@@ -61,59 +61,21 @@ class Route{
 			$control_folder = [$control_folder];
 		}
 
-        $namespace = '\\';
-        $namespace_path = '';
-
         $control = false;
         $action = false;
 
-        /**
-         * @todo а если несколько директорий?
-         */
-        while(sizeof($routes)){
-            $rout = array_shift($routes);
-            $routU = ucfirst($rout);
+		foreach($control_folder as $folder) {
+			$find = $this->findController($routes, $folder);
+			if($find){
+				$control = $find[0];
+				$action = $find[1];
+				break;
+			}
+		}
 
-            foreach($control_folder as $folder){
-                if(is_dir($folder . $namespace_path . $rout)){
-                    $namespace_path .= $rout . DIRECTORY_SEPARATOR;
-                    $namespace .= $routU . '\\';
-                    continue;
-                }
-
-                if(class_exists(static::BASE_NAMESPACE . $namespace . static::PREF_CONTROL . $routU)){
-                    $control = static::BASE_NAMESPACE . $namespace . static::PREF_CONTROL . $routU;
-                    continue;
-                }
-
-                if(!$control){
-                    $control = static::BASE_NAMESPACE . '\\' . static::PREF_CONTROL . ucfirst($this->default_control);
-                }
-
-                if($control){
-                    if(method_exists($control, static::PREF_ACTION . $routU)){
-                        $action = static::PREF_ACTION . $routU;
-                    }
-
-                    if(!$action && method_exists($control, static::PREF_ACTION . $this->default_action)){
-                        $action = static::PREF_ACTION . ucfirst($this->default_action);
-                    }
-
-                    if(!$action && method_exists($control, static::PREF_ACTION . $this->error_404)){
-                        $action = static::PREF_ACTION . $this->error_404;
-                    }
-
-                    if(!$action){
-                        $control = static::PREF_CONTROL . ucfirst($this->default_action);
-                        $action = static::PREF_ACTION . ucfirst($this->error_404);
-                    }
-                    break(2);
-                }
-            }
-        }
         if(!$control){
-            $control = static::BASE_NAMESPACE . '\\' . static::PREF_CONTROL . ucfirst($this->default_control);
-            $action = static::PREF_ACTION . ucfirst($this->default_action);
+            $control = static::BASE_NAMESPACE . '\\' . $this->getControllerName($this->default_control);
+            $action = $this->getActionName($this->default_action);
         }
         if(sizeof($routes)){
             $this->param = $routes;
@@ -122,6 +84,65 @@ class Route{
         $this->control = $control;
         $this->action = $action;
 
+	}
+
+	protected function getControllerName($name){
+		return static::PREF_CONTROL . ucfirst($name);
+	}
+
+	protected function getActionName($name){
+		return static::PREF_ACTION . ucfirst($name);
+	}
+
+	protected function findController(array $routes, $folder){
+		$control = false;
+		$action = false;
+
+		$namespace = '\\';
+		$namespace_path = '';
+
+		while(sizeof($routes)){
+			$rout = array_shift($routes);
+			$routU = ucfirst($rout);
+
+			if(is_dir($folder . $namespace_path . $rout)){
+				$namespace_path .= $rout . DIRECTORY_SEPARATOR;
+				$namespace .= $routU . '\\';
+				continue;
+			}
+
+			$className = static::BASE_NAMESPACE . $namespace . $this->getControllerName($rout);
+			if(class_exists($className)){
+				$control = $className;
+				continue;
+			}
+
+			if(!$control){
+				$control = static::BASE_NAMESPACE . '\\' . $this->getControllerName($this->default_control);
+			}
+
+			if($control){
+				if(method_exists($control, static::PREF_ACTION . $routU)){
+					$action = static::PREF_ACTION . $routU;
+				}
+
+				if(!$action && method_exists($control, static::PREF_ACTION . $this->default_action)){
+					$action = static::PREF_ACTION . ucfirst($this->default_action);
+				}
+
+				if(!$action && method_exists($control, static::PREF_ACTION . $this->error_404)){
+					$action = static::PREF_ACTION . $this->error_404;
+				}
+
+				if(!$action){
+					$control = static::PREF_CONTROL . ucfirst($this->default_action);
+					$action = static::PREF_ACTION . ucfirst($this->error_404);
+				}
+				break;
+			}
+		}
+
+		return ($control && $action) ? [$control, $action] : false;
 	}
 
 	/**
