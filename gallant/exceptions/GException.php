@@ -35,6 +35,7 @@ class GException extends \Exception{
 		echo $this->css();
 		echo "<div class=\"GallantExceptions\">
 			<div class=\"GallantExceptionsTitle\">Gallant\Exception\GException:<br> <b>$this->message</b> [ error code <b>$this->code</b> ]</div>
+			<div>$this->file : $this->line</div>
 			<div class=\"GallantExceptionsStack\"> <b>Function Stack:</b>";
 
 		if($this->stack) foreach ($this->stack as $data) {

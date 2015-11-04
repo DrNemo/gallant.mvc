@@ -15,23 +15,24 @@ use \G;
 use \Gallant\Exceptions\CoreException;
 
 class Route{
-	private $control = false;
-	private $action = false;
+	protected $control = false;
+	protected $action = false;
 
-	private $default_control = false;
-	private $default_action = false;
+	protected $default_control = false;
+	protected $default_action = false;
 
-	private $error_404 = false;
+	protected $error_404 = false;
 
-	private $param = array();
+	protected $param = [];
 
-	private $routes = array();
+	protected $routes = [];
 
-	private $urls = array(); // url active controller
+	protected $urls = []; // url active controller
 
     const BASE_NAMESPACE = 'Controller';
 	const PREF_CONTROL = 'Controller';
 	const PREF_ACTION = 'action';
+	const PREF_AJAX = 'ajax';
 
 	function __construct(){
 		$config_route = G::getConfig('route');
@@ -53,7 +54,6 @@ class Route{
 	}
 
 	protected function route(){
-		$routes = $this->routes;
 		$this->urls = [];
 
 		$control_folder = G::getPath('controller');
@@ -61,29 +61,28 @@ class Route{
 			$control_folder = [$control_folder];
 		}
 
-        $control = false;
-        $action = false;
-
 		foreach($control_folder as $folder) {
-			$find = $this->findController($routes, $folder);
-			if($find){
-				$control = $find[0];
-				$action = $find[1];
+			$this->findController($folder);
+			if($this->control && $this->findAction()){
 				break;
 			}
 		}
 
-        if(!$control){
-            $control = static::BASE_NAMESPACE . '\\' . $this->getControllerName($this->default_control);
-            $action = $this->getActionName($this->default_action);
-        }
-        if(sizeof($routes)){
-            $this->param = $routes;
-        }
+		if(!$this->control){
+			$this->control = static::BASE_NAMESPACE . '\\' . $this->getControllerName($this->default_control);
+			$this->findAction(false);
+		}
 
-        $this->control = $control;
-        $this->action = $action;
+		$this->param = $this->routes;
 
+		if(!$this->action){
+			// @TODO Logger 404
+			$this->findActionByName($this->error_404);
+
+			if(!$this->action){
+				throw new CoreException('Not found 404 action');
+			}
+		}
 	}
 
 	protected function getControllerName($name){
@@ -91,58 +90,80 @@ class Route{
 	}
 
 	protected function getActionName($name){
-		return static::PREF_ACTION . ucfirst($name);
+		return (G::isAjax() ? static::PREF_AJAX : static::PREF_ACTION) . ucfirst($name);
 	}
 
-	protected function findController(array $routes, $folder){
-		$control = false;
-		$action = false;
+	protected function findController($folder){
+		if(!sizeof($this->routes)){
+			return;
+		}
+		$url = [];
 
 		$namespace = '\\';
 		$namespace_path = '';
 
-		while(sizeof($routes)){
-			$rout = array_shift($routes);
-			$routU = ucfirst($rout);
+		while(sizeof($this->routes)){
+			$rout = array_shift($this->routes);
+			$url[] = $rout;
 
 			if(is_dir($folder . $namespace_path . $rout)){
 				$namespace_path .= $rout . DIRECTORY_SEPARATOR;
-				$namespace .= $routU . '\\';
+				$namespace .= ucfirst($rout) . '\\';
 				continue;
 			}
 
 			$className = static::BASE_NAMESPACE . $namespace . $this->getControllerName($rout);
 			if(class_exists($className)){
-				$control = $className;
-				continue;
+				$this->control = $className;
+				$this->urls = $url;
 			}
 
-			if(!$control){
-				$control = static::BASE_NAMESPACE . '\\' . $this->getControllerName($this->default_control);
-			}
-
-			if($control){
-				if(method_exists($control, static::PREF_ACTION . $routU)){
-					$action = static::PREF_ACTION . $routU;
-				}
-
-				if(!$action && method_exists($control, static::PREF_ACTION . $this->default_action)){
-					$action = static::PREF_ACTION . ucfirst($this->default_action);
-				}
-
-				if(!$action && method_exists($control, static::PREF_ACTION . $this->error_404)){
-					$action = static::PREF_ACTION . $this->error_404;
-				}
-
-				if(!$action){
-					$control = static::PREF_CONTROL . ucfirst($this->default_action);
-					$action = static::PREF_ACTION . ucfirst($this->error_404);
-				}
-				break;
-			}
+			break;
 		}
 
-		return ($control && $action) ? [$control, $action] : false;
+		if(!$this->control){
+			$this->routes = array_merge($url, $this->routes);
+		}
+	}
+
+	protected function findAction($findDefault = true){
+		if(sizeof($this->routes)){
+			if($this->findActionByName($this->routes[0])){
+				unset($this->routes[0]);
+				return true;
+			}
+		}
+		if(!$findDefault){
+			return false;
+		}
+
+		if($this->findActionByName($this->default_action)){
+			return true;
+		}
+		return false;
+	}
+
+	protected function findActionByName($actionName){
+		$actionMethod = $this->getActionName($actionName);
+		if(is_callable([$this->control, $actionMethod])){
+			$this->action = $actionMethod;
+			$this->urls[] = $actionName;
+			return true;
+		}
+		return false;
+	}
+
+	protected $request;
+	public function getRequest(){
+		if(empty($this->request)){
+			$this->request = G::getComponent(Request::class);
+		}
+		$this->route();
+
+		$this->request->setRunAction($this->control, $this->action);
+		$this->request->setArgs($this->param);
+
+		return $this->request;
 	}
 
 	/**
@@ -163,7 +184,6 @@ class Route{
 		$routes = array_values(array_filter(explode('/', strtolower($routes).'/'), 'trim'));
 		array_walk($routes, G::$filter['html'], G::$filter['html']);
 		$this->routes = $routes;
-		$this->route();
 	}
 
 	/**

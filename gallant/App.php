@@ -88,9 +88,9 @@ class G{
 		
 		self::$config = array_replace_recursive($def_config, $app_config);
 		
-		self::$template = static::getComponent(Template::class);
-
 		self::$_route = static::getComponent(Route::class);
+
+		self::$template = static::getComponent(Template::class);
 
         $bootstrapClass = G::getConfig('bootstrap');
         if(!is_subclass_of($bootstrapClass, Entry::class)){
@@ -99,28 +99,14 @@ class G{
 
         $bootstrapClass::init();
 
-		$control = self::getControl();
-		$action = self::getAction();
+		$request = self::$_route->getRequest();
+		$request->runController();
 
-		self::template()->ob();
+		$bootstrapClass::render();
 
-        if(!class_exists($control)){
-            throw new CoreException('Not found controller: ' . $control);
-        }
-		$apply = new $control();
-		$result = $apply->$action();
+		self::template()->render();
 
-		self::template()->ob();
-
-        $bootstrapClass::render();
-
-		self::template()->render($result);
-
-        $bootstrapClass::destroy();
-
-		/**
-		* @todo destroy
-		*/
+		$bootstrapClass::destroy();
 	}
 
     /**

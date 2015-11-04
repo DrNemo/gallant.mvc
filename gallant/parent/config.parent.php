@@ -25,7 +25,7 @@ return [
 		'site' 		=> '/', 
 		'type' => 'get', // or get
 		'index' => 'page/index',
-		'error404' => 'action404'
+		'error404' => '404'
 		],
 
 	'path' => [
